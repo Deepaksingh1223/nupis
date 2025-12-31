@@ -1,3 +1,5 @@
+
+
 /* Add to app/globals.css */
 .preloader {
   position: fixed;
@@ -31,4 +33,38 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+/* Hide default slick arrows */
+.slick-prev,
+.slick-next {
+  display: none !important;
+}
+
+/* Custom arrows */
+.custom-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #d66c57;
+  border: none;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  cursor: pointer;
+}
+
+.slick-prev.custom-arrow {
+  left: -20px;
+}
+
+.slick-next.custom-arrow {
+  right: -20px;
+}
+
+.custom-arrow i {
+  color: #fff;
 }

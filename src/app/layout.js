@@ -64,82 +64,20 @@ export default function RootLayout({ children }) {
               <ul>
                 <li className="menu-item-has-children">
                   <a href="/">Home</a>
-                  <ul className="sub-menu">
-                    <li><a href="/">Home 1</a></li>
-                    <li><a href="/index-2">Home 2</a></li>
-                    <li><a href="/index-3">Home 3</a></li>
-                  </ul>
+                
                 </li>
                 <li className="menu-item-has-children">
                   <a href="/shop">Shop</a>
-                  <ul className="sub-menu">
-                    <li><a href="/shop">Shop</a></li>
-                    <li><a href="/shop-sidebar">Shop Sidebar</a></li>
-                    <li><a href="/shop-details">Shop Details</a></li>
-                  </ul>
+                  
                 </li>
                 <li className="menu-item-has-children">
                   <a href="/about">Vendor</a>
-                  <ul className="sub-menu">
-                    <li><a href="/vendor">Vendor</a></li>
-                    <li><a href="/vendor-details">Vendor Details</a></li>
-                  </ul>
                 </li>
                 <li className="menu-item-has-children mega-menu-wrap">
-                  <a href="#">Pages</a>
-                  <ul className="mega-menu">
-                    <li>
-                      <a href="/shop">Page List 1</a>
-                      <ul>
-                        <li><a href="/">Home 1</a></li>
-                        <li><a href="/index-2">Home 2</a></li>
-                        <li><a href="/index-3">Home 3</a></li>
-                        <li><a href="/about">About</a></li>
-                        <li><a href="/contact">Contact</a></li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="#">Page List 2</a>
-                      <ul>
-                        <li><a href="/blog">Blog</a></li>
-                        <li><a href="/blog-sidebar">Blog Sidebar</a></li>
-                        <li><a href="/blog-sidebar-2">Blog Sidebar 2</a></li>
-                        <li><a href="/Blog-Standard">Blog Standard</a></li>
-                        <li><a href="/blog-details">Blog Details</a></li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="#">Page List 3</a>
-                      <ul>
-                        <li><a href="/cart">Cart</a></li>
-                        <li><a href="/shop">Shop</a></li>
-                        <li><a href="/shop-sidebar">Shop Sidebar</a></li>
-                        <li><a href="/shop-details">Shop Details</a></li>
-                        <li><a href="/404">Error Page</a></li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="#">Page List 4</a>
-                      <ul>
-                        <li><a href="/wishlist">wishlist</a></li>
-                        <li><a href="/checkout">checkout</a></li>
-                        <li><a href="/author">All Authors</a></li>
-                        <li><a href="/author-details">Author Details</a></li>
-                        <li><a href="/vendor">Vendor</a></li>
-                        <li><a href="/vendor-details">Vendor Details</a></li>
-                      </ul>
-                    </li>
-                  </ul>
+                  <a href="#">Pages</a> 
                 </li>
                 <li className="menu-item-has-children">
-                  <a href="/blog">Blog</a>
-                  <ul className="sub-menu">
-                    <li><a href="/blog">Blog</a></li>
-                    <li><a href="/blog-sidebar">Blog Sidebar</a></li>
-                    <li><a href="/blog-sidebar-2">Blog Sidebar 2</a></li>
-                    <li><a href="/Blog-Standard">Blog Standard</a></li>
-                    <li><a href="/blog-details">Blog Details</a></li>
-                  </ul>
+                  <a href="/blog">Blog</a> 
                 </li>
                 <li>
                   <a href="/contact">Contact</a>
@@ -169,19 +107,7 @@ export default function RootLayout({ children }) {
                   </div>
                 </div>
                 <div className="col-auto">
-                  <div className="header-right">
-                    <div className="dropdown">
-                      <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"><span className="globe-icon"><i className="fal fa-globe"></i></span>English</a>
-                      <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <li><a className="dropdown-item" href="#">Arabic</a></li>
-                        <li><a className="dropdown-item" href="#">German</a></li>
-                        <li><a className="dropdown-item" href="#">French</a></li>
-                        <li><a className="dropdown-item" href="#">Italian</a></li>
-                        <li><a className="dropdown-item" href="#">Slobac</a></li>
-                        <li><a className="dropdown-item" href="#">Russian</a></li>
-                        <li><a className="dropdown-item" href="#">Spanish</a></li>
-                      </ul>
-                    </div>
+                  <div className="header-right"> 
                     <div className="header-social">
                       <a href="#"><i className="fab fa-facebook-f"></i></a>
                       <a href="#"><i className="fa-brands fa-x-twitter"></i></a>
@@ -212,14 +138,9 @@ export default function RootLayout({ children }) {
                       </button>
                       <div className="d-flex align-items-center">
                         <div className="dropdown">
-                          <div className="dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-                            Categories
-                          </div>
-                          <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a className="dropdown-item" href="#">Action</a></li>
-                            <li><a className="dropdown-item" href="#">Another action</a></li>
-                            <li><a className="dropdown-item" href="#">Something else here</a></li>
-                          </ul>
+                          <div className="header-info_label">
+                            Search 
+                          </div> 
                         </div>
                         <input type="text" placeholder="Search yourProduct's....." />
                       </div>
@@ -271,82 +192,18 @@ export default function RootLayout({ children }) {
                             <ul>
                               <li className="menu-item-has-children">
                                 <a href="/">Home</a>
-                                <ul className="sub-menu">
-                                  <li><a href="/">Home 1</a></li>
-                                  <li><a href="/index-2">Home 2</a></li>
-                                  <li><a href="/index-3">Home 3</a></li>
-                                </ul>
                               </li>
                               <li className="menu-item-has-children">
                                 <a href="/shop">Shop</a>
-                                <ul className="sub-menu">
-                                  <li><a href="/shop">Shop</a></li>
-                                  <li><a href="/shop-sidebar">Shop Sidebar</a></li>
-                                  <li><a href="/shop-details">Shop Details</a></li>
-                                </ul>
                               </li>
                               <li className="menu-item-has-children">
                                 <a href="/vendor">Vendor</a>
-                                <ul className="sub-menu">
-                                  <li><a href="/vendor">Vendor</a></li>
-                                  <li><a href="/vendor-details">Vendor Details</a></li>
-                                </ul>
                               </li>
                               <li className="menu-item-has-children mega-menu-wrap">
                                 <a href="#">Pages</a>
-                                <ul className="mega-menu">
-                                  <li>
-                                    <a href="/shop">Page List 1</a>
-                                    <ul>
-                                      <li><a href="/">Home 1</a></li>
-                                      <li><a href="/index-2">Home 2</a></li>
-                                      <li><a href="/index-3">Home 3</a></li>
-                                      <li><a href="/about">About</a></li>
-                                      <li><a href="/contact">Contact</a></li>
-                                    </ul>
-                                  </li>
-                                  <li>
-                                    <a href="#">Page List 2</a>
-                                    <ul>
-                                      <li><a href="/blog">Blog</a></li>
-                                      <li><a href="/blog-sidebar">Blog Sidebar</a></li>
-                                      <li><a href="/blog-sidebar-2">Blog Sidebar 2</a></li>
-                                      <li><a href="/Blog-Standard">Blog Standard</a></li>
-                                      <li><a href="/blog-details">Blog Details</a></li>
-                                    </ul>
-                                  </li>
-                                  <li>
-                                    <a href="#">Page List 3</a>
-                                    <ul>
-                                      <li><a href="/cart">Cart</a></li>
-                                      <li><a href="/shop">Shop</a></li>
-                                      <li><a href="/shop-sidebar">Shop Sidebar</a></li>
-                                      <li><a href="/shop-details">Shop Details</a></li>
-                                      <li><a href="/404">Error Page</a></li>
-                                    </ul>
-                                  </li>
-                                  <li>
-                                    <a href="#">Page List 4</a>
-                                    <ul>
-                                      <li><a href="/wishlist">wishlist</a></li>
-                                      <li><a href="/checkout">checkout</a></li>
-                                      <li><a href="/author">All Authors</a></li>
-                                      <li><a href="/author-details">Author Details</a></li>
-                                      <li><a href="/vendor">Vendor</a></li>
-                                      <li><a href="/vendor-details">Vendor Details</a></li>
-                                    </ul>
-                                  </li>
-                                </ul>
                               </li>
                               <li className="menu-item-has-children">
                                 <a href="/blog">Blog</a>
-                                <ul className="sub-menu">
-                                  <li><a href="/blog">Blog</a></li>
-                                  <li><a href="/blog-sidebar">Blog Sidebar</a></li>
-                                  <li><a href="/blog-sidebar-2">Blog Sidebar 2</a></li>
-                                  <li><a href="/Blog-Standard">Blog Standard</a></li>
-                                  <li><a href="/blog-details">Blog Details</a></li>
-                                </ul>
                               </li>
                               <li>
                                 <a href="/contact">Contact</a>
@@ -455,12 +312,8 @@ export default function RootLayout({ children }) {
                   <div className="widget widget_nav_menu footer-widget">
                     <h3 className="widget_title">Explore Us<span className="title-shape"><img src="/assets/img/shapes/footer-line-shape.svg" alt="Shape Image" /></span></h3>
                     <ul className="menu">
-                      <li><a href="/about"><i className="far fa-angle-right"></i> About Us</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Loyalty Program</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Bookmarks</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Sign in / Join</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Delivery Information</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Track Your Order</a></li>
+                      <li><a href="/about"><i className="far fa-angle-right"></i> About Us</a></li> 
+                     
                     </ul>
                   </div>
                 </div>
@@ -468,12 +321,7 @@ export default function RootLayout({ children }) {
                   <div className="widget widget_nav_menu footer-widget">
                     <h3 className="widget_title">Services <span className="title-shape"><img src="/assets/img/shapes/footer-line-shape.svg" alt="Shape Image" /></span></h3>
                     <ul className="menu">
-                      <li><a href="#"><i className="far fa-angle-right"></i> Help Center</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Returns</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Products Recalls</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Store Pickup</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Accessibility</a></li>
-                      <li><a href="/contact"><i className="far fa-angle-right"></i> Contact Us</a></li>
+                      <li><a href="#"><i className="far fa-angle-right"></i> Help Center</a></li> 
                     </ul>
                   </div>
                 </div>
@@ -482,17 +330,7 @@ export default function RootLayout({ children }) {
                     <h3 className="widget_title">Categories<span className="title-shape"><img src="/assets/img/shapes/footer-line-shape.svg" alt="Shape Image" /></span></h3>
                     <ul className="menu footer-menu">
                       <li><a href="#"><i className="far fa-angle-right"></i> Action</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Comedy</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Kids</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Adventure</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Trips</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Suspense</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Suspense</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Love</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Thrillers</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Since Friction</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> General</a></li>
-                      <li><a href="#"><i className="far fa-angle-right"></i> Astronomy</a></li>
+                      <li><a href="#"><i className="far fa-angle-right"></i> Comedy</a></li> 
                     </ul>
                   </div>
                 </div>
@@ -501,9 +339,8 @@ export default function RootLayout({ children }) {
                     <h3 className="widget_title">Contact<span className="title-shape"><img src="/assets/img/shapes/footer-line-shape.svg" alt="Shape Image" /></span></h3>
                     <div className="list-style1">
                       <ul className="list-unstyled">
-                        <li><i className="fas fa-map-marked-alt"></i> <a href="#">Willow Creek, # 32/65 Colorado United State Of America</a></li>
-                        <li><i className="fas fa-envelope"></i><a href="mailto:example@ebokz.com">example@ebokz.com</a></li>
-                        <li><i className="fa-solid fa-headset"></i> <a href="tel:+0061365000299">+(006) 1365 000 29</a> <a href="tel:+0061365000299">+(006) 1365 000 29</a></li>
+                       <li><i className="fa-solid fa-headset"></i> <a href="tel:+0061365000299">+(006) 1365 000 29</a> 
+                        </li>
                       </ul>
                     </div>
                   </div>
