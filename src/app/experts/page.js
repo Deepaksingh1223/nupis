@@ -12,9 +12,8 @@ const Section4 = () => {
             </p>
           </div>
         </section>
-      {/* Expert Educators Section */}
-      <div className="container"> 
 
+      <div className="container"> 
         {/* Educator Cards Grid */}
         <div className="row g-4 mt-5">
           {/* Dr. Michael Chen */}
