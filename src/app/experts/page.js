@@ -16,7 +16,6 @@ const Section4 = () => {
       <div className="container"> 
         {/* Educator Cards Grid */}
         <div className="row g-4 mt-5">
-          {/* Dr. Michael Chen */}
           <div className="col-lg-6">
             <div className="educator-card">
               <div className="row g-4">
