@@ -6252,7 +6252,7 @@ input:focus {
   border: 1px solid rgb(255 233 128 / 69%);
   backdrop-filter: blur(10px);
   text-transform: uppercase;
-  margin-top: 50px;
+  margin-top: 90px;
 }
 
 /* Warning Label */
