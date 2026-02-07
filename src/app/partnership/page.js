@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useState } from "react";
-import Image from 'next/image'; 
+import Image from 'next/image';
 const Section2 = () => {
   const [activeFaq, setActiveFaq] = useState(null);
 
@@ -44,23 +44,21 @@ const Section2 = () => {
           <div className="hero-content">
             <div className="row">
               <div className="col-md-6">
-                <div className="hero-text">
-                  <h1 className="hero-title1 text-dark">Academy Partnership Program</h1>
-                  <p className="hero-description text-gray">
-                    Partner with NUPIPS to bring world-class financial markets education to your institution.
-                    Co-branded programs, certified curricula, and comprehensive support.
-                  </p>
-                  <button className="apply-button">
-                    Apply for Partnership →
-                  </button>
-                </div>
+                <h1 className="hero-title1 text-dark">Academy Partnership Program</h1>
+                <p className="hero-description text-gray">
+                  Partner with NUPIPS to bring world-class financial markets education to your institution.
+                  Co-branded programs, certified curricula, and comprehensive support.
+                </p>
+                <button className="apply-button">
+                  Apply for Partnership →
+                </button>
               </div>
               <div className="col-md-6">
                 <div className="hero-visual">
                   <div className="placeholder-visual">
                     <div className="visual-content">
                       <Image
-                     src="/assets/img/partnership-img.png"
+                        src="/assets/img/partnership-img.png"
                         alt="Partnership"
                         width={600}
                         height={300}
@@ -70,18 +68,9 @@ const Section2 = () => {
                 </div>
               </div>
             </div>
-
-
           </div>
         </div>
       </section>
-
-      <div className="section-divider">
-        <div className="container">
-          <hr />
-        </div>
-      </div>
-
       {/* Partnership Benefits */}
       <section className="benefits-section">
         <div className="container">
@@ -157,11 +146,12 @@ const Section2 = () => {
           <div className="included-wrapper">
             <div className="included-visual">
               <div className="included-image-placeholder">
-                <div className="included-image-content">
-                  <div className="image-icon">📚</div>
-                  <h4>Educational Resources</h4>
-                  <p>Comprehensive learning materials</p>
-                </div>
+                <Image
+                  src="/assets/img/Included-img.png"
+                  alt="Partnership"
+                  width={800}
+                  height={600}
+                />
               </div>
             </div>
             <div className="included-list">
@@ -210,47 +200,7 @@ const Section2 = () => {
                   </div>
                 </div>
 
-                <div className="feature-item">
-                  <div className="feature-check">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M20 6L9 17L4 12" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </div>
-                  <div className="feature-content">
-                    <h4 className="feature-title">Ongoing Support</h4>
-                    <p className="feature-description">
-                      Regular updates, new content, and dedicated partnership support team
-                    </p>
-                  </div>
-                </div>
-
-                <div className="feature-item">
-                  <div className="feature-check">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M20 6L9 17L4 12" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </div>
-                  <div className="feature-content">
-                    <h4 className="feature-title">Faculty Training</h4>
-                    <p className="feature-description">
-                      Professional development workshops for your educators on financial markets education
-                    </p>
-                  </div>
-                </div>
-
-                <div className="feature-item">
-                  <div className="feature-check">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M20 6L9 17L4 12" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </div>
-                  <div className="feature-content">
-                    <h4 className="feature-title">Co-Branded Materials</h4>
-                    <p className="feature-description">
-                      Customized content featuring both NUPIPS and your institution's branding
-                    </p>
-                  </div>
-                </div>
+               
               </div>
             </div>
           </div>
