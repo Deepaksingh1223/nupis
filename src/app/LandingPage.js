@@ -1,5 +1,5 @@
 'use client';
-
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 const LandingPage = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -17,48 +17,52 @@ const LandingPage = () => {
       {/* Header */}
 
       {/* Hero Section */}
-      <section className="hero">
-        <div className="hero-bg">
-          <div className="gradient-overlay"></div>
-          <div className="pattern-overlay"></div>
+
+      <section class="fin-edu-hero-section">
+        <div class="fin-edu-background-layer">
+          <div class="fin-edu-dark-bg"></div>
+          <div class="fin-edu-gradient-blur"></div>
         </div>
-        <div className="container hero-content">
 
+        <div class="fin-edu-content-container">
+          <div class="fin-edu-warning-badge">
+            <i class="fas fa-book-open"></i>   Educational Purposes Only - No Financial Advice
+          </div>
 
-          <h1 className="hero-title">
-            Master Your <br></br><span className="gradient-text">Financial Future</span>
+          <h1 class="fin-edu-primary-heading">
+            Master Your<br />
+            <span class="fin-edu-accent-gradient">Financial Future</span>
           </h1>
 
-          <h2 className="hero-subtitle">Through Education</h2>
+          <h2 class="fin-edu-secondary-heading">Through Education</h2>
 
-          <p className="hero-description text-white">
-            Expert-led courses in Forex education, Stock market fundamentals, trading psychology, and risk management.
+          <p class="fin-edu-paragraph-text">
+            Expert-led courses in <span className='span1'>Forex education</span>, <span className='span2'> Stock market fundamentals </span>, <span className='span3'>
+              trading psychology </span> , and <span className='span4'>risk management </span>.
             Build knowledge, not promises.
           </p>
 
-          <div className="hero-buttons">
-            <a href="#education" className="btn btn-primary">
-              <i className="fas fa-book-open"></i> Explore Education
+          <div class="fin-edu-action-buttons">
+            <a href="#education" class="fin-edu-primary-action">
+              <i class="fas fa-book-open"></i> Explore Education
             </a>
-            <a href="#community" className="btn btn-secondary">
-              <i className="fas fa-users"></i> Join Community
+            <a href="#community" class="fin-edu-secondary-action">
+              <i class="fas fa-users"></i> Join Community
             </a>
           </div>
 
-          <div className="trust-stats">
-            <div className="stat-item">
-              <div className="stat-number">15K+</div>
-              <div className="stat-label">Active Students</div>
+          <div class="fin-edu-statistics-row">
+            <div class="fin-edu-stat-card">
+              <div class="fin-edu-stat-value">15K+</div>
+              <div class="fin-edu-stat-title">Active Students</div>
             </div>
-            <div className="stat-divider"></div>
-            <div className="stat-item">
-              <div className="stat-number">200+</div>
-              <div className="stat-label">Expert Lessons</div>
+            <div class="fin-edu-stat-card">
+              <div class="fin-edu-stat-value">200+</div>
+              <div class="fin-edu-stat-title">Expert Lessons</div>
             </div>
-            <div className="stat-divider"></div>
-            <div className="stat-item">
-              <div className="stat-number">4.8★</div>
-              <div className="stat-label">Student Rating</div>
+            <div class="fin-edu-stat-card">
+              <div class="fin-edu-stat-value">4.8★</div>
+              <div class="fin-edu-stat-title">Student Rating</div>
             </div>
           </div>
         </div>
@@ -69,7 +73,7 @@ const LandingPage = () => {
       {/* Education Programs Section */}
       <section className="section programs bg-light">
         <div className="container">
-          <h2 className="section-title">Comprehensive Financial Education</h2>
+          <h2 className="section-title1">Comprehensive Financial Education</h2>
           <p className="section-subtitle">
             Structured learning programs designed for students, professionals, and aspiring traders worldwide.
           </p>
@@ -116,20 +120,16 @@ const LandingPage = () => {
           <div className="experts-grid">
             <div className="experts-image">
               <div className="image-placeholder">
-                <div className="image-content">
-                  <i className="fas fa-newspaper"></i>
-                  <div className="floating-element">
-                    <i className="fas fa-chart-line"></i>
-                  </div>
-                  <div className="floating-element">
-                    <i className="fas fa-calculator"></i>
-                  </div>
-                </div>
+                <Image src="/assets/img/Learn-From.png"
+                  alt="Partnership"
+                  width={600}
+                  height={600}
+                />
               </div>
             </div>
 
             <div className="experts-content">
-              <h2 className="section-title text-left">Learn From Verified Experts</h2>
+              <h2 className="section-title2 text-left">Learn From Verified Experts</h2>
               <p className="section-subtitle text-left">
                 Our faculty consists of experienced educators with decades of combined expertise in financial markets, technical analysis, and risk management.
               </p>
@@ -160,7 +160,7 @@ const LandingPage = () => {
       {/* Testimonials Section */}
       <section className="section testimonials bg-light">
         <div className="container">
-          <h2 className="section-title">What Our Learners Say</h2>
+          <h2 className="section-title3">What Our Learners Say</h2>
           <p className="section-subtitle">
             Join thousands of satisfied students who have transformed their financial education journey with nupips.
           </p>
@@ -174,9 +174,7 @@ const LandingPage = () => {
                 "The risk management course completely changed my approach to trading. The emphasis on education over profits is refreshing."
               </p>
               <div className="testimonial-author">
-                <div className="author-avatar">
-                  <i className="fas fa-user"></i>
-                </div>
+
                 <div>
                   <div className="author-name">Alex Chen</div>
                   <div className="author-title">Financial Analyst</div>
@@ -192,9 +190,7 @@ const LandingPage = () => {
                 "As a beginner, I appreciated the structured learning path. The community support made complex concepts easier to grasp."
               </p>
               <div className="testimonial-author">
-                <div className="author-avatar">
-                  <i className="fas fa-user"></i>
-                </div>
+
                 <div>
                   <div className="author-name">Sarah Johnson</div>
                   <div className="author-title">Software Engineer</div>
@@ -210,9 +206,7 @@ const LandingPage = () => {
                 "The expert faculty brings real-world experience that you won't find in textbooks. Worth every penny for serious learners."
               </p>
               <div className="testimonial-author">
-                <div className="author-avatar">
-                  <i className="fas fa-user"></i>
-                </div>
+
                 <div>
                   <div className="author-name">Michael Rodriguez</div>
                   <div className="author-title">Business Student</div>
@@ -232,7 +226,7 @@ const LandingPage = () => {
           </p>
 
           <div className="cta-buttons">
-            <a href="#programs" className="btn btn-primary">
+            <a href="#programs" className="footer-btn">
               <i className="fas fa-graduation-cap"></i> Explore Programs
             </a>
             <a href="#contact" className="btn btn-outline">

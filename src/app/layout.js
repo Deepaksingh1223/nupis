@@ -193,9 +193,7 @@ export default function RootLayout({ children }) {
               {/* Company Info */}
               <div>
                 <div className="flex items-center space-x-2 mb-6">
-                  <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                    <i className="ri-line-chart-line text-white text-xl"></i>
-                  </div>
+                 
                   <span className="text-2xl font-bold">
                     <Image
                       src="/assets/img/logo.png"
@@ -284,7 +282,7 @@ export default function RootLayout({ children }) {
 
             <div className="border-t border-gray-800 pt-8">
               <div className="flex flex-col md:flex-row justify-between items-center">
-                <p className="text-gray-400 mb-4 md:mb-0">
+                <p className="text-gray-400 mb-0 md:mb-0">
                   © 2024 NUPIPS. All rights reserved. Educational purposes only.
                 </p>
                 <div className="flex items-center space-x-6">

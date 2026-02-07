@@ -239,7 +239,7 @@ body {
 }
 
 .btn-outline:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background:rgb(255 255 255);
 }
 
 .trust-stats {
@@ -457,8 +457,7 @@ body {
 
 .image-placeholder {
   background: linear-gradient(135deg, var(--light-gray), var(--medium-gray));
-  border-radius: 20px;
-  height: 400px;
+  border-radius: 20px; 
   position: relative;
   overflow: hidden;
 }
@@ -538,6 +537,7 @@ body {
   border-radius: 16px;
   padding: 30px;
   box-shadow: var(--shadow);
+  border: 1px solid #e3dddd;
 }
 
 .stars {
@@ -549,15 +549,17 @@ body {
 .testimonial-text {
   color: var(--text-secondary);
   font-style: italic;
-  line-height: 1.8;
-  margin-bottom: 25px;
+  line-height: 1.8; 
   font-size: 1rem;
 }
 
 .testimonial-author {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-top: 10px;
+    margin-top: 10px;
+    border-top: 1px solid #e3dddd;
 }
 
 .author-avatar {

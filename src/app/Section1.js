@@ -8,7 +8,7 @@ const Section1 = () => {
           <div className="row">
             <div className="col-12 col-lg-12">
               <h1 className="hero-edu-title display-4 fw-bold mb-4">
-                Financial Markets Education
+                Financial Markets Education 
               </h1>
               <p className="hero-edu-subtitle lead mb-0">
                 Comprehensive, structured programs in Forex and Stock Market education.
