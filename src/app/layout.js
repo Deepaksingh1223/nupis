@@ -2,6 +2,17 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import "./globals.css";
 import Script from "next/script";
+import { Geist, Geist_Mono } from "next/font/google";
+
+const geistSans = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist-sans",
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+});
 
 export const metadata = {
   title: "nupips | Professional Financial Education",
@@ -26,7 +37,7 @@ export default function RootLayout({ children }) {
         <Script src="/assets/js/bootstrap.min.js" strategy="beforeInteractive" />
       </head>
 
-      <body>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Header />
         <main>{children}</main>
         <Footer />
