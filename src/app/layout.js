@@ -6,6 +6,7 @@ import Script from "next/script";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import Image from 'next/image';
+import { usePathname } from "next/navigation";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -30,7 +31,7 @@ const metadata = {
 export default function RootLayout({ children }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-
+  const pathname = usePathname();
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -135,11 +136,27 @@ export default function RootLayout({ children }) {
 
               {/* Desktop Navigation */}
               <div className="nav-items desktop-nav">
-                {navItems.map((item) => (
+                {/* {navItems.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
                     className="nav-link"
+                  >
+                    {item.name}
+                  </Link>
+                ))} */}
+
+                {navItems.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`nav-link
+      ${pathname === item.href
+                        ? "text-orange-500 font-semibold"
+                        : "text-gray-300 hover:text-white"
+                      }
+    `}
                   >
                     {item.name}
                   </Link>
@@ -167,12 +184,27 @@ export default function RootLayout({ children }) {
               {isMounted && (
                 <div className={`mobile-nav-items ${isMobileMenuOpen ? 'active' : ''}`}>
                   <div className="mobile-nav-content">
-                    {navItems.map((item) => (
+                    {/* {navItems.map((item) => (
                       <Link
                         key={item.name}
                         href={item.href}
                         className="mobile-nav-link"
                         onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {item.name}
+                      </Link>
+                    ))} */}
+                    {navItems.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`nav-link
+      ${pathname === item.href
+                            ? "text-orange-500 font-semibold"
+                            : "text-gray-300 hover:text-white"
+                          }
+    `}
                       >
                         {item.name}
                       </Link>
@@ -193,7 +225,7 @@ export default function RootLayout({ children }) {
               {/* Company Info */}
               <div>
                 <div className="flex items-center space-x-2 mb-6">
-                 
+
                   <span className="text-2xl font-bold">
                     <Image
                       src="/assets/img/logo.png"
