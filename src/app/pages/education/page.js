@@ -15,8 +15,8 @@ const Section1 = () => {
                 Learn technical analysis, risk management, and trading psychology from
                 industry experts.
               </p>
-              <div class="fin-edu-warning-badge1">
-                <i class="fas fa-book-open"></i>   Educational Purposes Only - No Financial Advice
+              <div className="fin-edu-warning-badge1">
+                <i className="fas fa-book-open"></i>   Educational Purposes Only - No Financial Advice
               </div>
             </div>
           </div>
@@ -30,7 +30,7 @@ const Section1 = () => {
             <div className="col-12 col-md-6 col-lg-3">
               <div className="feature-edu-card h-100 p-4">
                 <div className="feature-edu-icon blue-edu-icon mb-3">
-                  <i class="fa-solid fa-arrow-trend-up"></i> 
+                  <i className="fa-solid fa-arrow-trend-up"></i> 
                 </div>
                 <h3 className="feature-edu-title h5 fw-bold mb-2">
                   Market Structure
@@ -44,7 +44,7 @@ const Section1 = () => {
             <div className="col-12 col-md-6 col-lg-3">
               <div className="feature-edu-card h-100 p-4">
                 <div className="feature-edu-icon green-edu-icon mb-3">
-                  <i class="fa-solid fa-book-open"></i> 
+                  <i className="fa-solid fa-book-open"></i> 
                 </div>
                 <h3 className="feature-edu-title h5 fw-bold mb-2">
                   Technical Analysis
@@ -58,7 +58,7 @@ const Section1 = () => {
             <div className="col-12 col-md-6 col-lg-3">
               <div className="feature-edu-card h-100 p-4">
                 <div className="feature-edu-icon purple-edu-icon mb-3">
-                   <i class="fa-solid fa-shield-heart"></i> 
+                   <i className="fa-solid fa-shield-heart"></i> 
                 </div>
                 <h3 className="feature-edu-title h5 fw-bold mb-2">
                   Risk Management
@@ -72,7 +72,7 @@ const Section1 = () => {
             <div className="col-12 col-md-6 col-lg-3">
               <div className="feature-edu-card h-100 p-4">
                 <div className="feature-edu-icon amber-edu-icon mb-3">
-                  <i class="fa-solid fa-brain"></i> 
+                  <i className="fa-solid fa-brain"></i> 
                 </div>
                 <h3 className="feature-edu-title h5 fw-bold mb-2">
                   Trading Psychology
