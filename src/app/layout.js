@@ -9,10 +9,10 @@ const geistSans = Geist({
   variable: "--font-geist-sans",
 });
 
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-geist-mono",
-});
+// const geistMono = Geist_Mono({
+//   subsets: ["latin"],
+//   variable: "--font-geist-mono",
+// });
 
 export const metadata = {
   title: "nupips | Professional Financial Education",
@@ -37,7 +37,7 @@ export default function RootLayout({ children }) {
         <Script src="/assets/js/bootstrap.min.js" strategy="beforeInteractive" />
       </head>
 
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable}`}>
         <Header />
         <main>{children}</main>
         <Footer />
