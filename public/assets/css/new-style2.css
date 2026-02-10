@@ -6939,5 +6939,5 @@
   }
   body {
   font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
 }
