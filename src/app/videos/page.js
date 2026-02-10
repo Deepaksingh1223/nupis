@@ -138,7 +138,7 @@ const Section5 = () => {
       </section>
 
       {/* Section 2: Areas of Expertise */}
-      <section className="expertise-section">
+      <section className="expertise-section m-0">
         <div className="container py-5">
           <h2 className="section-title text-center mb-5">Areas of Expertise</h2>
           <div className="row g-4">

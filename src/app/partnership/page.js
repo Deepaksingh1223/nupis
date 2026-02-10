@@ -47,25 +47,23 @@ const Section2 = () => {
                 <h1 className="hero-title1 text-dark">Academy Partnership Program</h1>
                 <p className="hero-description text-gray">
                   Partner with NUPIPS to bring world-class financial markets education to your institution.
-                  Co-branded programs, certified curricula, and comprehensive support.
+                  Co-branded programs, certified curricula, and comprehensive support.  Co-branded programs, certified curricula, and comprehensive support.
                 </p>
                 <button className="apply-button">
                   Apply for Partnership →
                 </button>
               </div>
               <div className="col-md-6">
-                <div className="hero-visual">
-                  <div className="placeholder-visual">
-                    <div className="visual-content">
+                <div className="hero-visual mt-3">
+                 
                       <Image
                         src="/assets/img/partnership-img.png"
                         alt="Partnership"
+                        className="partneship-banner-img"
                         width={600}
                         height={300}
                       />
-                    </div>
-                  </div>
-                </div>
+                    </div> 
               </div>
             </div>
           </div>
@@ -75,7 +73,7 @@ const Section2 = () => {
       <section className="benefits-section">
         <div className="container">
           <div className="section-header">
-            <h2 className="section-title">Partnership Benefits</h2>
+            <h2 className="section-title acording-m">Partnership Benefits</h2>
             <p className="section-subtitle">
               Comprehensive support for integrating financial education into your curriculum
             </p>
@@ -143,17 +141,13 @@ const Section2 = () => {
       {/* What's Included */}
       <section className="included-section">
         <div className="container">
-          <div className="included-wrapper">
-            <div className="included-visual">
-              <div className="included-image-placeholder">
+          <div className="included-wrapper"> 
                 <Image
                   src="/assets/img/Included-img.png"
                   alt="Partnership"
                   width={800}
                   height={600}
-                />
-              </div>
-            </div>
+                /> 
             <div className="included-list">
               <h3 className="section-title-left">What's Included</h3>
 

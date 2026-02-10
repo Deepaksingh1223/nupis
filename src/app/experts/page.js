@@ -296,7 +296,7 @@ const Section4 = () => {
       </div>
 
       {/* Teaching Philosophy Section - Modified */}
-      <div className="teaching-philosophy-section mb-5">
+      <div className="teaching-philosophy-section">
         <div className="container">
           <div className="text-center mb-5">
             <h2 className="section-title text-white">
