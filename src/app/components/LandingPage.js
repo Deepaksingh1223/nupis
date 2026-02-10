@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+ import { RiGraduationCapLine, RiShieldCheckLine, RiCommunityLine } from 'react-icons/ri';
 import { useState, useEffect } from 'react';
 const LandingPage = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -66,7 +67,67 @@ const LandingPage = () => {
       </section>
 
       {/* Why Choose Section */}
-      <section className="py-20 bg-gray-50"><div className="max-w-7xl mx-auto px-6"><div className="text-center mb-16"><span className="inline-block bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold mb-4">WHY CHOOSE NUPIPS</span><h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Build Financial Literacy<span className="block text-blue-600">That Lasts a Lifetime</span></h2><p className="text-xl text-gray-600 max-w-3xl mx-auto">Our education-first approach focuses on building genuine understanding of financial markets, risk management, and trading psychology.</p></div><div className="grid md:grid-cols-3 gap-8"><div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow"><div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-6"><i className="ri-graduation-cap-line text-blue-600 text-2xl"></i></div><h3 className="text-2xl font-bold text-gray-900 mb-4">Expert-Led Curriculum</h3><p className="text-gray-600 mb-6 leading-relaxed">Learn from verified educators with real market experience. Our faculty includes certified analysts, risk management specialists, and behavioral finance experts.</p><a className="text-blue-600 font-semibold hover:text-blue-700 transition-colors" href="/preview/8dd92c6f-31c3-443e-b924-e2df9f3074e4/5941968/experts" data-discover="true">Meet Our Experts →</a></div><div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow transform md:-translate-y-4"><div className="w-16 h-16 bg-amber-100 rounded-xl flex items-center justify-center mb-6"><i className="ri-shield-check-line text-amber-600 text-2xl"></i></div><h3 className="text-2xl font-bold text-gray-900 mb-4">Risk-Focused Learning</h3><p className="text-gray-600 mb-6 leading-relaxed">Understand market risks before opportunities. We emphasize responsible learning with clear disclaimers and realistic expectations about market volatility.</p><a className="text-blue-600 font-semibold hover:text-blue-700 transition-colors" href="/preview/8dd92c6f-31c3-443e-b924-e2df9f3074e4/5941968/disclaimer" data-discover="true">Read Disclaimer →</a></div><div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow"><div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mb-6"><i className="ri-community-line text-green-600 text-2xl"></i></div><h3 className="text-2xl font-bold text-gray-900 mb-4">Global Community</h3><p className="text-gray-600 mb-6 leading-relaxed">Connect with learners across Asia, Middle East, Europe, Africa, and the Americas. Share insights, discuss strategies, and learn together.</p><a className="text-blue-600 font-semibold hover:text-blue-700 transition-colors" href="/preview/8dd92c6f-31c3-443e-b924-e2df9f3074e4/5941968/community" data-discover="true">Join Community →</a></div></div></div></section>
+  
+
+<section className="py-20 bg-gray-50 pb-0">
+  <div className="max-w-7xl mx-auto px-6">
+    <div className="text-center mb-16">
+      <span className="inline-block bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+        WHY CHOOSE NUPIPS
+      </span>
+      <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+        Build Financial Literacy
+        <span className="block text-blue-600">That Lasts a Lifetime</span>
+      </h2>
+      <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+        Our education-first approach focuses on building genuine understanding of financial markets, risk management, and trading psychology.
+      </p>
+    </div>
+    <div className="grid md:grid-cols-3 gap-8">
+      <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+        <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
+          <RiGraduationCapLine className="text-blue-600 text-2xl" />
+        </div>
+        <h3 className="text-2xl font-bold text-gray-900 mb-4">Expert-Led Curriculum</h3>
+        <p className="text-gray-600 mb-6 leading-relaxed">
+          Learn from verified educators with real market experience. Our faculty includes certified analysts, risk management specialists, and behavioral finance experts.
+        </p>
+        <a className="text-blue-600 font-semibold hover:text-blue-700 transition-colors"
+          href="/preview/8dd92c6f-31c3-443e-b924-e2df9f3074e4/5941968/experts" data-discover="true">
+          Meet Our Experts →
+        </a>
+      </div>
+      
+      <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow transform md:-translate-y-4">
+        <div className="w-16 h-16 bg-amber-100 rounded-xl flex items-center justify-center mb-6">
+          <RiShieldCheckLine className="text-amber-600 text-2xl" />
+        </div>
+        <h3 className="text-2xl font-bold text-gray-900 mb-4">Risk-Focused Learning</h3>
+        <p className="text-gray-600 mb-6 leading-relaxed">
+          Understand market risks before opportunities. We emphasize responsible learning with clear disclaimers and realistic expectations about market volatility.
+        </p>
+        <a className="text-blue-600 font-semibold hover:text-blue-700 transition-colors"
+          href="/preview/8dd92c6f-31c3-443e-b924-e2df9f3074e4/5941968/disclaimer" data-discover="true">
+          Read Disclaimer →
+        </a>
+      </div>
+      
+      <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+        <div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mb-6">
+          <RiCommunityLine className="text-green-600 text-2xl" />
+        </div>
+        <h3 className="text-2xl font-bold text-gray-900 mb-4">Global Community</h3>
+        <p className="text-gray-600 mb-6 leading-relaxed">
+          Connect with learners across Asia, Middle East, Europe, Africa, and the Americas. Share insights, discuss strategies, and learn together.
+        </p>
+        <a className="text-blue-600 font-semibold hover:text-blue-700 transition-colors"
+          href="/preview/8dd92c6f-31c3-443e-b924-e2df9f3074e4/5941968/community" data-discover="true">
+          Join Community →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
       {/* Education Programs Section */}
       <section className="section programs bg-light">
         <div className="container">

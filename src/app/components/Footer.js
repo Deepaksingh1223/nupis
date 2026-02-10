@@ -37,7 +37,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">Education</h3>
+            <h3 className="font-semibold mb-4 text-white">Education</h3>
             <ul className="space-y-2">
               {educationLinks.map((l) => (
                 <li key={l.name}>
@@ -50,7 +50,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">Community</h3>
+            <h3 className="font-semibold mb-4 text-white">Community</h3>
             <ul className="space-y-2">
               {communityLinks.map((l) => (
                 <li key={l.name}>
@@ -63,7 +63,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-4">Support</h3>
+            <h3 className="font-semibold mb-4 text-white">Support</h3>
             <ul className="space-y-2">
               {supportLinks.map((l) => (
                 <li key={l.name}>
@@ -76,7 +76,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between">
+        <div className="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between pt-5">
           <p className="text-gray-400">
             © 2024 NUPIPS. All rights reserved.
           </p>

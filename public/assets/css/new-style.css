@@ -88,7 +88,7 @@ body {
 }
 
 .nav-link:hover {
-  color: var(--accent-teal);
+  color: #ff7a18;
   opacity: 1;
 }
  
