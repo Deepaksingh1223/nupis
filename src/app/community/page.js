@@ -79,16 +79,13 @@ const Section3 = () => {
       </section>
       <section class="included-section">
         <div class="container">
-          <div class="included-wrapper">
-            <div class="included-visual">
-              <div class="included-image-placeholder">
-                <div class="included-image-content">
-                  <div class="image-icon">📚</div>
-                  <h4>Educational Resources</h4>
-                  <p>Comprehensive learning materials</p>
-                </div>
-              </div>
-            </div>
+          <div class="included-wrapper"> 
+                  <Image
+          src="/assets/img/Educational-Resources-img.jpg"
+          alt="Partnership" className="banner-img m-0"
+          width={600}
+          height={600}
+        />  
             <div class="included-list">
               <h3 class="section-title-left">What's Included</h3><div class="features-list">
                 <div class="feature-item">
