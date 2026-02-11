@@ -58,7 +58,7 @@ const Section1 = () => {
               </p>
               <div className="fin-edu-warning-badge1">
                 <div className='d-flex align-items-center'>
-           <FaBookOpen className="me-2" />
+           <FaBookOpen className="me-2 big-screen-hide" />
        Educational Purposes Only - No Financial Advice
            </div>
                
@@ -257,10 +257,10 @@ const Section1 = () => {
               Ready to Start Learning?
             </h2>
             <div className="d-flex flex-column flex-sm-row justify-content-center gap-3">
-              <button className="cta-edu-btn cta-edu-btn-primary btn btn-lg px-4 py-3">
+              <button className="cta-edu-btn cta-edu-btn-primary btn btn-lg px-4 py-3 justify-center">
                 <FaGraduationCap className="me-2" /> Enroll Now
               </button>
-              <button className="cta-edu-btn cta-edu-btn-secondary btn btn-lg px-4 py-3">
+              <button className="cta-edu-btn cta-edu-btn-secondary btn btn-lg px-4 py-3 justify-center">
                 <FaFileAlt className="me-2" /> View Curriculum
               </button>
             </div>
