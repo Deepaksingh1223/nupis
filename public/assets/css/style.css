@@ -1,3 +1,5 @@
+
+
 @charset "UTF-8";
 /*
 Template Name: TechBiz
@@ -66,6 +68,10 @@ Version: 1.0.0
 /*------------------- 1.1. Mixin -------------------*/
 /*------------------- 1.2. Function -------------------*/
 /*------------------- 1.3. Variable-------------------*/
+body {
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+}
 :root {
   --theme-color: #D16655;
   --secondary-color: #BD7579;
@@ -14458,3 +14464,7 @@ span.select2-selection.select2-selection--single:focus {
 /*# sourceMappingURL=style.css.map */
 
  
+body {
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+}
