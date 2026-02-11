@@ -111,7 +111,9 @@ body {
 
 .nav-link:hover,
 .nav-link.active {
-  color: #ff7a18 !important;
+  color: #00bcd4 !important;
+}.card-text {
+    font-family: '__nextjs-Geist';
 }
 
 /* Mobile button */

@@ -1,5 +1,34 @@
 import { memo } from "react";
 import Image from "next/image";
+import { 
+  FaArrowUp,
+  FaBookOpen,
+  FaShieldAlt,
+  FaBrain,
+  FaComments,
+  FaCalendarAlt,
+  FaUserGraduate,
+  FaUsers,
+  FaHandshake,
+  FaExclamationTriangle,
+  FaStar,
+  FaBirthdayCake,
+  FaGraduationCap,
+  FaChartLine,
+  FaFileAlt,
+  FaChalkboardTeacher,
+  FaCertificate
+} from "react-icons/fa";
+import { 
+  RiBookOpenLine,
+  RiShieldLine,
+  RiCommunityLine,
+  RiMessageLine,
+  RiCalendarEventLine,
+  RiUserLine,
+  RiCheckboxCircleFill
+} from "react-icons/ri";
+
 const Section3 = () => {
   return (
     <div className="fin-edu-container">
@@ -40,7 +69,7 @@ const Section3 = () => {
             <div className="col-12 col-md-6 col-lg-3">
               <div className="feature-edu-card h-100 p-4">
                 <div className="feature-edu-icon blue-edu-icon mb-3">
-                  <i className="fa-solid fa-arrow-trend-up"></i>
+                  <FaArrowUp />
                 </div>
                 <h3 className="feature-edu-title h5 fw-bold mb-2">Market Structure</h3>
                 <p className="feature-edu-desc small mb-0">Understand how the global foreign exchange market operates, major participants,
@@ -49,7 +78,7 @@ const Section3 = () => {
             <div className="col-12 col-md-6 col-lg-3">
               <div className="feature-edu-card h-100 p-4">
                 <div className="feature-edu-icon green-edu-icon mb-3">
-                  <i className="fa-solid fa-book-open"></i>
+                  <RiBookOpenLine />
                 </div>
                 <h3 className="feature-edu-title h5 fw-bold mb-2">Technical Analysis</h3>
                 <p className="feature-edu-desc small mb-0">
@@ -59,7 +88,7 @@ const Section3 = () => {
               </div></div><div className="col-12 col-md-6 col-lg-3">
               <div className="feature-edu-card h-100 p-4">
                 <div className="feature-edu-icon purple-edu-icon mb-3">
-                  <i className="fa-solid fa-shield-heart"></i>
+                  <FaShieldAlt />
                 </div>
                 <h3 className="feature-edu-title h5 fw-bold mb-2">Risk Management</h3>
                 <p className="feature-edu-desc small mb-0">Essential strategies to protect
@@ -69,8 +98,8 @@ const Section3 = () => {
             <div className="col-12 col-md-6 col-lg-3">
               <div className="feature-edu-card h-100 p-4">
                 <div className="feature-edu-icon amber-edu-icon mb-3">
-                  <i className="fa-solid fa-brain">
-                  </i></div><h3 className="feature-edu-title h5 fw-bold mb-2">Trading Psychology</h3>
+                  <FaBrain />
+                </div><h3 className="feature-edu-title h5 fw-bold mb-2">Trading Psychology</h3>
                 <p className="feature-edu-desc small mb-0">Develop the mental discipline and emotional control required for consistent trading</p>
               </div>
             </div>
@@ -90,21 +119,32 @@ const Section3 = () => {
               <h3 className="section-title-left">What's Included</h3><div className="features-list">
                 <div className="feature-item">
                   <div className="feature-check">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M20 6L9 17L4 12" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </svg></div><div className="feature-content"><h4 className="feature-title">Structured Curriculum</h4>
+                    <RiCheckboxCircleFill style={{color: "#10B981", fontSize: "20px"}} />
+                  </div><div className="feature-content"><h4 className="feature-title">Structured Curriculum</h4>
                     <p className="feature-description">Complete course materials covering Forex, stock markets, risk management, and trading psychology</p>
                   </div>
                 </div>
                 <div className="feature-item">
-                  <div className="feature-check"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17L4 12" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div className="feature-content"><h4 className="feature-title">Teaching Resources</h4><p className="feature-description">Lesson plans, presentation slides, case studies, and assessment materials</p></div></div><div className="feature-item"><div className="feature-check"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17L4 12" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div className="feature-content"><h4 className="feature-title">Certification Programs</h4><p className="feature-description">Recognized certificates for students completing structured learning modules</p>
+                  <div className="feature-check">
+                    <RiCheckboxCircleFill style={{color: "#10B981", fontSize: "20px"}} />
+                  </div>
+                  <div className="feature-content">
+                    <h4 className="feature-title">Teaching Resources</h4>
+                    <p className="feature-description">Lesson plans, presentation slides, case studies, and assessment materials</p>
                   </div>
                 </div>
                 <div className="feature-item">
                   <div className="feature-check">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M20 6L9 17L4 12" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      </path></svg>
+                    <RiCheckboxCircleFill style={{color: "#10B981", fontSize: "20px"}} />
+                  </div>
+                  <div className="feature-content">
+                    <h4 className="feature-title">Certification Programs</h4>
+                    <p className="feature-description">Recognized certificates for students completing structured learning modules</p>
+                  </div>
+                </div>
+                <div className="feature-item">
+                  <div className="feature-check">
+                    <RiCheckboxCircleFill style={{color: "#10B981", fontSize: "20px"}} />
                   </div>
                   <div className="feature-content">
                     <h4 className="feature-title">Ongoing Support</h4>
@@ -113,9 +153,8 @@ const Section3 = () => {
                 </div>
                 <div className="feature-item">
                   <div className="feature-check">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M20 6L9 17L4 12" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </svg></div>
+                    <RiCheckboxCircleFill style={{color: "#10B981", fontSize: "20px"}} />
+                  </div>
                   <div className="feature-content">
                     <h4 className="feature-title">Faculty Training</h4>
                     <p className="feature-description">Professional development workshops for your educators on financial markets education</p>
@@ -123,9 +162,7 @@ const Section3 = () => {
                 </div>
                 <div className="feature-item">
                   <div className="feature-check">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M20 6L9 17L4 12" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </svg>
+                    <RiCheckboxCircleFill style={{color: "#10B981", fontSize: "20px"}} />
                   </div>
                   <div className="feature-content">
                     <h4 className="feature-title">Co-Branded Materials</h4>
@@ -185,7 +222,8 @@ const Section3 = () => {
                         <h5 className="discussion-author mb-1">Sarah Chen <div>7 hr year</div></h5>
                         <p className="discussion-topic mb-1">Understanding Support and Resistance Levels</p>
                       <div className="msg-flexing-div">
-                          <span className="discussion-category">Technical Analysis </span><spam><i className="fa-regular fa-message"></i>24 Message</spam>
+                          <span className="discussion-category">Technical Analysis </span>
+                          <span><RiMessageLine className="me-1" />24 Messages</span>
                       </div>
                       </div>
                     </div>
@@ -202,7 +240,8 @@ const Section3 = () => {
                         <h5 className="discussion-author mb-1">Michael Rodriguez <div>7 hr year</div></h5>
                         <p className="discussion-topic mb-1">Risk Management Strategies for Beginners</p>
                         <div className="msg-flexing-div">
-                          <span className="discussion-category">Risk Management</span><spam><i className="fa-regular fa-message"></i>24 Message</spam>
+                          <span className="discussion-category">Risk Management</span>
+                          <span><RiMessageLine className="me-1" />24 Messages</span>
                       </div> 
                       </div>
                     </div>
@@ -219,7 +258,8 @@ const Section3 = () => {
                         <h5 className="discussion-author mb-1">Priya Sharma <div>7 hr year</div></h5>
                         <p className="discussion-topic mb-1">Analyzing Economic Indicators Impact</p>
                         <div className="msg-flexing-div">
-                          <span className="discussion-category">Fundamental Analysis</span><spam><i className="fa-regular fa-message"></i>24 Message</spam>
+                          <span className="discussion-category">Fundamental Analysis</span>
+                          <span><RiMessageLine className="me-1" />24 Messages</span>
                       </div> 
                         <span className="discussion-category"></span>
                       </div>
@@ -344,7 +384,9 @@ const Section3 = () => {
             <div className="col-lg-8 mb-4 mb-lg-0">
               <div className="guidelines-container">
                 <div className="guideline-item d-flex mb-3">
-                  <div className="guideline-icon me-3">📚</div>
+                  <div className="guideline-icon me-3">
+                    <RiBookOpenLine style={{fontSize: "1.5rem"}} />
+                  </div>
                   <div>
                     <h5 className="guideline-title mb-1">Education-First:</h5>
                     <p className="guideline-text">All discussions must be educational in nature. No financial advice or specific investment recommendations.</p>
@@ -352,7 +394,9 @@ const Section3 = () => {
                 </div>
 
                 <div className="guideline-item d-flex mb-3">
-                  <div className="guideline-icon me-3">🤝</div>
+                  <div className="guideline-icon me-3">
+                    <FaHandshake style={{fontSize: "1.5rem"}} />
+                  </div>
                   <div>
                     <h5 className="guideline-title mb-1">Respectful Dialogue:</h5>
                     <p className="guideline-text">Treat all members with respect. Constructive feedback and diverse perspectives are encouraged.</p>
@@ -360,7 +404,9 @@ const Section3 = () => {
                 </div>
 
                 <div className="guideline-item d-flex mb-3">
-                  <div className="guideline-icon me-3">⚠️</div>
+                  <div className="guideline-icon me-3">
+                    <FaExclamationTriangle style={{fontSize: "1.5rem"}} />
+                  </div>
                   <div>
                     <h5 className="guideline-title mb-1">No Guarantees:</h5>
                     <p className="guideline-text">Do not make claims about guaranteed returns, success rates, or trading performance.</p>
@@ -368,7 +414,9 @@ const Section3 = () => {
                 </div>
 
                 <div className="guideline-item d-flex mb-3">
-                  <div className="guideline-icon me-3">⭐</div>
+                  <div className="guideline-icon me-3">
+                    <FaStar style={{fontSize: "1.5rem"}} />
+                  </div>
                   <div>
                     <h5 className="guideline-title mb-1">Quality Content:</h5>
                     <p className="guideline-text">Share well-researched analysis, credible sources, and thoughtful questions.</p>
@@ -376,7 +424,9 @@ const Section3 = () => {
                 </div>
 
                 <div className="guideline-item d-flex">
-                  <div className="guideline-icon me-3">🔞</div>
+                  <div className="guideline-icon me-3">
+                    <FaBirthdayCake style={{fontSize: "1.5rem"}} />
+                  </div>
                   <div>
                     <h5 className="guideline-title mb-1">Age Requirement:</h5>
                     <p className="guideline-text">All community members must be 18 years or older.</p>
@@ -394,7 +444,9 @@ const Section3 = () => {
             <div className="col-lg-12 text-center">
               <h3 className="cta-title mb-3 text-white">Ready to Join Our Learning Community?</h3>
               <p className="cta-text mb-4">Connect with learners worldwide and accelerate your financial education</p>
-              <button className="btn btn-join-community py-3">Get Started Today</button>
+              <button className="btn btn-join-community py-3">
+                <FaUserGraduate className="me-2" /> Get Started Today
+              </button>
             </div>
           </div>
         </div>

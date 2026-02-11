@@ -1,4 +1,45 @@
 import { memo } from "react";
+import { 
+  FaBookOpen,
+  FaChartLine,
+  FaUserTie,
+  FaGraduationCap,
+  FaFileAlt,
+  FaUsers,
+  FaLightbulb,
+  FaClipboardCheck,
+  FaShieldAlt,
+  FaBrain,
+  FaBalanceScale
+} from "react-icons/fa";
+import { 
+  RiBookOpenLine,
+  RiShieldLine,
+  RiMindMap,
+  RiBarChartBoxLine,
+  RiMoneyDollarCircleLine,
+  RiGlobalLine,
+  RiLineChartLine,
+  RiPieChartLine,
+  RiFundsLine,
+  RiCalendarTodoLine,
+  RiBookReadLine,
+  RiMedalLine,
+  RiArrowUpLine
+} from "react-icons/ri";
+import { 
+  PiGraph,
+  PiCurrencyCircleDollar,
+  PiStrategy,
+  PiChartLineUp,
+  PiBuildings,
+  PiChartPieSlice,
+  PiChartBarHorizontal,
+  PiPlant,
+  PiTrendUp,
+  PiUserCircle
+} from "react-icons/pi";
+
 const Section1 = () => {
   return (
     <div className="fin-edu-container">
@@ -16,7 +57,11 @@ const Section1 = () => {
                 industry experts.
               </p>
               <div className="fin-edu-warning-badge1">
-                <i className="fas fa-book-open"></i>   Educational Purposes Only - No Financial Advice
+                <div className='d-flex align-items-center'>
+           <FaBookOpen className="me-2" />
+       Educational Purposes Only - No Financial Advice
+           </div>
+               
               </div>
             </div>
           </div>
@@ -30,7 +75,7 @@ const Section1 = () => {
             <div className="col-12 col-md-6 col-lg-3">
               <div className="feature-edu-card h-100 p-4">
                 <div className="feature-edu-icon blue-edu-icon mb-3">
-                  <i className="fa-solid fa-arrow-trend-up"></i> 
+                  <RiArrowUpLine /> 
                 </div>
                 <h3 className="feature-edu-title h5 fw-bold mb-2">
                   Market Structure
@@ -44,7 +89,7 @@ const Section1 = () => {
             <div className="col-12 col-md-6 col-lg-3">
               <div className="feature-edu-card h-100 p-4">
                 <div className="feature-edu-icon green-edu-icon mb-3">
-                  <i className="fa-solid fa-book-open"></i> 
+                  <RiBookOpenLine /> 
                 </div>
                 <h3 className="feature-edu-title h5 fw-bold mb-2">
                   Technical Analysis
@@ -58,7 +103,7 @@ const Section1 = () => {
             <div className="col-12 col-md-6 col-lg-3">
               <div className="feature-edu-card h-100 p-4">
                 <div className="feature-edu-icon purple-edu-icon mb-3">
-                   <i className="fa-solid fa-shield-heart"></i> 
+                   <FaShieldAlt /> 
                 </div>
                 <h3 className="feature-edu-title h5 fw-bold mb-2">
                   Risk Management
@@ -72,7 +117,7 @@ const Section1 = () => {
             <div className="col-12 col-md-6 col-lg-3">
               <div className="feature-edu-card h-100 p-4">
                 <div className="feature-edu-icon amber-edu-icon mb-3">
-                  <i className="fa-solid fa-brain"></i> 
+                  <FaBrain /> 
                 </div>
                 <h3 className="feature-edu-title h5 fw-bold mb-2">
                   Trading Psychology
@@ -103,7 +148,8 @@ const Section1 = () => {
               <div key={index} className="col-12 col-md-6 col-lg-4">
                 <div className="education-edu-card blue-edu-card h-100 p-4">
                   <div className="card-edu-icon blue-edu-card-icon mb-3">
-                    <div className="card-edu-icon-dot"></div>
+                  
+                    {module.icon}
                   </div>
                   <h3 className="card-edu-title h5 fw-bold mb-3">{module.title}</h3>
                   <ul className="card-edu-list list-unstyled mb-0">
@@ -136,7 +182,8 @@ const Section1 = () => {
               <div key={index} className="col-12 col-md-6 col-lg-4">
                 <div className="education-edu-card green-edu-card h-100 p-4">
                   <div className="card-edu-icon green-edu-card-icon mb-3">
-                    <div className="card-edu-icon-dot"></div>
+             
+                    {module.icon}
                   </div>
                   <h3 className="card-edu-title h5 fw-bold mb-3">{module.title}</h3>
                   <ul className="card-edu-list list-unstyled mb-0">
@@ -169,7 +216,8 @@ const Section1 = () => {
               <div key={index} className="col-12 col-md-4">
                 <div className="approach-edu-card h-100 p-4 text-center">
                   <div className="step-edu-number display-1 fw-bold mb-3">{step.number}</div>
-                  <h3 className="approach-edu-title h4 fw-bold mb-3">{step.title}</h3>
+                   
+                  <h3 className="approach-edu-title h4 fw-bold mb-3"> {step.icon} {step.title}</h3>
                   <p className="approach-edu-desc mb-0">{step.description}</p>
                 </div>
               </div>
@@ -191,7 +239,8 @@ const Section1 = () => {
               <div key={index} className="col-12 col-md-6 col-lg-3">
                 <div className="journey-edu-card h-100 p-4">
                   <div className="journey-edu-step display-6 fw-bold mb-2">{step.step}</div>
-                  <h3 className="journey-edu-step-title h5 fw-bold mb-2 text-white">{step.title}</h3>
+                   
+                  <h3 className="journey-edu-step-title h5 fw-bold mb-2 text-white">   {step.icon} {step.title}</h3>
                   <p className="journey-edu-step-desc mb-0">{step.description}</p>
                 </div>
               </div>
@@ -209,10 +258,10 @@ const Section1 = () => {
             </h2>
             <div className="d-flex flex-column flex-sm-row justify-content-center gap-3">
               <button className="cta-edu-btn cta-edu-btn-primary btn btn-lg px-4 py-3">
-                Enroll Now
+                <FaGraduationCap className="me-2" /> Enroll Now
               </button>
               <button className="cta-edu-btn cta-edu-btn-secondary btn btn-lg px-4 py-3">
-                View Curriculum
+                <FaFileAlt className="me-2" /> View Curriculum
               </button>
             </div>
           </div>
@@ -222,58 +271,70 @@ const Section1 = () => {
   );
 };
 
-// Data arrays
+// Data arrays with icons
 const forexModules = [
   {
     title: "Market Structure",
-    points: ["Major participants", "Trading sessions", "Liquidity concepts", "Market makers vs FCN"]
+    points: ["Major participants", "Trading sessions", "Liquidity concepts", "Market makers vs FCN"],
+    icon: <RiGlobalLine fill="blue" style={{fontSize: '1.5rem'}} />
   },
   {
     title: "Currency Pairs",
-    points: ["Major pairs", "Cross pairs", "Exotic pairs", "Correlation analysis"]
+    points: ["Major pairs", "Cross pairs", "Exotic pairs", "Correlation analysis"],
+    icon: <PiCurrencyCircleDollar fill="blue" style={{fontSize: '1.5rem'}} />
   },
   {
     title: "Technical Analysis",
-    points: ["Chart patterns", "Indicators", "Price action", "Support & resistance"]
+    points: ["Chart patterns", "Indicators", "Price action", "Support & resistance"],
+    icon: <FaChartLine fill="blue" style={{fontSize: '1.5rem'}} />
   },
   {
     title: "Risk Management",
-    points: ["Position sizing", "Stop loss strategies", "Risk-reward ratios", "Portfolio management"]
+    points: ["Position sizing", "Stop loss strategies", "Risk-reward ratios", "Portfolio management"],
+    icon: <RiShieldLine fill="blue" style={{fontSize: '1.5rem'}} />
   },
   {
     title: "Trading Psychology",
-    points: ["Emotional control", "Discipline", "Trading mindset", "Behavioral patterns"]
+    points: ["Emotional control", "Discipline", "Trading mindset", "Behavioral patterns"],
+    icon: <RiMindMap fill="blue" style={{fontSize: '1.5rem'}} />
   },
   {
     title: "Market Analysis",
-    points: ["Economic indicators", "News trading", "Fundamental analysis", "Market sentiment"]
+    points: ["Economic indicators", "News trading", "Fundamental analysis", "Market sentiment"],
+    icon: <PiGraph fill="blue" style={{fontSize: '1.5rem'}} />
   }
 ];
 
 const stockModules = [
   {
     title: "Equity Basics",
-    points: ["Stock types", "Market mechanics", "Order types", "Trading hours"]
+    points: ["Stock types", "Market mechanics", "Order types", "Trading hours"],
+    icon: <RiMoneyDollarCircleLine fill="#065f46" style={{fontSize: '1.5rem'}} />
   },
   {
     title: "Fundamental Analysis",
-    points: ["Financial ratios", "Balance sheets", "Income statements", "Cash flow analysis"]
+    points: ["Financial ratios", "Balance sheets", "Income statements", "Cash flow analysis"],
+    icon: <PiBuildings fill="#065f46" style={{fontSize: '1.5rem'}} />
   },
   {
     title: "Chart Reading",
-    points: ["Candlestick patterns", "Trend analysis", "Volume indicators", "Moving averages"]
+    points: ["Candlestick patterns", "Trend analysis", "Volume indicators", "Moving averages"],
+    icon: <RiLineChartLine fill="#065f46" style={{fontSize: '1.5rem'}} />
   },
   {
     title: "Portfolio Concepts",
-    points: ["Diversification", "Asset allocation", "Rebalancing", "Portfolio theory"]
+    points: ["Diversification", "Asset allocation", "Rebalancing", "Portfolio theory"],
+    icon: <RiPieChartLine fill="#065f46" style={{fontSize: '1.5rem'}} />
   },
   {
     title: "Market Cycles",
-    points: ["Bull markets", "Bear markets", "Economic indicators", "Sector rotation"]
+    points: ["Bull markets", "Bear markets", "Economic indicators", "Sector rotation"],
+    icon: <PiChartLineUp fill="#065f46" style={{fontSize: '1.5rem'}} />
   },
   {
     title: "Investment Research",
-    points: ["Company analysis", "Industry research", "Competitive analysis", "Risk assessment"]
+    points: ["Company analysis", "Industry research", "Competitive analysis", "Risk assessment"],
+    icon: <FaClipboardCheck fill="#065f46" style={{fontSize: '1.5rem'}} />
   }
 ];
 
@@ -281,17 +342,20 @@ const approachSteps = [
   {
     number: "01",
     title: "Foundation Building",
-    description: "Start with core concepts, market mechanics, and fundamental principles before advancing to complex strategies"
+    description: "Start with core concepts, market mechanics, and fundamental principles before advancing to complex strategies",
+    icon: <RiBookReadLine className="text-primary" />
   },
   {
     number: "02",
     title: "Practical Application",
-    description: "Learn through real-world case studies, chart analysis exercises, and systematic frameworks"
+    description: "Learn through real-world case studies, chart analysis exercises, and systematic frameworks",
+    icon: <PiStrategy className="text-primary" />
   },
   {
     number: "03",
     title: "Continuous Learning",
-    description: "Ongoing education with market updates, advanced concepts, and community-driven knowledge sharing"
+    description: "Ongoing education with market updates, advanced concepts, and community-driven knowledge sharing",
+    icon: <FaLightbulb className="text-primary" />
   }
 ];
 
@@ -299,22 +363,26 @@ const journeySteps = [
   {
     step: "01",
     title: "Foundation",
-    description: "Basic concepts and terminology"
+    description: "Basic concepts and terminology",
+    icon: <PiPlant className="text-white" />
   },
   {
     step: "02",
     title: "Analysis",
-    description: "Technical and fundamental skills"
+    description: "Technical and fundamental skills",
+    icon: <PiChartBarHorizontal className="text-white" />
   },
   {
     step: "03",
     title: "Strategy",
-    description: "Develop trading approaches"
+    description: "Develop trading approaches",
+    icon: <PiTrendUp className="text-white" />
   },
   {
     step: "04",
     title: "Psychology",
-    description: "Master emotional discipline"
+    description: "Master emotional discipline",
+    icon: <PiUserCircle className="text-white" />
   }
 ];
 
