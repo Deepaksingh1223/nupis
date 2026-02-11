@@ -3,24 +3,24 @@ import Image from "next/image";
 
 export default function Footer() {
   const educationLinks = [
-    { name: "Forex Education", href: "/education" },
-    { name: "Stock Market", href: "/education" },
-    { name: "Trading Psychology", href: "/education" },
-    { name: "Risk Management", href: "/education" },
-    { name: "Video Library", href: "/videos" },
+    { name: "Forex Education", href: "/pages/education" },
+    { name: "Stock Market", href: "/pages/education" },
+    { name: "Trading Psychology", href: "/pages/education" },
+    { name: "Risk Management", href: "/pages/education" },
+    { name: "Video Library", href: "/pages/videos" },
   ];
 
   const communityLinks = [
-    { name: "Discussion Groups", href: "/community" },
-    { name: "Live Sessions", href: "/community" },
-    { name: "Expert Faculty", href: "/experts" },
-    { name: "Academy Partnership", href: "/partnership" },
-    { name: "Partners", href: "/partners" },
+    { name: "Discussion Groups", href: "/pages/community" },
+    { name: "Live Sessions", href: "/pages/community" },
+    { name: "Expert Faculty", href: "/pages/experts" },
+    { name: "Academy Partnership", href: "/pages/partnership" },
+    { name: "Partners", href: "/pages/partners" },
   ];
 
   const supportLinks = [
-    { name: "Contact Us", href: "/contact" },
-    { name: "Disclaimer", href: "/disclaimer" },
+    { name: "Contact Us", href: "/pages/contact" },
+    { name: "Disclaimer", href: "/pages/disclaimer" },
     { name: "Email", href: "mailto:education@nupips.com" },
   ];
 
