@@ -2,6 +2,40 @@
 
 import { memo, useState } from "react";
 import Image from 'next/image';
+import { 
+  FaBookOpen,
+  FaChalkboardTeacher,
+  FaCertificate,
+  FaUsers,
+  FaGraduationCap,
+  FaHandshake,
+  FaClipboardCheck,
+  FaUserTie,
+  FaFileAlt,
+  FaCalendarAlt,
+  FaCogs,
+  FaLightbulb,
+  FaEnvelope,
+  FaCheck,
+  FaChevronDown,
+  FaUniversity,
+  FaChartLine,
+  FaUsersCog,
+  FaLayerGroup,
+  FaUserCheck,
+  FaBullhorn,
+  FaArrowRight
+} from "react-icons/fa";
+import { 
+  RiBookOpenLine,
+  RiShieldLine,
+  RiCommunityLine,
+  RiFileList3Line,
+  RiMailLine,
+  RiCheckboxCircleFill,
+  RiArrowRightLine
+} from "react-icons/ri";
+
 const Section2 = () => {
   const [activeFaq, setActiveFaq] = useState(null);
 
@@ -50,7 +84,7 @@ const Section2 = () => {
                   Co-branded programs, certified curricula, and comprehensive support.  Co-branded programs, certified curricula, and comprehensive support.
                 </p>
                 <button className="apply-button">
-                  Apply for Partnership →
+                  <FaHandshake className="me-2" /> Apply for Partnership <RiArrowRightLine className="ms-2" />
                 </button>
               </div>
               <div className="col-md-6">
@@ -82,11 +116,7 @@ const Section2 = () => {
           <div className="benefits-grid">
             <div className="benefit-item">
               <div className="benefit-icon">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M2 17L12 22L22 17" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M2 12L12 17L22 12" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <FaUniversity style={{color: "#2563EB", fontSize: "2rem"}} />
               </div>
               <h3 className="benefit-title">Co-Branded Educational Programs</h3>
               <p className="benefit-description">
@@ -96,10 +126,7 @@ const Section2 = () => {
 
             <div className="benefit-item">
               <div className="benefit-icon">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 20H21" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M16.5 3.5C16.8978 3.10217 17.4374 2.87868 18 2.87868C18.2786 2.87868 18.5544 2.93355 18.8118 3.04015C19.0692 3.14676 19.303 3.30301 19.5 3.5C19.697 3.69698 19.8532 3.93083 19.9599 4.1882C20.0665 4.44558 20.1213 4.72142 20.1213 5C20.1213 5.27858 20.0665 5.55442 19.9599 5.8118C19.8532 6.06917 19.697 6.30302 19.5 6.5L7 19L3 20L4 16L16.5 3.5Z" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <FaChartLine style={{color: "#2563EB", fontSize: "2rem"}} />
               </div>
               <h3 className="benefit-title">Curriculum Integration Support</h3>
               <p className="benefit-description">
@@ -109,10 +136,7 @@ const Section2 = () => {
 
             <div className="benefit-item">
               <div className="benefit-icon">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9 12L11 14L15 10" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <FaCertificate style={{color: "#2563EB", fontSize: "2rem"}} />
               </div>
               <h3 className="benefit-title">Certified Education Programs</h3>
               <p className="benefit-description">
@@ -122,12 +146,7 @@ const Section2 = () => {
 
             <div className="benefit-item">
               <div className="benefit-icon">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <FaUsersCog style={{color: "#2563EB", fontSize: "2rem"}} />
               </div>
               <h3 className="benefit-title">Faculty Training & Development</h3>
               <p className="benefit-description">
@@ -154,9 +173,7 @@ const Section2 = () => {
               <div className="features-list">
                 <div className="feature-item">
                   <div className="feature-check">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M20 6L9 17L4 12" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                    <RiCheckboxCircleFill style={{color: "#10B981", fontSize: "1.25rem"}} />
                   </div>
                   <div className="feature-content">
                     <h4 className="feature-title">Structured Curriculum</h4>
@@ -168,9 +185,7 @@ const Section2 = () => {
 
                 <div className="feature-item">
                   <div className="feature-check">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M20 6L9 17L4 12" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                    <RiCheckboxCircleFill style={{color: "#10B981", fontSize: "1.25rem"}} />
                   </div>
                   <div className="feature-content">
                     <h4 className="feature-title">Teaching Resources</h4>
@@ -182,9 +197,7 @@ const Section2 = () => {
 
                 <div className="feature-item">
                   <div className="feature-check">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M20 6L9 17L4 12" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                    <RiCheckboxCircleFill style={{color: "#10B981", fontSize: "1.25rem"}} />
                   </div>
                   <div className="feature-content">
                     <h4 className="feature-title">Certification Programs</h4>
@@ -193,8 +206,8 @@ const Section2 = () => {
                     </p>
                   </div>
                 </div>
-
-               
+  
+ 
               </div>
             </div>
           </div>
@@ -216,19 +229,27 @@ const Section2 = () => {
               <h3 className="eligibility-card-title">Institutional Requirements</h3>
               <ul className="criteria-list">
                 <li>
-                  <div className="bullet-icon">✓</div>
+                  <div className="bullet-icon">
+                    <FaCheck style={{color: "#10B981"}} />
+                  </div>
                   <span>Accredited educational institution</span>
                 </li>
                 <li>
-                  <div className="bullet-icon">✓</div>
+                  <div className="bullet-icon">
+                    <FaCheck style={{color: "#10B981"}} />
+                  </div>
                   <span>Minimum 50 students enrolled</span>
                 </li>
                 <li>
-                  <div className="bullet-icon">✓</div>
+                  <div className="bullet-icon">
+                    <FaCheck style={{color: "#10B981"}} />
+                  </div>
                   <span>Dedicated faculty for program delivery</span>
                 </li>
                 <li>
-                  <div className="bullet-icon">✓</div>
+                  <div className="bullet-icon">
+                    <FaCheck style={{color: "#10B981"}} />
+                  </div>
                   <span>Compliance with local education regulations</span>
                 </li>
               </ul>
@@ -238,19 +259,27 @@ const Section2 = () => {
               <h3 className="eligibility-card-title">Program Alignment</h3>
               <ul className="criteria-list">
                 <li>
-                  <div className="bullet-icon">✓</div>
+                  <div className="bullet-icon">
+                    <FaCheck style={{color: "#10B981"}} />
+                  </div>
                   <span>Focus on education, not trading services</span>
                 </li>
                 <li>
-                  <div className="bullet-icon">✓</div>
+                  <div className="bullet-icon">
+                    <FaCheck style={{color: "#10B981"}} />
+                  </div>
                   <span>Commitment to ethical teaching practices</span>
                 </li>
                 <li>
-                  <div className="bullet-icon">✓</div>
+                  <div className="bullet-icon">
+                    <FaCheck style={{color: "#10B981"}} />
+                  </div>
                   <span>Age restriction enforcement (18+)</span>
                 </li>
                 <li>
-                  <div className="bullet-icon">✓</div>
+                  <div className="bullet-icon">
+                    <FaCheck style={{color: "#10B981"}} />
+                  </div>
                   <span>Clear disclaimer and compliance messaging</span>
                 </li>
               </ul>
@@ -272,8 +301,8 @@ const Section2 = () => {
           <div className="process-steps">
             <div className="process-step">
               <div className="step-number">1</div>
-              <div className="step-content">
-                <h4 className="step-title">Submit Application</h4>
+              <div className="step-content"> 
+                <h4 className="step-title">          <FaFileAlt style={{color: "#2563EB"}} />Submit Application</h4>
                 <p className="step-description">
                   Complete the partnership inquiry form with institutional details and program requirements.
                 </p>
@@ -282,8 +311,8 @@ const Section2 = () => {
 
             <div className="process-step">
               <div className="step-number">2</div>
-              <div className="step-content">
-                <h4 className="step-title">Initial Consultation</h4>
+              <div className="step-content"> 
+                <h4 className="step-title">  <FaHandshake style={{color: "#2563EB"}} />Initial Consultation</h4>
                 <p className="step-description">
                   Meet with our partnership team to discuss your needs, goals, and curriculum integration.
                 </p>
@@ -292,8 +321,8 @@ const Section2 = () => {
 
             <div className="process-step">
               <div className="step-number">3</div>
-              <div className="step-content">
-                <h4 className="step-title">Program Customization</h4>
+              <div className="step-content"> 
+                <h4 className="step-title">         <FaCogs style={{color: "#2563EB"}} />Program Customization</h4>
                 <p className="step-description">
                   Work together to customize curriculum, materials, and certification programs for your institution.
                 </p>
@@ -302,8 +331,8 @@ const Section2 = () => {
 
             <div className="process-step">
               <div className="step-number">4</div>
-              <div className="step-content">
-                <h4 className="step-title">Launch & Support</h4>
+              <div className="step-content"> 
+                <h4 className="step-title">     <FaBullhorn style={{color: "#2563EB"}} />Launch & Support</h4>
                 <p className="step-description">
                   Faculty training, materials delivery, and ongoing support as you launch the program.
                 </p>
@@ -333,21 +362,7 @@ const Section2 = () => {
                 <div className="faq-question">
                   <h4>{faq.question}</h4>
                   <div className="faq-icon">
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M6 9L12 15L18 9"
-                        stroke="#2563EB"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                    <FaChevronDown style={{color: "#2563EB", transform: activeFaq === index ? 'rotate(180deg)' : 'rotate(0deg)'}} />
                   </div>
                 </div>
                 <div className="faq-answer">
@@ -361,7 +376,7 @@ const Section2 = () => {
             <p className="faq-contact-text">
               Still have questions? Contact our partnership team at{" "}
               <a href="mailto:partnerships@nupips.com" className="faq-contact-link">
-                partnerships@nupips.com
+                <RiMailLine className="me-1" /> partnerships@nupips.com
               </a>
             </p>
           </div>
@@ -378,7 +393,7 @@ const Section2 = () => {
               to provide cutting-edge financial markets education.
             </p>
             <button className="cta-button">
-              Start Your Partnership Application Today →
+              <FaUniversity className="me-2" /> Start Your Partnership Application Today <FaArrowRight className="ms-2" />
             </button>
           </div>
         </div>

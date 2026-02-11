@@ -1,4 +1,41 @@
 import { memo } from "react"; 
+import { 
+  FaChartLine,
+  FaUniversity,
+  FaShieldAlt,
+  FaBrain,
+  FaUserGraduate,
+  FaAward,
+  FaChartBar,
+  FaBullseye,
+  FaQuoteLeft,
+  FaGraduationCap,
+  FaMoneyBillWave,
+  FaArrowRight,
+  FaUsers,
+  FaClock,
+  FaFlask,
+  FaBalanceScale,
+  FaHandshake,
+  FaComments,
+  FaCheckCircle
+} from "react-icons/fa";
+import { 
+  RiBookOpenLine,
+  RiUserLine,
+  RiMedalLine,
+  RiShieldLine,
+  RiLightbulbLine,
+  RiCheckboxCircleFill,
+  RiArrowRightLine
+} from "react-icons/ri";
+import { 
+  PiCertificate,
+  PiBuildings,
+  PiChartLineUp,
+  PiPlant,
+  PiStrategy
+} from "react-icons/pi";
 
 const Section4 = () => {
   return (
@@ -16,18 +53,19 @@ const Section4 = () => {
       <div className="container"> 
         {/* Educator Cards Grid */}
         <div className="row g-4 mt-5">
+          {/* Dr. Michael Chen */}
           <div className="col-lg-6">
             <div className="educator-card">
               <div className="row g-4">
-                <div className="col-md-4 text-center">
+                <div className="col-md-2 text-center">
                   <div className="profile-image-container">
                     <div className="profile-image bg-primary-gradient">
-                      <i className="fas fa-chart-line profile-icon"></i>
+                      <FaChartLine className="profile-icon" />
                     </div>
                      
                   </div>
                 </div>
-                <div className="col-md-8">
+                <div className="col-md-10">
                   <div className="d-flex justify-content-between align-items-start flex-wrap ">
                     <div>
                       <h3 className="educator-name">Dr. Michael Chen</h3>
@@ -37,18 +75,18 @@ const Section4 = () => {
                   </div>
                   
                   <div className="credentials text-dark mb-3">
-                    <span className="credential-tag"><i className="fas fa-user-graduate"></i> PhD</span>
-                    <span className="credential-tag"><i className="fas fa-award"></i> CFA</span>
-                    <span className="credential-tag"><i className="fas fa-chart-bar"></i> CMT</span>
+                    <span className="credential-tag"><FaUserGraduate className="me-1" /> PhD</span>
+                    <span className="credential-tag"><FaAward className="me-1" /> CFA</span>
+                    <span className="credential-tag"><FaChartBar className="me-1" /> CMT</span>
                   </div>
                   
                   <div className="specialization-card mb-3">
-                    <h6><i className="fas fa-bullseye text-primary"></i> Specialization</h6>
+                    <h6><FaBullseye className="text-primary me-2" /> Specialization</h6>
                     <p className="mb-0 text-dark">Currency Markets & Technical Analysis</p>
                   </div>
                   
                   <p className="educator-description">
-                    <i className="fas fa-quote-left text-primary me-2"></i>
+                    <FaQuoteLeft className="text-primary me-2" />
                     Specialized in forex market structure, technical analysis methodologies, 
                     and risk management strategies for currency trading.
                   </p>
@@ -61,15 +99,15 @@ const Section4 = () => {
           <div className="col-lg-6">
             <div className="educator-card">
               <div className="row g-4">
-                <div className="col-md-4 text-center">
+                <div className="col-md-2 text-center">
                   <div className="profile-image-container">
                     <div className="profile-image bg-success-gradient">
-                      <i className="fas fa-university profile-icon"></i>
+                      <FaUniversity className="profile-icon" />
                     </div>
                     
                   </div>
                 </div>
-                <div className="col-md-8">
+                <div className="col-md-10">
                   <div className="d-flex justify-content-between align-items-start flex-wrap ">
                     <div>
                       <h3 className="educator-name">Sarah Johnson</h3>
@@ -79,17 +117,17 @@ const Section4 = () => {
                   </div>
                   
                   <div className="credentials mb-3">
-                    <span className="credential-tag"><i className="fas fa-graduation-cap"></i> MBA</span>
-                    <span className="credential-tag"><i className="fas fa-award"></i> CFA Level III</span>
+                    <span className="credential-tag"><FaGraduationCap className="me-1" /> MBA</span>
+                    <span className="credential-tag"><FaAward className="me-1" /> CFA Level III</span>
                   </div>
                   
                   <div className="specialization-card mb-3">
-                    <h6><i className="fas fa-bullseye text-primary"></i> Specialization</h6>
+                    <h6><FaBullseye className="text-primary me-2" /> Specialization</h6>
                     <p className="mb-0 text-dark">Equity Analysis & Fundamental Research</p>
                   </div>
                   
                   <p className="educator-description">
-                    <i className="fas fa-quote-left text-primary me-2"></i>
+                    <FaQuoteLeft className="text-primary me-2" />
                     Expert in fundamental analysis, portfolio management concepts, 
                     and equity market cycles with focus on long-term value investing.
                   </p>
@@ -102,15 +140,15 @@ const Section4 = () => {
           <div className="col-lg-6">
             <div className="educator-card">
               <div className="row g-4">
-                <div className="col-md-4 text-center">
+                <div className="col-md-2 text-center">
                   <div className="profile-image-container">
                     <div className="profile-image bg-danger-gradient">
-                      <i className="fas fa-shield-alt profile-icon"></i>
+                      <FaShieldAlt className="profile-icon" />
                     </div>
                    
                   </div>
                 </div>
-                <div className="col-md-8">
+                <div className="col-md-10">
                   <div className="d-flex justify-content-between align-items-start flex-wrap ">
                     <div>
                       <h3 className="educator-name">David Martinez</h3>
@@ -120,17 +158,17 @@ const Section4 = () => {
                   </div>
                   
                   <div className="credentials mb-3">
-                    <span className="credential-tag"><i className="fas fa-user-graduate"></i> MSc</span>
-                    <span className="credential-tag"><i className="fas fa-shield-alt"></i> FRM</span>
+                    <span className="credential-tag"><FaUserGraduate className="me-1" /> MSc</span>
+                    <span className="credential-tag"><FaShieldAlt className="me-1" /> FRM</span>
                   </div>
                   
                   <div className="specialization-card mb-3">
-                    <h6><i className="fas fa-bullseye text-primary"></i> Specialization</h6>
+                    <h6><FaBullseye className="text-primary me-2" /> Specialization</h6>
                     <p className="mb-0 text-dark">Trading Psychology & Risk Control</p>
                   </div>
                   
                   <p className="educator-description">
-                    <i className="fas fa-quote-left text-primary me-2"></i>
+                    <FaQuoteLeft className="text-primary me-2" />
                     Focuses on behavioral finance, trading psychology, position sizing, 
                     and systematic risk management approaches.
                   </p>
@@ -143,15 +181,15 @@ const Section4 = () => {
           <div className="col-lg-6">
             <div className="educator-card">
               <div className="row g-4">
-                <div className="col-md-4 text-center">
+                <div className="col-md-2 text-center">
                   <div className="profile-image-container">
                     <div className="profile-image bg-warning-gradient">
-                      <i className="fas fa-brain profile-icon"></i>
+                      <FaBrain className="profile-icon" />
                     </div>
                      
                   </div>
                 </div>
-                <div className="col-md-8">
+                <div className="col-md-10">
                   <div className="d-flex justify-content-between align-items-start flex-wrap ">
                     <div>
                       <h3 className="educator-name">Prof. Lisa Anderson</h3>
@@ -161,17 +199,17 @@ const Section4 = () => {
                   </div>
                   
                   <div className="credentials mb-3">
-                    <span className="credential-tag"><i className="fas fa-user-graduate"></i> PhD</span>
-                    <span className="credential-tag"><i className="fas fa-brain"></i> Behavioral Econ</span>
+                    <span className="credential-tag"><FaUserGraduate className="me-1" /> PhD</span>
+                    <span className="credential-tag"><FaBrain className="me-1" /> Behavioral Econ</span>
                   </div>
                   
                   <div className="specialization-card mb-3">
-                    <h6><i className="fas fa-bullseye text-primary"></i> Specialization</h6>
+                    <h6><FaBullseye className="text-primary me-2" /> Specialization</h6>
                     <p className="mb-0 text-dark">Market Psychology & Decision Making</p>
                   </div>
                   
                   <p className="educator-description">
-                    <i className="fas fa-quote-left text-primary me-2"></i>
+                    <FaQuoteLeft className="text-primary me-2" />
                     Research-focused educator specializing in cognitive biases, emotional control, 
                     and decision-making frameworks in financial markets.
                   </p>
@@ -186,7 +224,7 @@ const Section4 = () => {
       <div className="expertise-section">
         <div className="container">
           <div className="text-center mb-5">
-            <h2 className="section-title">
+            <h2 className="section-title mt-0">
               Our <span className="text-highlight bg-dark">Areas of Expertise</span>
             </h2>
             <p className="section-subtitle">
@@ -198,14 +236,14 @@ const Section4 = () => {
             <div className="col-md-6 col-lg-3">
               <div className="expertise-card">
                 <div className="expertise-icon bg-primary-gradient">
-                  <i className="fas fa-money-bill-wave"></i>
+                  <FaMoneyBillWave className="text-white" />
                 </div>
                 <h4 className="expertise-title">Currency Markets</h4>
                 <p className="expertise-description">
                   Forex fundamentals, pair analysis, and market structure
                 </p>
                 <div className="expertise-footer">
-                  <i className="fas fa-arrow-right"></i> Learn More
+                  <RiArrowRightLine className="me-2" /> Learn More
                 </div>
               </div>
             </div>
@@ -213,14 +251,14 @@ const Section4 = () => {
             <div className="col-md-6 col-lg-3">
               <div className="expertise-card">
                 <div className="expertise-icon bg-success-gradient">
-                  <i className="fas fa-chart-line"></i>
+                  <FaChartLine className="text-white" />
                 </div>
                 <h4 className="expertise-title">Equity Analysis</h4>
                 <p className="expertise-description">
                   Stock market fundamentals and valuation methods
                 </p>
                 <div className="expertise-footer">
-                  <i className="fas fa-arrow-right"></i> Learn More
+                  <RiArrowRightLine className="me-2" /> Learn More
                 </div>
               </div>
             </div>
@@ -228,14 +266,14 @@ const Section4 = () => {
             <div className="col-md-6 col-lg-3">
               <div className="expertise-card">
                 <div className="expertise-icon bg-danger-gradient">
-                  <i className="fas fa-shield-alt"></i>
+                  <FaShieldAlt className="text-white" />
                 </div>
                 <h4 className="expertise-title">Risk Control</h4>
                 <p className="expertise-description">
                   Position sizing, portfolio risk, and money management
                 </p>
                 <div className="expertise-footer">
-                  <i className="fas fa-arrow-right"></i> Learn More
+                  <RiArrowRightLine className="me-2" /> Learn More
                 </div>
               </div>
             </div>
@@ -243,14 +281,14 @@ const Section4 = () => {
             <div className="col-md-6 col-lg-3">
               <div className="expertise-card">
                 <div className="expertise-icon bg-warning-gradient">
-                  <i className="fas fa-brain"></i>
+                  <FaBrain className="text-white" />
                 </div>
                 <h4 className="expertise-title">Psychology</h4>
                 <p className="expertise-description">
                   Behavioral finance and emotional discipline
                 </p>
                 <div className="expertise-footer">
-                  <i className="fas fa-arrow-right"></i> Learn More
+                  <RiArrowRightLine className="me-2" /> Learn More
                 </div>
               </div>
             </div>
@@ -271,23 +309,23 @@ const Section4 = () => {
 
         <div className="row g-4">
           {[
-            { title: "CFA", description: "Chartered Financial Analyst", icon: "fas fa-award", color: "primary" },
-            { title: "CMT", description: "Chartered Market Technician", icon: "fas fa-chart-bar", color: "success" },
-            { title: "FRM", description: "Financial Risk Manager", icon: "fas fa-shield-alt", color: "danger" },
-            { title: "PhD", description: "Economics & Finance", icon: "fas fa-user-graduate", color: "warning" },
-            { title: "MBA", description: "Finance & Analytics", icon: "fas fa-graduation-cap", color: "info" },
-            { title: "MSc", description: "Financial Engineering", icon: "fas fa-certificate", color: "purple" }
+            { title: "CFA", description: "Chartered Financial Analyst", icon: FaAward, color: "primary" },
+            { title: "CMT", description: "Chartered Market Technician", icon: FaChartBar, color: "success" },
+            { title: "FRM", description: "Financial Risk Manager", icon: FaShieldAlt, color: "danger" },
+            { title: "PhD", description: "Economics & Finance", icon: FaUserGraduate, color: "warning" },
+            { title: "MBA", description: "Finance & Analytics", icon: FaGraduationCap, color: "info" },
+            { title: "MSc", description: "Financial Engineering", icon: PiCertificate, color: "purple" }
           ].map((credential, index) => (
             <div key={index} className="col-md-6 col-lg-4">
               <div className={`credential-card credential-${credential.color}`}>
                 <div className="credential-icon">
-                  <i className={credential.icon}></i>
+                  <credential.icon />
                 </div>
                 <h4 className="credential-title">{credential.title}</h4>
                 <p className="credential-description">{credential.description}</p>
                 <div className="credential-stats">
-                  <span><i className="fas fa-users"></i> 95% Pass Rate</span>
-                  <span><i className="fas fa-clock"></i> 2+ Years</span>
+                  <span><FaUsers className="me-1" /> 95% Pass Rate</span>
+                  <span><FaClock className="me-1" /> 2+ Years</span>
                 </div>
               </div>
             </div>
@@ -311,7 +349,7 @@ const Section4 = () => {
             <div className="col-lg-4">
               <div className="philosophy-card-large">
                 <div className="philosophy-icon-large bg-primary-gradient">
-                  <i className="fas fa-graduation-cap"></i>
+                  <FaGraduationCap className="text-white" />
                 </div>
                 <h3 className="philosophy-title-large">Education Over Profits</h3>
                 <p className="philosophy-description-large">
@@ -321,15 +359,15 @@ const Section4 = () => {
                 </p>
                 <div className="philosophy-highlights">
                   <div className="highlight-item">
-                    <i className="fas fa-check-circle text-success"></i>
+                    <RiCheckboxCircleFill className="text-success me-2" />
                     <span>Focus on skill development</span>
                   </div>
                   <div className="highlight-item">
-                    <i className="fas fa-check-circle text-success"></i>
+                    <RiCheckboxCircleFill className="text-success me-2" />
                     <span>No false promises of returns</span>
                   </div>
                   <div className="highlight-item">
-                    <i className="fas fa-check-circle text-success"></i>
+                    <RiCheckboxCircleFill className="text-success me-2" />
                     <span>Risk-aware learning approach</span>
                   </div>
                 </div>
@@ -339,7 +377,7 @@ const Section4 = () => {
             <div className="col-lg-4">
               <div className="philosophy-card-large">
                 <div className="philosophy-icon-large bg-success-gradient">
-                  <i className="fas fa-flask"></i>
+                  <FaFlask className="text-white" />
                 </div>
                 <h3 className="philosophy-title-large">Research-Backed Methods</h3>
                 <p className="philosophy-description-large">
@@ -349,15 +387,15 @@ const Section4 = () => {
                 </p>
                 <div className="philosophy-highlights">
                   <div className="highlight-item">
-                    <i className="fas fa-check-circle text-success"></i>
+                    <RiCheckboxCircleFill className="text-success me-2" />
                     <span>Academic research based</span>
                   </div>
                   <div className="highlight-item">
-                    <i className="fas fa-check-circle text-success"></i>
+                    <RiCheckboxCircleFill className="text-success me-2" />
                     <span>Market history analysis</span>
                   </div>
                   <div className="highlight-item">
-                    <i className="fas fa-check-circle text-success"></i>
+                    <RiCheckboxCircleFill className="text-success me-2" />
                     <span>Systematic thinking focus</span>
                   </div>
                 </div>
@@ -367,7 +405,7 @@ const Section4 = () => {
             <div className="col-lg-4">
               <div className="philosophy-card-large">
                 <div className="philosophy-icon-large bg-danger-gradient">
-                  <i className="fas fa-balance-scale"></i>
+                  <FaBalanceScale className="text-white" />
                 </div>
                 <h3 className="philosophy-title-large">Ethics & Compliance First</h3>
                 <p className="philosophy-description-large">
@@ -377,15 +415,15 @@ const Section4 = () => {
                 </p>
                 <div className="philosophy-highlights">
                   <div className="highlight-item">
-                    <i className="fas fa-check-circle text-success"></i>
+                    <RiCheckboxCircleFill className="text-success me-2" />
                     <span>Regulatory compliance focus</span>
                   </div>
                   <div className="highlight-item">
-                    <i className="fas fa-check-circle text-success"></i>
+                    <RiCheckboxCircleFill className="text-success me-2" />
                     <span>Highest ethical standards</span>
                   </div>
                   <div className="highlight-item">
-                    <i className="fas fa-check-circle text-success"></i>
+                    <RiCheckboxCircleFill className="text-success me-2" />
                     <span>Market integrity education</span>
                   </div>
                 </div>
@@ -397,7 +435,7 @@ const Section4 = () => {
             <div className="row g-4">
               <div className="col-md-6">
                 <div className="principle-item">
-                  <i className="fas fa-handshake principle-icon"></i>
+                  <FaHandshake className="principle-icon" />
                   <div>
                     <h5>Practical Application Focus</h5>
                     <p>Real-world scenarios and case studies integrated into all courses</p>
@@ -406,7 +444,7 @@ const Section4 = () => {
               </div>
               <div className="col-md-6">
                 <div className="principle-item">
-                  <i className="fas fa-users principle-icon"></i>
+                  <FaUsers className="principle-icon" />
                   <div>
                     <h5>Lifetime Learning Support</h5>
                     <p>Continuous education updates and community access for all alumni</p>
@@ -415,7 +453,7 @@ const Section4 = () => {
               </div>
               <div className="col-md-6">
                 <div className="principle-item">
-                  <i className="fas fa-chart-line principle-icon"></i>
+                  <FaChartLine className="principle-icon" />
                   <div>
                     <h5>Performance Tracking</h5>
                     <p>Regular assessments and progress tracking for measurable growth</p>
@@ -424,7 +462,7 @@ const Section4 = () => {
               </div>
               <div className="col-md-6">
                 <div className="principle-item">
-                  <i className="fas fa-comments principle-icon"></i>
+                  <FaComments className="principle-icon" />
                   <div>
                     <h5>Interactive Learning</h5>
                     <p>Live sessions, Q&A forums, and peer discussions for active learning</p>
