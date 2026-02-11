@@ -324,11 +324,11 @@ const LandingPage = () => {
 
           <div className="cta-buttons">
             <a href="#programs" className="footer-btn">
-              <FaGraduationCap className="inline mr-2" />
+              <FaGraduationCap className="inline mr-2 big-screen-hide" />
               Explore Programs
             </a>
             <a href="#contact" className="btn btn-outline">
-              <RiMailLine className="inline mr-2" />
+              <RiMailLine className="inline mr-2 big-screen-hide" />
               Contact Us
             </a>
           </div>
