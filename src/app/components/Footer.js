@@ -15,7 +15,7 @@ export default function Footer() {
     { name: "Live Sessions", href: "/pages/community" },
     { name: "Expert Faculty", href: "/pages/experts" },
     { name: "Academy Partnership", href: "/pages/partnership" },
-    { name: "Partners", href: "/pages/partners" },
+    { name: "Partners", href: "/pages/contact" },
   ];
 
   const supportLinks = [
@@ -78,9 +78,9 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between pt-5">
           <p className="text-gray-400">
-            © 2024 NUPIPS. All rights reserved.
+            © 2026 NUPIPS. All rights reserved.
           </p>
-          <Link href="/disclaimer" className="text-gray-400 hover:text-white">
+          <Link href="/pages/disclaimer " className="text-gray-400 hover:text-white">
             Important Disclaimer
           </Link>
         </div>

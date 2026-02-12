@@ -48,7 +48,7 @@ const LandingPage = () => {
 
         <div className="fin-edu-content-container">
           <div className="fin-edu-warning-badge"> 
-           <div className='d-flex align-iteam-center'>
+           <div className='d-flex align-items-center'>
             <RiBookOpenLine className="inline mr-2" />
              Educational Purposes Only - No Financial Advice
            </div>
@@ -68,11 +68,11 @@ const LandingPage = () => {
           </p>
 
           <div className="fin-edu-action-buttons">
-            <a href="#education" className="fin-edu-primary-action">
+            <a href="/pages/education" className="fin-edu-primary-action">
               <RiBookOpenLine className="inline mr-2" />
               Explore Education
             </a>
-            <a href="#community" className="fin-edu-secondary-action">
+            <a href="/pages/community" className="fin-edu-secondary-action">
               <FaUsers className="inline mr-2" />
               Join Community
             </a>
@@ -120,7 +120,7 @@ const LandingPage = () => {
                 Learn from verified educators with real market experience. Our faculty includes certified analysts, risk management specialists, and behavioral finance experts.
               </p>
               <a className="text-blue-600 font-semibold hover:text-blue-700 transition-colors"
-                href="/preview/8dd92c6f-31c3-443e-b924-e2df9f3074e4/5941968/experts" data-discover="true">
+                href="/pages/experts" data-discover="true">
                 Meet Our Experts →
               </a>
             </div>
@@ -134,7 +134,7 @@ const LandingPage = () => {
                 Understand market risks before opportunities. We emphasize responsible learning with clear disclaimers and realistic expectations about market volatility.
               </p>
               <a className="text-blue-600 font-semibold hover:text-blue-700 transition-colors"
-                href="/preview/8dd92c6f-31c3-443e-b924-e2df9f3074e4/5941968/disclaimer" data-discover="true">
+                href="/pages/disclaimer" data-discover="true">
                 Read Disclaimer →
               </a>
             </div>
@@ -148,7 +148,7 @@ const LandingPage = () => {
                 Connect with learners across Asia, Middle East, Europe, Africa, and the Americas. Share insights, discuss strategies, and learn together.
               </p>
               <a className="text-blue-600 font-semibold hover:text-blue-700 transition-colors"
-                href="/preview/8dd92c6f-31c3-443e-b924-e2df9f3074e4/5941968/community" data-discover="true">
+                href="/pages/community" data-discover="true">
                 Join Community →
               </a>
             </div>
@@ -236,7 +236,7 @@ const LandingPage = () => {
                 </li>
               </ul>
 
-              <a href="#experts" className="btn btn-primary">
+              <a href="/pages/experts" className="btn btn-primary">
                 <FaUserTie className="inline mr-2" />
                 Meet Our Experts
               </a>
@@ -323,11 +323,11 @@ const LandingPage = () => {
           </p>
 
           <div className="cta-buttons">
-            <a href="#programs" className="footer-btn">
+            <a href=" /pages/videos" className="footer-btn">
               <FaGraduationCap className="inline mr-2 big-screen-hide" />
               Explore Programs
             </a>
-            <a href="#contact" className="btn btn-outline">
+            <a href="/pages/contact" className="btn btn-outline">
               <RiMailLine className="inline mr-2 big-screen-hide" />
               Contact Us
             </a>

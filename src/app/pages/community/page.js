@@ -444,9 +444,9 @@ const Section3 = () => {
             <div className="col-lg-12 text-center">
               <h3 className="cta-title mb-3 text-white">Ready to Join Our Learning Community?</h3>
               <p className="cta-text mb-4">Connect with learners worldwide and accelerate your financial education</p>
-              <button className="btn btn-join-community py-3">
+              <a href="/pages/contact" className="btn btn-join-community py-3">
                 <FaUserGraduate className="me-2" /> Get Started Today
-              </button>
+              </a>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 "use client";
-
-import { memo, useState } from "react"; 
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { memo, useState } from "react";
 
 const Section7 = () => {
   const [acknowledged, setAcknowledged] = useState(false);
@@ -65,7 +65,7 @@ const Section7 = () => {
 
   return (
     <div className="legal-disclaimer-page">
- 
+
       {/* Header Section */}
       <section className="disclaimer-header">
         <div className="container">
@@ -87,7 +87,7 @@ const Section7 = () => {
               <div className="card-body p-4">
                 <h2 className="highlight-card-title text-center h4">Educational Purpose Only</h2>
                 <p className="card-text text-center mb-0 text-dark">
-                  NUPIPS is an educational platform exclusively focused on providing knowledge about financial markets, including Forex and Stock Markets. 
+                  NUPIPS is an educational platform exclusively focused on providing knowledge about financial markets, including Forex and Stock Markets.
                   We do not provide financial advice, investment recommendations, or any form of investment services.
                 </p>
               </div>
@@ -99,7 +99,7 @@ const Section7 = () => {
 
         {/* Key Disclaimer Points */}
         <h2 className="section-title text-center">Key Disclaimer Points</h2>
-        
+
         <div className="row g-4">
           {disclaimerPoints.map((point, index) => (
             <div key={index} className="col-md-6 col-lg-3">
@@ -198,41 +198,22 @@ const Section7 = () => {
           <p className="text-white text-center mb-4">
             By accessing NUPIPS's educational content and programs, you acknowledge that you have read, understood, and agree to this disclaimer.
           </p>
-          
+
           <label className="checkbox-label">
-            <input
-              type="checkbox"
-              className="checkbox-input"
-              checked={acknowledged}
-              onChange={(e) => setAcknowledged(e.target.checked)}
-            />
+             <input class="form-check-input" type="checkbox"  checked={acknowledged}
+              onChange={(e) => setAcknowledged(e.target.checked)} value="" id="checkDefault" />
             <span>
-              I confirm that I have read, understood, and agree to all terms in this legal disclaimer. 
+              I confirm that I have read, understood, and agree to all terms in this legal disclaimer.
               I accept full responsibility for my educational journey and any subsequent trading or investment decisions.
             </span>
           </label>
-          
-          <button
-            className="acknowledge-btn"
-            disabled={!acknowledged}
-            onClick={() => {
-              if (acknowledged) {
-                alert('Thank you for acknowledging the disclaimer. You may now proceed.');
-              }
-            }}
-          >
-            I Acknowledge and Accept
-          </button>
-          
-          <div className="text-center mt-4">
-            <a 
-              href="#" 
-              className="text-light"
-              style={{ opacity: 0.8, fontSize: '14px' }}
-            >
-              Link to NUPIPS Privacy Policy
-            </a>
+          <div class="acknowledge-btn gap-2">
+           <IoMdCheckmarkCircleOutline />
+            <label class="mb-0 text-white" for="checkDefault">
+              I Acknowledge and Accept
+            </label>
           </div>
+ 
         </div>
       </div>
     </div>

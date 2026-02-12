@@ -6297,7 +6297,7 @@
     border: 1px solid rgb(255 233 128 / 69%);
     backdrop-filter: blur(10px);
     text-transform: uppercase;
-    margin-top: 90px;
+    margin-top: 35px;
   }
 
   /* Warning Label */
@@ -7849,3 +7849,212 @@
     font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont,
       "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
   }
+  /* Video Popup Styles */
+.edu-video-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+.edu-video-popup-container {
+  width: 90%;
+  max-width: 1000px;
+  max-height: 90vh;
+  background: white;
+  border-radius: 16px;
+  position: relative;
+  animation: slideUp 0.3s ease;
+}
+
+.edu-popup-close-btn {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.edu-popup-close-btn:hover {
+  transform: rotate(90deg);
+  background: #f0f0f0;
+}
+
+.edu-popup-content {
+  padding: 24px;
+}
+
+.edu-popup-video-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  margin-bottom: 20px;
+}
+
+.edu-popup-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
+
+.edu-popup-details {
+  padding: 16px 0;
+}
+
+.edu-popup-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.edu-popup-duration {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #666;
+  font-size: 14px;
+}
+
+.edu-popup-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #1a1a1a;
+}
+
+.edu-popup-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #4a4a4a;
+  margin-bottom: 20px;
+}
+
+.edu-popup-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Play overlay for video thumbnails */
+.edu-play-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+.edu-video-thumbnail {
+  position: relative;
+}
+
+.edu-video-thumbnail:hover .edu-play-overlay {
+  opacity: 1;
+}
+
+.edu-play-icon {
+  font-size: 48px;
+  color: white;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .edu-video-popup-container {
+    width: 95%;
+    max-height: 95vh;
+  }
+  
+  .edu-popup-close-btn {
+    top: -35px;
+    right: 0;
+  }
+  
+  .edu-popup-title {
+    font-size: 20px;
+  }
+  
+  .edu-play-icon {
+    font-size: 40px;
+  }
+}
+
+/* Hover effect for video cards */
+.edu-video-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.edu-video-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+ 
+.checkbox-label,
+.acknowledge-checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.checkbox-input,
+.acknowledge-checkbox-input {
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+  cursor: pointer;
+  opacity: 1;
+  position: relative;
+  z-index: 1;
+}
+
+/* Force checkbox to be visible */
+input[type="checkbox"] {
+  opacity: 1 !important;
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  visibility: visible !important;
+  display: inline-block !important;
+  pointer-events: auto !important;
+}

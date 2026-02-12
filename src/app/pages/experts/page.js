@@ -242,9 +242,9 @@ const Section4 = () => {
                 <p className="expertise-description">
                   Forex fundamentals, pair analysis, and market structure
                 </p>
-                <div className="expertise-footer">
+                <a href="/pages/videos" className="expertise-footer">
                   <RiArrowRightLine className="me-2" /> Learn More
-                </div>
+                </a>
               </div>
             </div>
 
@@ -257,9 +257,9 @@ const Section4 = () => {
                 <p className="expertise-description">
                   Stock market fundamentals and valuation methods
                 </p>
-                <div className="expertise-footer">
+                <a href="/pages/videos" className="expertise-footer">
                   <RiArrowRightLine className="me-2" /> Learn More
-                </div>
+                </a>
               </div>
             </div>
 
@@ -272,9 +272,9 @@ const Section4 = () => {
                 <p className="expertise-description">
                   Position sizing, portfolio risk, and money management
                 </p>
-                <div className="expertise-footer">
+                <a href="/pages/videos" className="expertise-footer">
                   <RiArrowRightLine className="me-2" /> Learn More
-                </div>
+                </a>
               </div>
             </div>
 
@@ -287,9 +287,9 @@ const Section4 = () => {
                 <p className="expertise-description">
                   Behavioral finance and emotional discipline
                 </p>
-                <div className="expertise-footer">
+                <a href="/pages/videos" className="expertise-footer">
                   <RiArrowRightLine className="me-2" /> Learn More
-                </div>
+                </a>
               </div>
             </div>
           </div>
