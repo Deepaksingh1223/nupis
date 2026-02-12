@@ -145,7 +145,7 @@ const Section1 = () => {
                       </li>
                     ))}
                   </ul>
-                  <a class="text-blue-600 font-semibold hover:text-blue-700 transition-colors" href="/pages/experts" data-discover="true">Meet Our Experts →</a>
+                  <a class="text-blue-600 font-semibold hover:text-blue-700 transition-colors" href="/pages/videos" data-discover="true">Start Learning →</a>
                 </div>
               </div>
             ))}
@@ -180,7 +180,7 @@ const Section1 = () => {
                       </li>
                     ))}
                   </ul>
-                  <a class="text-bullet-600 font-semibold hover:text-bullet-700 transition-colors" href="/pages/experts" data-discover="true">Meet Our Experts →</a>
+                  <a class="text-bullet-600 font-semibold hover:text-bullet-700 transition-colors" href="/pages/videos" data-discover="true">Start Learning →</a>
                 </div>
               </div>
             ))}
