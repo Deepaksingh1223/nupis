@@ -1,43 +1,30 @@
 import { memo } from "react";
 import { 
   FaBookOpen,
-  FaChartLine,
-  FaUserTie,
+  FaChartLine, 
   FaGraduationCap,
-  FaFileAlt,
-  FaUsers,
-  FaLightbulb,
+  FaFileAlt, 
   FaClipboardCheck,
   FaShieldAlt,
   FaBrain,
-  FaBalanceScale
+  FaLongArrowAltRight ,
+  FaCheckDouble
 } from "react-icons/fa";
 import { 
   RiBookOpenLine,
   RiShieldLine,
-  RiMindMap,
-  RiBarChartBoxLine,
+  RiMindMap, 
   RiMoneyDollarCircleLine,
   RiGlobalLine,
   RiLineChartLine,
-  RiPieChartLine,
-  RiFundsLine,
-  RiCalendarTodoLine,
-  RiBookReadLine,
-  RiMedalLine,
+  RiPieChartLine, 
   RiArrowUpLine
 } from "react-icons/ri";
 import { 
   PiGraph,
-  PiCurrencyCircleDollar,
-  PiStrategy,
+  PiCurrencyCircleDollar, 
   PiChartLineUp,
-  PiBuildings,
-  PiChartPieSlice,
-  PiChartBarHorizontal,
-  PiPlant,
-  PiTrendUp,
-  PiUserCircle
+  PiBuildings, 
 } from "react-icons/pi";
 
 const Section1 = () => {
@@ -147,8 +134,7 @@ const Section1 = () => {
             {forexModules.map((module, index) => (
               <div key={index} className="col-12 col-md-6 col-lg-4">
                 <div className="education-edu-card blue-edu-card h-100 p-4">
-                  <div className="card-edu-icon blue-edu-card-icon mb-3">
-                  
+                  <div className="card-edu-icon blue-edu-card-icon mb-3"> 
                     {module.icon}
                   </div>
                   <h3 className="card-edu-title h5 fw-bold mb-3">{module.title}</h3>
@@ -159,6 +145,7 @@ const Section1 = () => {
                       </li>
                     ))}
                   </ul>
+                  <a class="text-blue-600 font-semibold hover:text-blue-700 transition-colors" href="/pages/experts" data-discover="true">Meet Our Experts →</a>
                 </div>
               </div>
             ))}
@@ -193,6 +180,7 @@ const Section1 = () => {
                       </li>
                     ))}
                   </ul>
+                  <a class="text-bullet-600 font-semibold hover:text-bullet-700 transition-colors" href="/pages/experts" data-discover="true">Meet Our Experts →</a>
                 </div>
               </div>
             ))}
@@ -240,7 +228,7 @@ const Section1 = () => {
                 <div className="journey-edu-card h-100 p-4">
                   <div className="journey-edu-step display-6 fw-bold mb-2">{step.step}</div>
                    
-                  <h3 className="journey-edu-step-title h5 fw-bold mb-2 text-white">   {step.icon} {step.title}</h3>
+                  <h3 className="journey-edu-step-title h5 fw-bold mb-2 text-white">{step.title} {step.icon}</h3>
                   <p className="journey-edu-step-desc mb-0">{step.description}</p>
                 </div>
               </div>
@@ -257,12 +245,12 @@ const Section1 = () => {
               Ready to Start Learning?
             </h2>
             <div className="d-flex flex-column flex-sm-row justify-content-center gap-3">
-              <button className="cta-edu-btn cta-edu-btn-primary btn btn-lg px-4 py-3 justify-center">
+              <a href="/pages/contact" className="cta-edu-btn cta-edu-btn-primary btn btn-lg px-4 py-3 justify-center">
                 <FaGraduationCap className="me-2" /> Enroll Now
-              </button>
-              <button className="cta-edu-btn cta-edu-btn-secondary btn btn-lg px-4 py-3 justify-center">
+              </a>
+              <a href="/pages/contact" className="cta-edu-btn cta-edu-btn-secondary btn btn-lg px-4 py-3 justify-center">
                 <FaFileAlt className="me-2" /> View Curriculum
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -342,20 +330,17 @@ const approachSteps = [
   {
     number: "01",
     title: "Foundation Building",
-    description: "Start with core concepts, market mechanics, and fundamental principles before advancing to complex strategies",
-    icon: <RiBookReadLine className="text-primary" />
+    description: "Start with core concepts, market mechanics, and fundamental principles before advancing to complex strategies" 
   },
   {
     number: "02",
     title: "Practical Application",
-    description: "Learn through real-world case studies, chart analysis exercises, and systematic frameworks",
-    icon: <PiStrategy className="text-primary" />
+    description: "Learn through real-world case studies, chart analysis exercises, and systematic frameworks" 
   },
   {
     number: "03",
     title: "Continuous Learning",
-    description: "Ongoing education with market updates, advanced concepts, and community-driven knowledge sharing",
-    icon: <FaLightbulb className="text-primary" />
+    description: "Ongoing education with market updates, advanced concepts, and community-driven knowledge sharing" 
   }
 ];
 
@@ -364,25 +349,25 @@ const journeySteps = [
     step: "01",
     title: "Foundation",
     description: "Basic concepts and terminology",
-    icon: <PiPlant className="text-white" />
+    icon: <FaLongArrowAltRight />
   },
   {
     step: "02",
     title: "Analysis",
     description: "Technical and fundamental skills",
-    icon: <PiChartBarHorizontal className="text-white" />
+    icon: <FaLongArrowAltRight />
   },
   {
     step: "03",
     title: "Strategy",
     description: "Develop trading approaches",
-    icon: <PiTrendUp className="text-white" />
+    icon:<FaLongArrowAltRight />
   },
   {
     step: "04",
     title: "Psychology",
     description: "Master emotional discipline",
-    icon: <PiUserCircle className="text-white" />
+    icon:<FaCheckDouble />
   }
 ];
 

@@ -11,19 +11,21 @@ import {
   FaLongArrowAltRight,
   FaChevronRight,
   FaRegClock,
-  FaVideo
+  FaVideo,
+  FaTimes
 } from "react-icons/fa";
 import {
   RiMailLine
 } from "react-icons/ri";
 
 const Section5 = () => {
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState("All Videos");
   const [email, setEmail] = useState("");
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
   const categories = [
-    "All",
-    "Introduction",
+    "All Videos",
+    "Videos Tutorial",
     "Forex Education",
     "Stock Market",
     "Technical Analysis",
@@ -31,86 +33,351 @@ const Section5 = () => {
     "Psychology"
   ];
 
- const videoData = [
+  // Har category me 6 videos ke saath complete tutorial list
+  const videoData = [
+    // Videos Tutorial - 5 Videos
     {
       id: 1,
-      title: "Welcome to NUPIPS · 30 Second Introduction",
-      description: "Discover our mission to provide world-class financial markets education focused on Forex, Stock Markets, and responsible trading practices.",
-      category: "Introduction",
+      title: "New Opportunities, Positive Changes & Growth Ahead | GTCFX",
+      description: "Welcome 2026 | New Opportunities, Positive Changes & Growth Ahead | GTCFX",
+      category: "Videos Tutorial",
       duration: "0:30",
       timeAgo: "2 days ago",
       rating: 4.9,
       reviews: 120,
-      imgSrc: "/assets/img/videos/Introduction.png",
-      bgClass: "edu-bg-primary-soft"
+      imgSrc: "/assets/img/videos/account0.png",
+      bgClass: "edu-bg-primary-soft",
+      videoUrl: "https://www.youtube.com/embed/S6tKx8mHDH8"
     },
     {
       id: 2,
-      title: "Understanding Forex Market Structure",
-      description: "Learn the fundamentals of currency pair mechanics and market participants.",
+      title: "GTCFX - Account Setup in Phone | Complete Sign Up, Login, KYC, Deposit & Withdrawal Guide - Hindi",
+      description: "GTCFX - Account Setup in Phone | Complete Sign Up, Login, KYC, Deposit & Withdrawal Guide - Hindi",
+      category: "Videos Tutorial",
+      duration: "4:15",
+      timeAgo: "3 days ago",
+      rating: 4.8,
+      reviews: 95,
+      imgSrc: "/assets/img/videos/account1.png",
+      bgClass: "edu-bg-primary-soft",
+      videoUrl: "https://www.youtube.com/embed/Qi860G11cwM"
+    },
+    {
+      id: 3,
+      title: "GTCFX - Account Setup in Phone | Complete Sign Up, Secure Login, KYC, Deposit & Withdrawal Guide",
+      description: "GTCFX - Account Setup in Phone | Complete Sign Up, Secure Login, KYC, Deposit & Withdrawal Guide",
+      category: "Videos Tutorial",
+      duration: "3:45",
+      timeAgo: "4 days ago",
+      rating: 4.7,
+      reviews: 78,
+      imgSrc: "/assets/img/videos/account2.png",
+      bgClass: "edu-bg-primary-soft",
+      videoUrl: "https://www.youtube.com/embed/Sut3kborBLk"
+    },
+    {
+      id: 4,
+      title: "GTCFX - Account Setup in Hindi | Step-by-Step Sign Up, Secure Login, KYC, Deposit & Withdrawal Guide",
+      description: "GTCFX - Account Setup in Hindi | Step-by-Step Sign Up, Secure Login, KYC, Deposit & Withdrawal Guide",
+      category: "Videos Tutorial",
+      duration: "5:20",
+      timeAgo: "5 days ago",
+      rating: 4.9,
+      reviews: 112,
+      imgSrc: "/assets/img/videos/account3.png",
+      bgClass: "edu-bg-primary-soft",
+      videoUrl: "https://www.youtube.com/embed/ye0ANqXJ8zQ"
+    },
+    {
+      id: 5,
+      title: "GTCFX - Account Setup in English | Complete Sign Up, Secure Login, KYC, Deposit & Withdrawal Guide",
+      description: "GTCFX - Account Setup in English | Complete Sign Up, Secure Login, KYC, Deposit & Withdrawal Guide",
+      category: "Videos Tutorial",
+      duration: "5:20",
+      timeAgo: "5 days ago",
+      rating: 4.9,
+      reviews: 112,
+      imgSrc: "/assets/img/videos/account3.png",
+      bgClass: "edu-bg-primary-soft",
+      videoUrl: "https://www.youtube.com/embed/tZRRSw5tJVg"
+    },
+
+    // Forex Education - 6 Videos
+    {
+      id: 7,
+      title: "What is Forex?",
+      description: "Learn the fundamentals of currency trading and how the Forex market operates globally.",
       category: "Forex Education",
       duration: "15:24",
       timeAgo: "1 week ago",
       rating: 4.8,
       reviews: 89,
       imgSrc: "/assets/img/videos/Forex-Education.png",
-      bgClass: "edu-bg-info-soft"
+      bgClass: "edu-bg-info-soft",
+      videoUrl: "https://www.youtube.com/embed/GtUN1rLrG_U"
     },
     {
-      id: 3,
-      title: "Introduction to Technical Analysis",
-      description: "Basic concepts of chart reading, trends, and support/resistance levels.",
-      category: "Technical Analysis",
+      id: 8,
+      title: "Major Currency Pairs Explained",
+      description: "Understanding EUR/USD, GBP/USD, USD/JPY and other major currency pairs.",
+      category: "Forex Education",
+      duration: "18:30",
+      timeAgo: "1 week ago",
+      rating: 4.9,
+      reviews: 134,
+      imgSrc: "/assets/img/videos/Forex-Education.png",
+      bgClass: "edu-bg-info-soft",
+      videoUrl: "https://www.youtube.com/embed/GtUN1rLrG_U"
+    },
+    {
+      id: 9,
+      title: "Forex Market Sessions",
+      description: "Learn about London, New York, Tokyo sessions and the best times to trade.",
+      category: "Forex Education",
+      duration: "20:15",
+      timeAgo: "2 weeks ago",
+      rating: 4.7,
+      reviews: 156,
+      imgSrc: "/assets/img/videos/Forex-Education.png",
+      bgClass: "edu-bg-info-soft",
+      videoUrl: "https://www.youtube.com/embed/GtUN1rLrG_U"
+    },
+
+
+    // Stock Market - 6 Videos
+    {
+      id: 13,
+      title: "What is Stock Market?",
+      description: "Basic concepts of equity markets, how stocks are traded, and market participants.",
+      category: "Stock Market",
       duration: "22:10",
       timeAgo: "3 days ago",
       rating: 4.9,
       reviews: 156,
-      imgSrc: "/assets/img/videos/Technical-Analysis.png",
-      bgClass: "edu-bg-success-soft"
+      imgSrc: "/assets/img/videos/Stock-Market.png",
+      bgClass: "edu-bg-success-soft",
+      videoUrl: "https://www.youtube.com/embed/coTlg-HQkkQ"
     },
     {
-      id: 4,
-      title: "Risk Management Essentials",
-      description: "Core principles of position sizing and portfolio risk control.",
-      category: "Risk Management",
+      id: 14,
+      title: "How to Buy Stocks",
+      description: "Step-by-step guide to purchasing your first stock through different order types.",
+      category: "Stock Market",
+      duration: "18:45",
+      timeAgo: "4 days ago",
+      rating: 4.7,
+      reviews: 143,
+      imgSrc: "/assets/img/videos/Stock-Market.png",
+      bgClass: "edu-bg-success-soft",
+      videoUrl: "https://www.youtube.com/embed/coTlg-HQkkQ"
+    },
+    {
+      id: 15,
+      title: "Stock Exchanges Explained",
+      description: "NYSE, NASDAQ, London Stock Exchange - how they work and their differences.",
+      category: "Stock Market",
+      duration: "20:30",
+      timeAgo: "5 days ago",
+      rating: 4.8,
+      reviews: 112,
+      imgSrc: "/assets/img/videos/Stock-Market.png",
+      bgClass: "edu-bg-success-soft",
+      videoUrl: "https://www.youtube.com/embed/coTlg-HQkkQ"
+    },
+
+
+    // Technical Analysis - 6 Videos
+    {
+      id: 19,
+      title: "What is Technical Analysis?",
+      description: "Core principles of chart reading, trends, support/resistance, and technical indicators.",
+      category: "Technical Analysis",
       duration: "18:45",
       timeAgo: "5 days ago",
       rating: 4.7,
       reviews: 67,
-      imgSrc: "/assets/img/videos/Risk-Management.png",
-      bgClass: "edu-bg-danger-soft"
+      imgSrc: "/assets/img/videos/Technical-Analysis.png",
+      bgClass: "edu-bg-danger-soft",
+      videoUrl: "https://www.youtube.com/embed/HLrGCeGPJ2Y"
     },
     {
-      id: 5,
-      title: "Stock Market Fundamentals",
-      description: "Understanding equity markets, order types, and market mechanics.",
-      category: "Stock Market",
+      id: 20,
+      title: "Candlestick Patterns",
+      description: "Complete guide to bullish and bearish candlestick formations.",
+      category: "Technical Analysis",
+      duration: "24:30",
+      timeAgo: "6 days ago",
+      rating: 4.9,
+      reviews: 189,
+      imgSrc: "/assets/img/videos/Technical-Analysis.png",
+      bgClass: "edu-bg-danger-soft",
+      videoUrl: "https://www.youtube.com/embed/HLrGCeGPJ2Y"
+    },
+    {
+      id: 21,
+      title: "Support and Resistance",
+      description: "How to identify key price levels and use them in your trading strategy.",
+      category: "Technical Analysis",
+      duration: "20:15",
+      timeAgo: "1 week ago",
+      rating: 4.8,
+      reviews: 156,
+      imgSrc: "/assets/img/videos/Technical-Analysis.png",
+      bgClass: "edu-bg-danger-soft",
+      videoUrl: "https://www.youtube.com/embed/HLrGCeGPJ2Y"
+    },
+
+
+    // Risk Management - 6 Videos
+    {
+      id: 25,
+      title: "What is Risk Management?",
+      description: "Essential skills for position sizing, stop losses, and protecting your trading capital.",
+      category: "Risk Management",
       duration: "20:30",
       timeAgo: "1 week ago",
       rating: 4.8,
       reviews: 92,
-      imgSrc: "/assets/img/videos/Stock-Market.png",
-      bgClass: "edu-bg-warning-soft"
+      imgSrc: "/assets/img/videos/Risk-Management.png",
+      bgClass: "edu-bg-warning-soft",
+      videoUrl: "https://www.youtube.com/embed/Cw3HRaxRZL8"
     },
     {
-      id: 6,
-      title: "Trading Psychology & Discipline",
-      description: "Mastering emotional control and decision-making in financial markets.",
+      id: 26,
+      title: "Position Sizing",
+      description: "Calculate optimal trade size based on account equity and risk tolerance.",
+      category: "Risk Management",
+      duration: "18:45",
+      timeAgo: "1 week ago",
+      rating: 4.7,
+      reviews: 145,
+      imgSrc: "/assets/img/videos/Risk-Management.png",
+      bgClass: "edu-bg-warning-soft",
+      videoUrl: "https://www.youtube.com/embed/Cw3HRaxRZL8"
+    },
+    {
+      id: 27,
+      title: "Stop Loss Strategies",
+      description: "Different types of stop losses and where to place them effectively.",
+      category: "Risk Management",
+      duration: "22:15",
+      timeAgo: "2 weeks ago",
+      rating: 4.9,
+      reviews: 167,
+      imgSrc: "/assets/img/videos/Risk-Management.png",
+      bgClass: "edu-bg-warning-soft",
+      videoUrl: "https://www.youtube.com/embed/Cw3HRaxRZL8"
+    },
+
+
+    // Psychology - 6 Videos
+    {
+      id: 31,
+      title: "What is Trading Psychology?",
+      description: "Master emotional control, discipline, and mental resilience for successful trading.",
       category: "Psychology",
       duration: "25:15",
       timeAgo: "4 days ago",
       rating: 4.9,
       reviews: 134,
       imgSrc: "/assets/img/videos/Psychology.png",
-      bgClass: "edu-bg-purple-soft"
-    }
+      bgClass: "edu-bg-purple-soft",
+      videoUrl: "https://www.youtube.com/embed/9W2Uhr7wRcQ"
+    },
+    {
+      id: 32,
+      title: "Overcoming Fear and Greed",
+      description: "Techniques to manage emotions and stick to your trading plan.",
+      category: "Psychology",
+      duration: "23:30",
+      timeAgo: "5 days ago",
+      rating: 4.8,
+      reviews: 156,
+      imgSrc: "/assets/img/videos/Psychology.png",
+      bgClass: "edu-bg-purple-soft",
+      videoUrl: "https://www.youtube.com/embed/9W2Uhr7wRcQ"
+    },
+    {
+      id: 33,
+      title: "Building Trading Discipline",
+      description: "Develop habits and routines that lead to consistent execution.",
+      category: "Psychology",
+      duration: "21:45",
+      timeAgo: "6 days ago",
+      rating: 4.7,
+      reviews: 143,
+      imgSrc: "/assets/img/videos/Psychology.png",
+      bgClass: "edu-bg-purple-soft",
+      videoUrl: "https://www.youtube.com/embed/9W2Uhr7wRcQ"
+    },
+
   ];
-  const filteredVideos = activeCategory === "All" 
-    ? videoData 
+
+  const filteredVideos = activeCategory === "All Videos"
+    ? videoData
     : videoData.filter(video => video.category === activeCategory);
+
+  const openVideoPopup = (video) => {
+    setSelectedVideo(video);
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeVideoPopup = () => {
+    setSelectedVideo(null);
+    document.body.style.overflow = "unset";
+  };
 
   return (
     <div className="edu-video-library">
+      {/* Video Popup Modal */}
+      {selectedVideo && (
+        <div className="edu-video-popup-overlay" onClick={closeVideoPopup}>
+          <div className="edu-video-popup-container" onClick={(e) => e.stopPropagation()}>
+            <button className="edu-popup-close-btn" onClick={closeVideoPopup}>
+              <FaTimes />
+            </button>
+
+            <div className="edu-popup-content">
+              <div className="edu-popup-video-wrapper">
+                <iframe
+                  src={selectedVideo.videoUrl}
+                  title={selectedVideo.title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="edu-popup-video"
+                ></iframe>
+              </div>
+
+              <div className="edu-popup-details">
+                <div className="edu-popup-header">
+                  <span className={`edu-category-badge edu-badge-${selectedVideo.bgClass.split('-')[2]}`}>
+                    {selectedVideo.category}
+                  </span>
+                  <span className="edu-popup-duration">
+                    <FaRegClock /> {selectedVideo.duration}
+                  </span>
+                </div>
+
+                <h2 className="edu-popup-title">{selectedVideo.title}</h2>
+                <p className="edu-popup-description">{selectedVideo.description}</p>
+
+                <div className="edu-popup-rating">
+                  <div className="edu-stars">
+                    <FaStar className="edu-star-filled" />
+                    <FaStar className="edu-star-filled" />
+                    <FaStar className="edu-star-filled" />
+                    <FaStar className="edu-star-filled" />
+                    <FaStar className="edu-star-filled" />
+                  </div>
+                  <span className="edu-rating-value">{selectedVideo.rating}</span>
+                  <span className="edu-reviews-count">({selectedVideo.reviews} reviews)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/*===========================================
           HERO SECTION - Educational Video Library
@@ -122,46 +389,51 @@ const Section5 = () => {
               <FaVideo className="edu-hero-badge-icon" />
               <span>Educational Video Library</span>
             </div>
-            
+
             <h1 className="edu-hero-title">
               Comprehensive Financial <span className="edu-text-gradient">Markets Education</span>
             </h1>
-            
+
             <p className="edu-hero-description">
-              Comprehensive video tutorials covering financial markets, technical analysis, 
+              Comprehensive video tutorials covering financial markets, technical analysis,
               risk management, and trading psychology. Learn at your own pace.
             </p>
-            
-            
           </div>
         </div>
-        
       </section>
+
       <section className="edu-path-wrapper">
-<div className="container ">
-  <div className="row"> 
-    <div className="edu-featured-card">
+        <div className="container ">
+          <div className="row">
+            <div className="edu-featured-card">
               <div className="edu-featured-icon-wrapper">
                 <FaPlayCircle className="edu-featured-icon" />
               </div>
               <div className="edu-featured-content">
                 <span className="edu-featured-badge">Featured Introduction</span>
                 <h3 className="edu-featured-title">
-                  Welcome to NUPIPS · 30 Second Introduction
+                  {videoData[0].title}
                 </h3>
                 <p className="edu-featured-text">
-                  Discover our mission to provide world-class financial markets education focused 
-                  on Forex, Stock Markets, and responsible trading practices.
+                  {videoData[0].description}
                 </p>
-                <a href="#" className="edu-featured-link">
-                  Start here: Learn about NUPIPS mission and approach 
+                <a
+                  href="#"
+                  className="edu-featured-link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    openVideoPopup(videoData[0]);
+                  }}
+                >
+                  Start here: Learn about GTCFX mission and approach
                   <FaLongArrowAltRight className="edu-featured-link-icon" />
                 </a>
               </div>
             </div>
-  </div>
-</div>
-</section>
+          </div>
+        </div>
+      </section>
+
       {/*===========================================
           CATEGORY SECTION - Browse by Category
       ===========================================*/}
@@ -189,10 +461,15 @@ const Section5 = () => {
 
           <div className="edu-video-grid">
             {filteredVideos.map((video) => (
-              <div key={video.id} className="edu-video-card">
+              <div
+                key={video.id}
+                className="edu-video-card"
+                onClick={() => openVideoPopup(video)}
+                style={{ cursor: "pointer" }}
+              >
                 <div className={`edu-video-thumbnail ${video.bgClass}`}>
                   <div className="edu-thumbnail-image">
-                    <Image 
+                    <Image
                       src={video.imgSrc}
                       alt={video.title}
                       width={400}
@@ -204,13 +481,17 @@ const Section5 = () => {
                       }}
                     />
                   </div>
-                  
+
+                  <div className="edu-play-overlay">
+                    <FaPlayCircle className="edu-play-icon" />
+                  </div>
+
                   <div className="edu-duration-badge">
                     <FaRegClock className="edu-duration-icon" />
                     {video.duration}
                   </div>
                 </div>
-                
+
                 <div className="edu-video-body">
                   <div className="edu-video-meta">
                     <span className={`edu-category-badge edu-badge-${video.bgClass.split('-')[2]}`}>
@@ -221,10 +502,10 @@ const Section5 = () => {
                       {video.timeAgo}
                     </span>
                   </div>
-                  
+
                   <h3 className="edu-video-title">{video.title}</h3>
                   <p className="edu-video-description">{video.description}</p>
-                  
+
                   <div className="edu-video-footer">
                     <div className="edu-rating">
                       <div className="edu-stars">
@@ -237,10 +518,10 @@ const Section5 = () => {
                       <span className="edu-rating-value">{video.rating}</span>
                       <span className="edu-reviews-count">({video.reviews} reviews)</span>
                     </div>
-                    <a href="#" className="edu-watch-link">
-                      Watch Now 
+                    <span className="edu-watch-link">
+                      Watch Now
                       <FaChevronRight className="edu-watch-icon" />
-                    </a>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -261,40 +542,40 @@ const Section5 = () => {
                 Follow this structured sequence for comprehensive understanding:
               </p>
             </div>
-            
+
             <div className="edu-path-steps">
               <div className="edu-path-step">
                 <div className="edu-step-number">1</div>
                 <div className="edu-step-content">
-                  <h4 className="edu-step-title">Understand NUPIPS approach and philosophy</h4>
+                  <h4 className="edu-step-title">Understand GTCFX approach and philosophy</h4>
                 </div>
               </div>
-              
+
               <div className="edu-path-step">
                 <div className="edu-step-number">2</div>
                 <div className="edu-step-content">
-                  <h4 className="edu-step-title">Learn how to read charts and identify key indicators</h4>
+                  <h4 className="edu-step-title">Learn Forex fundamentals and market structure</h4>
                 </div>
               </div>
-              
+
               <div className="edu-path-step">
                 <div className="edu-step-number">3</div>
                 <div className="edu-step-content">
-                  <h4 className="edu-step-title">Master chart reading and analytical tools</h4>
+                  <h4 className="edu-step-title">Master technical analysis and chart reading</h4>
                 </div>
               </div>
-              
+
               <div className="edu-path-step">
                 <div className="edu-step-number">4</div>
                 <div className="edu-step-content">
-                  <h4 className="edu-step-title">Essential skills for protecting capital</h4>
+                  <h4 className="edu-step-title">Essential risk management skills</h4>
                 </div>
               </div>
-              
+
               <div className="edu-path-step">
                 <div className="edu-step-number">5</div>
                 <div className="edu-step-content">
-                  <h4 className="edu-step-title">Develop emotional discipline and systematic thinking</h4>
+                  <h4 className="edu-step-title">Develop trading psychology and discipline</h4>
                 </div>
               </div>
             </div>
@@ -311,14 +592,14 @@ const Section5 = () => {
             <div className="edu-newsletter-icon-wrapper">
               <FaBell className="edu-newsletter-icon" />
             </div>
-            
+
             <h2 className="edu-newsletter-title">New Content Every Week</h2>
-            
+
             <p className="edu-newsletter-text">
-              Subscribe to receive notifications about new educational videos, 
+              Subscribe to receive notifications about new educational videos,
               market updates, and learning resources.
             </p>
-            
+
             <div className="edu-newsletter-form">
               <div className="edu-input-group">
                 <span className="edu-input-icon">
@@ -332,7 +613,7 @@ const Section5 = () => {
                   onChange={(e) => setEmail(e.target.value)}
                 />
                 <button className="edu-subscribe-btn">
-                  Subscribe 
+                  Subscribe
                   <FaArrowRight className="edu-subscribe-icon" />
                 </button>
               </div>
@@ -354,17 +635,17 @@ const Section5 = () => {
               <div className="edu-stat-number">200+</div>
               <div className="edu-stat-label">VIDEO TUTORIALS</div>
             </div>
-            
+
             <div className="edu-stat-item">
               <div className="edu-stat-number">50+</div>
               <div className="edu-stat-label">EXPERT EDUCATORS</div>
             </div>
-            
+
             <div className="edu-stat-item">
               <div className="edu-stat-number">15K+</div>
               <div className="edu-stat-label">ACTIVE LEARNERS</div>
             </div>
-            
+
             <div className="edu-stat-item">
               <div className="edu-stat-number">4.9★</div>
               <div className="edu-stat-label">AVERAGE RATING</div>
@@ -372,8 +653,6 @@ const Section5 = () => {
           </div>
         </div>
       </section>
-
-    
     </div>
   );
 };

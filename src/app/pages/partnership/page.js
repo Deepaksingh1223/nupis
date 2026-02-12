@@ -83,9 +83,9 @@ const Section2 = () => {
                   Partner with NUPIPS to bring world-class financial markets education to your institution.
                   Co-branded programs, certified curricula, and comprehensive support.  Co-branded programs, certified curricula, and comprehensive support.
                 </p>
-                <button className="apply-button">
-                  <FaHandshake className="me-2" /> Apply for Partnership <RiArrowRightLine className="ms-2" />
-                </button>
+                <a className="apply-button" href="/pages/contact">
+                  Apply for Partnership   <FaHandshake className="me-2" />
+                </a>
               </div>
               <div className="col-md-6">
                 <div className="hero-visual mt-3">
@@ -302,7 +302,7 @@ const Section2 = () => {
             <div className="process-step">
               <div className="step-number">1</div>
               <div className="step-content"> 
-                <h4 className="step-title">          <FaFileAlt style={{color: "#2563EB"}} />Submit Application</h4>
+                <h4 className="step-title">Submit Application</h4>
                 <p className="step-description">
                   Complete the partnership inquiry form with institutional details and program requirements.
                 </p>
@@ -312,7 +312,7 @@ const Section2 = () => {
             <div className="process-step">
               <div className="step-number">2</div>
               <div className="step-content"> 
-                <h4 className="step-title">  <FaHandshake style={{color: "#2563EB"}} />Initial Consultation</h4>
+                <h4 className="step-title">Initial Consultation</h4>
                 <p className="step-description">
                   Meet with our partnership team to discuss your needs, goals, and curriculum integration.
                 </p>
@@ -322,7 +322,7 @@ const Section2 = () => {
             <div className="process-step">
               <div className="step-number">3</div>
               <div className="step-content"> 
-                <h4 className="step-title">         <FaCogs style={{color: "#2563EB"}} />Program Customization</h4>
+                <h4 className="step-title">Program Customization</h4>
                 <p className="step-description">
                   Work together to customize curriculum, materials, and certification programs for your institution.
                 </p>
@@ -332,7 +332,7 @@ const Section2 = () => {
             <div className="process-step">
               <div className="step-number">4</div>
               <div className="step-content"> 
-                <h4 className="step-title">     <FaBullhorn style={{color: "#2563EB"}} />Launch & Support</h4>
+                <h4 className="step-title">Launch & Support</h4>
                 <p className="step-description">
                   Faculty training, materials delivery, and ongoing support as you launch the program.
                 </p>
@@ -376,7 +376,7 @@ const Section2 = () => {
             <p className="faq-contact-text">
               Still have questions? Contact our partnership team at{" "}
               <a href="mailto:partnerships@nupips.com" className="faq-contact-link">
-                <RiMailLine className="me-1" /> partnerships@nupips.com
+               partnerships@nupips.com
               </a>
             </p>
           </div>
@@ -392,9 +392,9 @@ const Section2 = () => {
               Join hundreds of institutions worldwide who are already partnering with NUPIPS
               to provide cutting-edge financial markets education.
             </p>
-            <button className="cta-button">
-              <FaUniversity className="me-2" /> Start Your Partnership Application Today <FaArrowRight className="ms-2" />
-            </button>
+            <a href="/pages/partnership" className="cta-button">
+              Start Your Partnership Application Today <FaArrowRight className="ms-2" />
+            </a>
           </div>
         </div>
       </section>
