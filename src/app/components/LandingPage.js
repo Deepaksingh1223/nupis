@@ -49,7 +49,7 @@ const LandingPage = () => {
         <div className="fin-edu-content-container">
           <div className="fin-edu-warning-badge"> 
            <div className='d-flex align-items-center'>
-            <RiBookOpenLine className="inline mr-2" />
+            <RiBookOpenLine className="inline mr-2 big-screen-hide" />
              Educational Purposes Only - No Financial Advice
            </div>
           </div>
