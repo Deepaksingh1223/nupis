@@ -38,14 +38,14 @@ const Section5 = () => {
     // Videos Tutorial - 5 Videos
     {
       id: 1,
-      title: "New Opportunities, Positive Changes & Growth Ahead | GTCFX",
+      title: "Welcome 2026 | New Opportunities",
       description: "Welcome 2026 | New Opportunities, Positive Changes & Growth Ahead | GTCFX",
       category: "Videos Tutorial",
       duration: "0:30",
       timeAgo: "2 days ago",
       rating: 4.9,
       reviews: 120,
-      imgSrc: "/assets/img/videos/account0.png",
+      imgSrc: "/assets/img/videos/account0.jpg",
       bgClass: "edu-bg-primary-soft",
       videoUrl: "https://www.youtube.com/embed/S6tKx8mHDH8"
     },
@@ -58,7 +58,7 @@ const Section5 = () => {
       timeAgo: "3 days ago",
       rating: 4.8,
       reviews: 95,
-      imgSrc: "/assets/img/videos/account1.png",
+      imgSrc: "/assets/img/videos/account1.jpg",
       bgClass: "edu-bg-primary-soft",
       videoUrl: "https://www.youtube.com/embed/Qi860G11cwM"
     },
@@ -71,7 +71,7 @@ const Section5 = () => {
       timeAgo: "4 days ago",
       rating: 4.7,
       reviews: 78,
-      imgSrc: "/assets/img/videos/account2.png",
+      imgSrc: "/assets/img/videos/account2.jpg",
       bgClass: "edu-bg-primary-soft",
       videoUrl: "https://www.youtube.com/embed/Sut3kborBLk"
     },
@@ -84,7 +84,7 @@ const Section5 = () => {
       timeAgo: "5 days ago",
       rating: 4.9,
       reviews: 112,
-      imgSrc: "/assets/img/videos/account3.png",
+      imgSrc: "/assets/img/videos/account3.jpg",
       bgClass: "edu-bg-primary-soft",
       videoUrl: "https://www.youtube.com/embed/ye0ANqXJ8zQ"
     },
@@ -97,7 +97,7 @@ const Section5 = () => {
       timeAgo: "5 days ago",
       rating: 4.9,
       reviews: 112,
-      imgSrc: "/assets/img/videos/account3.png",
+      imgSrc: "/assets/img/videos/account4.jpg",
       bgClass: "edu-bg-primary-soft",
       videoUrl: "https://www.youtube.com/embed/tZRRSw5tJVg"
     },
