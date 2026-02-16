@@ -17,11 +17,12 @@ import {
   RiMailLine,
   RiNewsLine
 } from "react-icons/ri";
+import { useRouter } from "next/navigation";
 
 const BlogSection = () => {
   const [email, setEmail] = useState("");
   const [showAll, setShowAll] = useState(false);
-
+  const router = useRouter();
   // Blog posts data - 12 posts (6 visible + 6 hidden)
   const blogPosts = [
     // Row 1 - 6 Posts
@@ -36,9 +37,9 @@ const BlogSection = () => {
       views: 1245,
       likes: 89,
       comments: 34,
-      image: "/assets/img/blog/blog-1.jpg",
+      image: "/assets/img/blog/blog-d-1.jpg",
       categoryColor: "primary",
-      slug: "us-dollar-strengthens"
+      slug: "../"
     },
     {
       id: 2,
@@ -51,7 +52,7 @@ const BlogSection = () => {
       views: 987,
       likes: 67,
       comments: 23,
-      image: "/assets/img/blog/blog-2.jpg",
+      image: "/assets/img/blog/blog-d-2.jpg",
       categoryColor: "success",
       slug: "eur-usd-technical-outlook"
     },
@@ -66,7 +67,7 @@ const BlogSection = () => {
       views: 2341,
       likes: 156,
       comments: 67,
-      image: "/assets/img/blog/blog-3.jpg",
+      image: "/assets/img/blog/blog-d-3.jpg",
       categoryColor: "info",
       slug: "fed-rate-cuts-q2-2026"
     },
@@ -81,7 +82,7 @@ const BlogSection = () => {
       views: 1123,
       likes: 78,
       comments: 29,
-      image: "/assets/img/blog/blog-4.jpg",
+      image: "/assets/img/blog/blog-d-4.jpg",
       categoryColor: "warning",
       slug: "gold-prices-break-2000"
     },
@@ -96,7 +97,7 @@ const BlogSection = () => {
       views: 1876,
       likes: 112,
       comments: 53,
-      image: "/assets/img/blog/blog-5.jpg",
+      image: "/assets/img/blog/blog-img-1-1.jpg",
       categoryColor: "danger",
       slug: "boj-ultra-loose-policy"
     },
@@ -111,7 +112,7 @@ const BlogSection = () => {
       views: 1432,
       likes: 87,
       comments: 36,
-      image: "/assets/img/blog/blog-6.jpg",
+      image: "/assets/img/blog/blog-img-1-1.jpg",
       categoryColor: "purple",
       slug: "uk-economy-resilience"
     },
@@ -127,7 +128,7 @@ const BlogSection = () => {
       views: 1543,
       likes: 98,
       comments: 42,
-      image: "/assets/img/blog/blog-7.jpg",
+      image: "/assets/img/blog/blog-img-1-2.jpg",
       categoryColor: "info",
       slug: "ecb-lagarde-inflation"
     },
@@ -142,7 +143,7 @@ const BlogSection = () => {
       views: 645,
       likes: 43,
       comments: 16,
-      image: "/assets/img/blog/blog-8.jpg",
+      image: "/assets/img/blog/blog-img-1-3.jpg",
       categoryColor: "primary",
       slug: "aud-usd-rba-decision"
     },
@@ -157,7 +158,7 @@ const BlogSection = () => {
       views: 1098,
       likes: 67,
       comments: 28,
-      image: "/assets/img/blog/blog-9.jpg",
+      image: "/assets/img/blog/blog-img-1-4.jpg",
       categoryColor: "success",
       slug: "china-stimulus-risk"
     },
@@ -172,7 +173,7 @@ const BlogSection = () => {
       views: 1654,
       likes: 103,
       comments: 47,
-      image: "/assets/img/blog/blog-10.jpg",
+      image: "/assets/img/blog/blog-img-1-5.jpg",
       categoryColor: "warning",
       slug: "oil-prices-impact-usd-cad"
     },
@@ -187,7 +188,7 @@ const BlogSection = () => {
       views: 892,
       likes: 56,
       comments: 21,
-      image: "/assets/img/blog/blog-11.jpg",
+      image: "/assets/img/blog/blog-img-1-6.jpg",
       categoryColor: "danger",
       slug: "usd-jpy-intervention"
     },
@@ -202,7 +203,7 @@ const BlogSection = () => {
       views: 1567,
       likes: 134,
       comments: 58,
-      image: "/assets/img/blog/blog-12.jpg",
+      image: "/assets/img/blog/blog-img-1-7.jpg",
       categoryColor: "purple",
       slug: "stock-market-outlook-q2-2026"
     }
@@ -225,27 +226,30 @@ const BlogSection = () => {
 
   return (
     <>
-    
+      <div className="fx-blog-header">
+        <div className="insight-hero">
+          <div className="insight-badge">
+            <RiNewsLine />
+            <span>Market Insights & Analysis</span>
+          </div>
+          <h1>Latest <span>Market News</span> & Analysis</h1>
+          <p>Stay updated with the latest financial market news, expert analysis, trading strategies, and economic insights from our team of professionals.</p>
 
+        </div>
+      </div>
       <div className="insight-wrapper">
+
         <div className="insight-container">
           {/* Hero Section */}
-          <div className="insight-hero">
-            <div className="insight-badge">
-              <RiNewsLine />
-              <span>Market Insights & Analysis</span>
-            </div>
-            <h1>Latest <span>Market News</span> & Analysis</h1>
-            <p>Stay updated with the latest financial market news, expert analysis, trading strategies, and economic insights from our team of professionals.</p>
-          </div>
+
 
           {/* Spotlight Card (Featured) */}
           <div className="spotlight-card">
             <div className="row g-0">
               <div className="col-lg-5">
                 <div className="spotlight-image">
-                  <Image 
-                    src="/assets/img/blog/featured-blog.jpg"
+                  <Image
+                    src="/assets/img/blog/blog-d-2.jpg"
                     alt="Featured"
                     width={600}
                     height={400}
@@ -275,7 +279,9 @@ const BlogSection = () => {
           </div>
 
           {/* Blog Header */}
+
           <div className="insight-header">
+
             <div>
               <h2>Latest Blog Posts</h2>
               <p>Expert analysis and market updates</p>
@@ -283,15 +289,16 @@ const BlogSection = () => {
             <div className="views-pill">
               <FaEye /> 16,403 total views
             </div>
+
           </div>
 
           {/* Blog Grid - Yeh dynamically update hoga */}
           <div className="row g-4">
             {visiblePosts.map((post) => (
-              <div key={post.id} className="col-lg-4 col-md-6">
+              <div key={post.id} className="col-lg-4 col-md-6" onClick={() => router.push(`/pages/blog/${post.id}`)}>
                 <div className="article-card">
                   <div className="card-media">
-                    <Image 
+                    <Image
                       src={post.image}
                       alt={post.title}
                       width={400}
@@ -368,7 +375,7 @@ const BlogSection = () => {
               </div>
             </div>
           </div>
- 
+
         </div>
       </div>
     </>
