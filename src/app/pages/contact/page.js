@@ -85,7 +85,7 @@ const ContactUs = () => {
                   <div className="contactus-card-content">
                     <h3 className="contactus-card-title">Global Reach</h3>
                     <p className="contactus-card-text-primary">
-                      Serving learners across Asia, Middle East, Europe, Africa, and the Americas
+                    LLC,Office- 405, Warba Center, Al Muraqabad, Dubai, Dubai, AE
                     </p>
                   </div>
                 </div>
