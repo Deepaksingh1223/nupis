@@ -526,7 +526,7 @@ const BlogDetail = () => {
                                 <div className="fx-blog-tags">
                                     <span className="fx-blog-tags-label">Tags:</span>
                                     <div className="fx-blog-tag-list">
-                                        {post.tags.map((tag, index) => (
+                                        {post?.tags?.map((tag, index) => (
                                             <Link href={`#`} key={index} className="fx-blog-tag-item">
                                                 {tag}
                                             </Link>
