@@ -38,7 +38,7 @@ const Section5 = () => {
     // Videos Tutorial - 5 Videos
     {
       id: 1,
-      title: "NUPIPS | Structured Financial Market Education",
+      title: "NUPIPS Explained in 30 Seconds | Forex & Stock Market Trading Education Platform",
       description: "Introduction to NUPIPS educational programs: Learn Forex Trading, Stock Market Analysis, Technical & Fundamental Analysis, Risk Management, and Trading Psychology.",
       category: "EDUCATIONAL INTRODUCTION",
       duration: "0:30",
@@ -406,20 +406,46 @@ const Section5 = () => {
         <div className="container ">
           <div className="row">
             <div className="edu-featured-card">
-
-              <div className="video-background">
+              <div style={{
+                position: 'relative',
+                width: '100%',
+                aspectRatio: '16/9',
+                background: 'linear-gradient(145deg, #0f172a 0%, #1e293b 100%)',
+                borderRadius: '12px',
+                overflow: 'hidden',
+              }}>
                 <video
-                  autoPlay
-                  muted  // Autoplay ke liye muted attribute zaroori hai (browser policy)
-                  loop   // Optional: agar loop karna ho to
-                  playsInline // Mobile browsers ke liye
-                  width="100%"
-                  height="auto"
+                  muted
+                  loop
+                  playsInline
                   controls
-                  poster="/assets/video-thumbnail.jpg"
+                  poster="/assets/Nupips-Intro-Video.jpg"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                  }}
+                  onError={(e) => {
+                    // Video error handling
+                    console.log('Video error:', e);
+                  }}
                 >
-                  <source width="100%" height="200" src="/assets/Nupips-Intro-Video.mp4" type="video/mp4" />
+                  <source src="/assets/Nupips-Intro-Video.mp4" type="video/mp4" />
                 </video>
+
+                {/* Gradient overlay for better look */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: '80px',
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.5), transparent)',
+                  pointerEvents: 'none',
+                }} />
               </div>
               <div className="edu-featured-content">
                 <span className="edu-featured-badge">Featured Introduction</span>
@@ -437,7 +463,7 @@ const Section5 = () => {
                     openVideoPopup(videoData[0]);
                   }}
                 >
-                  Start here: Learn about GTCFX mission and approach
+                  Learn today. Improve your understanding. Make informed decisions.
                   <FaLongArrowAltRight className="edu-featured-link-icon" />
                 </a>
               </div>
