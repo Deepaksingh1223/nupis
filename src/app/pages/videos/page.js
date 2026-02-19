@@ -36,10 +36,11 @@ const Section5 = () => {
   // Har category me 6 videos ke saath complete tutorial list
   const videoData = [
     // Videos Tutorial - 5 Videos
+
     {
       id: 1,
-      title: "NUPIPS Explained in 30 Seconds | Forex & Stock Market Trading Education Platform",
-      description: "Introduction to NUPIPS educational programs: Learn Forex Trading, Stock Market Analysis, Technical & Fundamental Analysis, Risk Management, and Trading Psychology.",
+      title: "Welcome 2026 | New Opportunities",
+      description: "Welcome 2026 | New Opportunities, Positive Changes & Growth Ahead | GTCFX",
       category: "EDUCATIONAL INTRODUCTION",
       duration: "0:30",
       timeAgo: "2 days ago",
@@ -401,7 +402,6 @@ const Section5 = () => {
           </div>
         </div>
       </section>
-
       <section className="edu-path-wrapper">
         <div className="container ">
           <div className="row">
@@ -429,14 +429,12 @@ const Section5 = () => {
                     left: 0,
                   }}
                   onError={(e) => {
-                    // Video error handling
                     console.log('Video error:', e);
                   }}
                 >
                   <source src="/assets/Nupips-Intro-Video.mp4" type="video/mp4" />
                 </video>
 
-                {/* Gradient overlay for better look */}
                 <div style={{
                   position: 'absolute',
                   bottom: 0,
@@ -450,17 +448,71 @@ const Section5 = () => {
               <div className="edu-featured-content">
                 <span className="edu-featured-badge">Featured Introduction</span>
                 <h3 className="edu-featured-title">
-                  {videoData[0].title}
+                  NUPIPS Explained in 30 Seconds | Forex & Stock Market Trading Education Platform
                 </h3>
                 <p className="edu-featured-text">
-                  {videoData[0].description}
+                  Welcome to NUPIPS, a structured and responsible platform dedicated to financial market education.
                 </p>
                 <a
                   href="#"
                   className="edu-featured-link"
                   onClick={(e) => {
                     e.preventDefault();
-                    openVideoPopup(videoData[0]);
+
+                    // Create popup element
+                    const popup = document.createElement('div');
+                    popup.setAttribute('id', 'video-popup');
+                    popup.innerHTML = `
+                <div style="position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.9); display:flex; align-items:center; justify-content:center; z-index:1000; padding:20px;" id="popup-overlay">
+                  <div style="position:relative; width:100%; max-width:900px; background:#0f172a; border-radius:16px; overflow:hidden;" onclick="event.stopPropagation()">
+                    <button style="position:absolute; top:16px; right:16px; width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,0.1); border:none; color:white; font-size:24px; cursor:pointer; z-index:10; display:flex; align-items:center; justify-content:center;" id="close-popup-btn">×</button>
+                    <div style="position:relative; width:100%; aspect-ratio:16/9;">
+                      <video controls autoplay muted loop playsinline poster="/assets/Nupips-Intro-Video.jpg" style="width:100%; height:100%; object-fit:cover;">
+                        <source src="/assets/Nupips-Intro-Video.mp4" type="video/mp4" />
+                      </video>
+                    </div>
+                    <div style="padding:24px; background:#0f172a;">
+                      <span style="display:inline-block; padding:6px 12px; background:rgba(59,130,246,0.2); color:#3b82f6; border-radius:20px; font-size:14px; margin-bottom:12px;">Featured Introduction</span>
+                      <h3 style="font-size:24px; font-weight:700; color:white; margin-bottom:12px;">NUPIPS Explained in 30 Seconds | Forex & Stock Market Trading Education Platform</h3>
+                      <p style="font-size:16px; color:#94a3b8; margin-bottom:20px;">Welcome to NUPIPS, a structured and responsible platform dedicated to financial market education.</p>
+                      <div style="font-size:16px; color:#3b82f6; display:flex; align-items:center; gap:8px;">Learn today. Improve your understanding. Make informed decisions. →</div>
+                    </div>
+                  </div>
+                </div>
+              `;
+
+                    document.body.appendChild(popup);
+                    document.body.style.overflow = 'hidden';
+
+                    // Close popup function
+                    const closePopup = () => {
+                      const popupElement = document.getElementById('video-popup');
+                      if (popupElement) {
+                        popupElement.remove();
+                        document.body.style.overflow = 'unset';
+                      }
+                    };
+
+                    // Add click event to close button
+                    setTimeout(() => {
+                      const closeBtn = document.getElementById('close-popup-btn');
+                      const overlay = document.getElementById('popup-overlay');
+
+                      if (closeBtn) {
+                        closeBtn.onclick = (e) => {
+                          e.stopPropagation();
+                          closePopup();
+                        };
+                      }
+
+                      if (overlay) {
+                        overlay.onclick = (e) => {
+                          if (e.target.id === 'popup-overlay') {
+                            closePopup();
+                          }
+                        };
+                      }
+                    }, 100);
                   }}
                 >
                   Learn today. Improve your understanding. Make informed decisions.
