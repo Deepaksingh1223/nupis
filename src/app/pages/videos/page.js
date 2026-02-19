@@ -38,16 +38,16 @@ const Section5 = () => {
     // Videos Tutorial - 5 Videos
     {
       id: 1,
-      title: "Welcome 2026 | New Opportunities",
-      description: "Welcome 2026 | New Opportunities, Positive Changes & Growth Ahead | GTCFX",
-      category: "Videos Tutorial",
+      title: "NUPIPS | Structured Financial Market Education",
+      description: "Introduction to NUPIPS educational programs: Learn Forex Trading, Stock Market Analysis, Technical & Fundamental Analysis, Risk Management, and Trading Psychology.",
+      category: "EDUCATIONAL INTRODUCTION",
       duration: "0:30",
       timeAgo: "2 days ago",
       rating: 4.9,
       reviews: 120,
       imgSrc: "/assets/img/videos/account0.jpg",
       bgClass: "edu-bg-primary-soft",
-      videoUrl: "https://www.youtube.com/embed/S6tKx8mHDH8"
+      videoUrl: "/assets/Nupips-Intro-Video.mp4"
     },
     {
       id: 2,
@@ -406,8 +406,20 @@ const Section5 = () => {
         <div className="container ">
           <div className="row">
             <div className="edu-featured-card">
-              <div className="edu-featured-icon-wrapper">
-                <FaPlayCircle className="edu-featured-icon" />
+
+              <div className="video-background">
+                <video
+                  autoPlay
+                  muted  // Autoplay ke liye muted attribute zaroori hai (browser policy)
+                  loop   // Optional: agar loop karna ho to
+                  playsInline // Mobile browsers ke liye
+                  width="100%"
+                  height="auto"
+                  controls
+                  poster="/assets/video-thumbnail.jpg"
+                >
+                  <source width="100%" height="200" src="/assets/Nupips-Intro-Video.mp4" type="video/mp4" />
+                </video>
               </div>
               <div className="edu-featured-content">
                 <span className="edu-featured-badge">Featured Introduction</span>

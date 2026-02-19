@@ -6234,6 +6234,7 @@
     background-image: url(../img/bg-img.jpg);
     background-repeat: no-repeat;
     background-size: cover;
+    padding-top: 0px;
   }
 
   .fin-edu-hero-section::after {
@@ -6297,7 +6298,7 @@
     border: 1px solid rgb(255 233 128 / 69%);
     backdrop-filter: blur(10px);
     text-transform: uppercase;
-    margin-top: 35px;
+    margin-top: 0px;
   }
 
   /* Warning Label */
@@ -7728,9 +7729,11 @@
     }
 
     .edu-hero-description {
-      font-size: 16px;
+      font-size: 16px;        margin: 0px;
     }
-
+.edu-path-wrapper{
+  padding-top:30px  ;
+}
     .edu-featured-icon-wrapper {
       width: 60px;
       height: 60px;
@@ -9534,3 +9537,22 @@
       color: #273f43;
     }
   }
+  
+  .edu-popup-video-wrapper {
+  width: 100%;
+  margin-bottom: 20px;
+  background: #000;  /* Background black so pata chale */
+  min-height: 200px;  /* Minimum height so visible */
+}
+
+.edu-popup-video {
+  width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  background: #000;
+}
+.video-background {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
