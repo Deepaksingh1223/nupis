@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -17,204 +18,14 @@ import {
   RiMessage3Line,
   RiListCheck,
   RiLayoutGridLine,
-  RiCloseLine
+  RiCloseLine,
+  RiUserLine,
+  RiTimeLine,
+  RiLoader4Line
 } from 'react-icons/ri';
-
-// Mock blog data matching user-side structure
-const blogPosts = [
-  {
-    id: 1,
-    title: "US Dollar Strengthens Ahead of Fed Decision",
-    description: "Analysis of how the upcoming Federal Reserve interest rate decision could impact major currency pairs.",
-    category: "Market Analysis",
-    author: "Rajesh Kumar",
-    date: "Feb 12, 2026",
-    readTime: "8 min read",
-    views: 1245,
-    likes: 89,
-    comments: 34,
-    image: "/assets/img/blog/blog-d-1.jpg",
-    categoryColor: "primary",
-    slug: "us-dollar-strengthens",
-    status: "published"
-  },
-  {
-    id: 2,
-    title: "EUR/USD Technical Outlook: Key Levels to Watch",
-    description: "Detailed technical analysis of EUR/USD with support and resistance levels for this week.",
-    category: "Technical Analysis",
-    author: "Priya Sharma",
-    date: "Feb 11, 2026",
-    readTime: "6 min read",
-    views: 987,
-    likes: 67,
-    comments: 23,
-    image: "/assets/img/blog/blog-d-2.jpg",
-    categoryColor: "success",
-    slug: "eur-usd-technical-outlook",
-    status: "published"
-  },
-  {
-    id: 3,
-    title: "Fed Signals Potential Rate Cuts in Q2 2026",
-    description: "Following news on Federal Reserve's latest statements about possible rate cuts and market impact.",
-    category: "Forex News",
-    author: "Amit Patel",
-    date: "Feb 10, 2026",
-    readTime: "4 min read",
-    views: 2341,
-    likes: 156,
-    comments: 67,
-    image: "/assets/img/blog/blog-d-3.jpg",
-    categoryColor: "info",
-    slug: "fed-rate-cuts-q2-2026",
-    status: "published"
-  },
-  {
-    id: 4,
-    title: "Gold Prices: Can XAU/USD Break Above $2,000?",
-    description: "Technical and fundamental analysis of gold prices with key levels to watch for breakout.",
-    category: "Commodities",
-    author: "Anita Desai",
-    date: "Feb 9, 2026",
-    readTime: "7 min read",
-    views: 1123,
-    likes: 78,
-    comments: 29,
-    image: "/assets/img/blog/blog-d-4.jpg",
-    categoryColor: "warning",
-    slug: "gold-prices-break-2000",
-    status: "published"
-  },
-  {
-    id: 5,
-    title: "BOJ Maintains Ultra-Loose Policy: Yen Weakens",
-    description: "Bank of Japan keeps negative interest rates, leading to continued Yen weakness.",
-    category: "Forex News",
-    author: "Takeshi Tanaka",
-    date: "Feb 8, 2026",
-    readTime: "4 min read",
-    views: 1876,
-    likes: 112,
-    comments: 53,
-    image: "/assets/img/blog/blog-img-1-1.jpg",
-    categoryColor: "danger",
-    slug: "boj-ultra-loose-policy",
-    status: "draft"
-  },
-  {
-    id: 6,
-    title: "UK Economy Shows Resilience: GBP Strengthens",
-    description: "Better-than-expected UK GDP data leads to broad-based Sterling strength.",
-    category: "Market Analysis",
-    author: "Sarah Williams",
-    date: "Feb 7, 2026",
-    readTime: "3 min read",
-    views: 1432,
-    likes: 87,
-    comments: 36,
-    image: "/assets/img/blog/blog-img-1-1.jpg",
-    categoryColor: "purple",
-    slug: "uk-economy-resilience",
-    status: "published"
-  },
-  {
-    id: 7,
-    title: "ECB's Lagarde: Inflation Progress Continues",
-    description: "Latest comments from ECB President on inflation and future monetary policy direction.",
-    category: "Forex News",
-    author: "Neha Gupta",
-    date: "Feb 6, 2026",
-    readTime: "3 min read",
-    views: 1543,
-    likes: 98,
-    comments: 42,
-    image: "/assets/img/blog/blog-img-1-2.jpg",
-    categoryColor: "info",
-    slug: "ecb-lagarde-inflation",
-    status: "published"
-  },
-  {
-    id: 8,
-    title: "AUD/USD: RBA Rate Decision Impact Analysis",
-    description: "How RBA's latest rate decision affects AUD/USD and what traders should watch.",
-    category: "Market Analysis",
-    author: "Vikram Singh",
-    date: "Feb 5, 2026",
-    readTime: "5 min read",
-    views: 645,
-    likes: 43,
-    comments: 16,
-    image: "/assets/img/blog/blog-img-1-3.jpg",
-    categoryColor: "primary",
-    slug: "aud-usd-rba-decision",
-    status: "draft"
-  },
-  {
-    id: 9,
-    title: "China's Stimulus Measures Boost Risk Appetite",
-    description: "New economic stimulus from China improves sentiment, benefiting AUD and NZD.",
-    category: "Economic Events",
-    author: "Li Wei",
-    date: "Feb 4, 2026",
-    readTime: "3 min read",
-    views: 1098,
-    likes: 67,
-    comments: 28,
-    image: "/assets/img/blog/blog-img-1-4.jpg",
-    categoryColor: "success",
-    slug: "china-stimulus-risk",
-    status: "published"
-  },
-  {
-    id: 10,
-    title: "Oil Prices Surge: Impact on USD/CAD",
-    description: "Rising oil prices due to Middle East tensions strengthen Canadian Dollar.",
-    category: "Commodities",
-    author: "Michael Chen",
-    date: "Feb 3, 2026",
-    readTime: "4 min read",
-    views: 1654,
-    likes: 103,
-    comments: 47,
-    image: "/assets/img/blog/blog-img-1-5.jpg",
-    categoryColor: "warning",
-    slug: "oil-prices-impact-usd-cad",
-    status: "published"
-  },
-  {
-    id: 11,
-    title: "USD/JPY: Intervention Risks and Technical Setup",
-    description: "Analysis of potential Japanese intervention and technical levels for USD/JPY.",
-    category: "Technical Analysis",
-    author: "Rajesh Kumar",
-    date: "Feb 2, 2026",
-    readTime: "6 min read",
-    views: 892,
-    likes: 56,
-    comments: 21,
-    image: "/assets/img/blog/blog-img-1-6.jpg",
-    categoryColor: "danger",
-    slug: "usd-jpy-intervention",
-    status: "published"
-  },
-  {
-    id: 12,
-    title: "Stock Market Outlook: Q2 2026 Preview",
-    description: "What to expect from global stock markets in the second quarter of 2026.",
-    category: "Stock Market",
-    author: "Priya Sharma",
-    date: "Feb 1, 2026",
-    readTime: "7 min read",
-    views: 1567,
-    likes: 134,
-    comments: 58,
-    image: "/assets/img/blog/blog-img-1-7.jpg",
-    categoryColor: "purple",
-    slug: "stock-market-outlook-q2-2026",
-    status: "draft"
-  }
-];
+import { getBlogs, deleteBlog } from '@/app/redux/slices/blogSlice';
+import { toast } from 'react-hot-toast';
+import DeletePopup from '@/app/common/utils/delete-popup';
 
 // Category color mapping
 const categoryColors = {
@@ -227,6 +38,9 @@ const categoryColors = {
 };
 
 export default function BlogAdminPage() {
+  const dispatch = useDispatch();
+  const { data: blogPosts, loading } = useSelector((state) => state.blog);
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -234,6 +48,12 @@ export default function BlogAdminPage() {
   const [viewMode, setViewMode] = useState('table'); // 'table' or 'grid'
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [deletePopup, setDeletePopup] = useState({ show: false, id: null });
+
+  // Fetch blogs on mount
+  useEffect(() => {
+    dispatch(getBlogs());
+  }, [dispatch]);
 
   // Check for mobile viewport
   useEffect(() => {
@@ -247,9 +67,9 @@ export default function BlogAdminPage() {
 
   // Filter posts based on search
   const filteredPosts = blogPosts.filter(post =>
-    post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.author.toLowerCase().includes(searchTerm.toLowerCase())
+    post.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post.createdBy?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Pagination
@@ -290,6 +110,26 @@ export default function BlogAdminPage() {
     );
   };
 
+  // Handle delete
+  const handleDelete = async () => {
+    try {
+      const result = await dispatch(deleteBlog(deletePopup.id)).unwrap();
+      if (result.statusCode === 200) {
+        toast.success('Blog deleted successfully!');
+        setSelectedPosts(prev => prev.filter(id => id !== deletePopup.id));
+      }
+    } catch (error) {
+      toast.error(error?.message || 'Failed to delete blog');
+    } finally {
+      setDeletePopup({ show: false, id: null });
+    }
+  };
+
+  // Reset page when search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
+
   return (
     <div className="space-y-4 md:space-y-6">
       {/* Header Section */}
@@ -300,11 +140,11 @@ export default function BlogAdminPage() {
         </div>
         <Link
           href="/admin/blog/add"
-          className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 bg-gradient-to-r from-[#D16655] to-[#BD7579] text-white font-medium rounded-lg md:rounded-xl text-sm hover:shadow-lg hover:shadow-[#D16655]/20 transition-all duration-300"
+          className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 mb-3 md:py-2.5 bg-gradient-to-r from-[#D16655] to-[#BD7579] font-medium rounded-lg md:rounded-xl text-sm hover:shadow-lg hover:shadow-[#D16655]/20 transition-all duration-300"
         >
           <RiAddLine className="text-base md:text-lg" />
-          <span className="hidden xs:inline">Add New Blog</span>
-          <span className="xs:hidden">Add Blog</span>
+          <span className="hidden sm:inline">Add New Blog</span>
+          <span className="sm:hidden">Add Blog</span>
         </Link>
       </div>
 
@@ -554,7 +394,7 @@ export default function BlogAdminPage() {
                         <td className="px-3 md:px-4 py-3 md:py-4 hidden lg:table-cell" data-label="Author">
                           <div className="flex items-center gap-2">
                             <div className="w-6 md:w-7 h-6 md:h-7 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-[10px] md:text-xs font-medium text-white">
-                              {post.author.charAt(0)}
+                              {post?.author?.charAt(0)}
                             </div>
                             <span className="text-xs md:text-sm text-gray-600 dark:text-gray-300 hidden sm:inline">{post.author}</span>
                           </div>
@@ -564,7 +404,7 @@ export default function BlogAdminPage() {
                               ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
                               : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
                             }`}>
-                            {post.status.charAt(0).toUpperCase() + post.status.slice(1)}
+                            {post?.status?.charAt(0)?.toUpperCase() + post.status.slice(1)}
                           </span>
                         </td>
                         <td className="px-3 md:px-4 py-3 md:py-4 hidden md:table-cell" data-label="Views">

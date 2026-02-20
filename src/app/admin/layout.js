@@ -22,6 +22,7 @@ import {
 } from "react-icons/ri";
 
 import ReduxProvider from '../components/ReduxProvider';
+import { Toaster } from 'react-hot-toast';
 import './admin.css';
 
 const menuItems = [
@@ -155,10 +156,11 @@ const [userMenuOpen, setUserMenuOpen] = useState(false);
     );
   }
 
-  // If not authenticated and on login page, render just the children without layout
+// If not authenticated and on login page, render just the children without layout
   if (!isAuthenticated && isLoginPage) {
     return (
       <ReduxProvider>
+        <Toaster position="top-right" />
         <div className={`min-h-screen ${isDark ? 'dark' : ''}`}>
           <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
             {children}
@@ -173,8 +175,9 @@ const [userMenuOpen, setUserMenuOpen] = useState(false);
     return null;
   }
 
-  return (
+return (
     <ReduxProvider>
+      <Toaster position="top-right" />
       <div className={`min-h-screen ${isDark ? 'dark' : ''}`}>
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
           {/* Sidebar */}
