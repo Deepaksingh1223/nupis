@@ -1,0 +1,756 @@
+"use client";
+
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import {
+  RiSearchLine,
+  RiAddLine,
+  RiEditLine,
+  RiDeleteBinLine,
+  RiEyeLine,
+  RiArrowLeftSLine,
+  RiArrowRightSLine,
+  RiArticleLine,
+  RiCalendarLine,
+  RiThumbUpLine,
+  RiMessage3Line,
+  RiListCheck,
+  RiLayoutGridLine,
+  RiCloseLine
+} from 'react-icons/ri';
+
+// Mock blog data matching user-side structure
+const blogPosts = [
+  {
+    id: 1,
+    title: "US Dollar Strengthens Ahead of Fed Decision",
+    description: "Analysis of how the upcoming Federal Reserve interest rate decision could impact major currency pairs.",
+    category: "Market Analysis",
+    author: "Rajesh Kumar",
+    date: "Feb 12, 2026",
+    readTime: "8 min read",
+    views: 1245,
+    likes: 89,
+    comments: 34,
+    image: "/assets/img/blog/blog-d-1.jpg",
+    categoryColor: "primary",
+    slug: "us-dollar-strengthens",
+    status: "published"
+  },
+  {
+    id: 2,
+    title: "EUR/USD Technical Outlook: Key Levels to Watch",
+    description: "Detailed technical analysis of EUR/USD with support and resistance levels for this week.",
+    category: "Technical Analysis",
+    author: "Priya Sharma",
+    date: "Feb 11, 2026",
+    readTime: "6 min read",
+    views: 987,
+    likes: 67,
+    comments: 23,
+    image: "/assets/img/blog/blog-d-2.jpg",
+    categoryColor: "success",
+    slug: "eur-usd-technical-outlook",
+    status: "published"
+  },
+  {
+    id: 3,
+    title: "Fed Signals Potential Rate Cuts in Q2 2026",
+    description: "Following news on Federal Reserve's latest statements about possible rate cuts and market impact.",
+    category: "Forex News",
+    author: "Amit Patel",
+    date: "Feb 10, 2026",
+    readTime: "4 min read",
+    views: 2341,
+    likes: 156,
+    comments: 67,
+    image: "/assets/img/blog/blog-d-3.jpg",
+    categoryColor: "info",
+    slug: "fed-rate-cuts-q2-2026",
+    status: "published"
+  },
+  {
+    id: 4,
+    title: "Gold Prices: Can XAU/USD Break Above $2,000?",
+    description: "Technical and fundamental analysis of gold prices with key levels to watch for breakout.",
+    category: "Commodities",
+    author: "Anita Desai",
+    date: "Feb 9, 2026",
+    readTime: "7 min read",
+    views: 1123,
+    likes: 78,
+    comments: 29,
+    image: "/assets/img/blog/blog-d-4.jpg",
+    categoryColor: "warning",
+    slug: "gold-prices-break-2000",
+    status: "published"
+  },
+  {
+    id: 5,
+    title: "BOJ Maintains Ultra-Loose Policy: Yen Weakens",
+    description: "Bank of Japan keeps negative interest rates, leading to continued Yen weakness.",
+    category: "Forex News",
+    author: "Takeshi Tanaka",
+    date: "Feb 8, 2026",
+    readTime: "4 min read",
+    views: 1876,
+    likes: 112,
+    comments: 53,
+    image: "/assets/img/blog/blog-img-1-1.jpg",
+    categoryColor: "danger",
+    slug: "boj-ultra-loose-policy",
+    status: "draft"
+  },
+  {
+    id: 6,
+    title: "UK Economy Shows Resilience: GBP Strengthens",
+    description: "Better-than-expected UK GDP data leads to broad-based Sterling strength.",
+    category: "Market Analysis",
+    author: "Sarah Williams",
+    date: "Feb 7, 2026",
+    readTime: "3 min read",
+    views: 1432,
+    likes: 87,
+    comments: 36,
+    image: "/assets/img/blog/blog-img-1-1.jpg",
+    categoryColor: "purple",
+    slug: "uk-economy-resilience",
+    status: "published"
+  },
+  {
+    id: 7,
+    title: "ECB's Lagarde: Inflation Progress Continues",
+    description: "Latest comments from ECB President on inflation and future monetary policy direction.",
+    category: "Forex News",
+    author: "Neha Gupta",
+    date: "Feb 6, 2026",
+    readTime: "3 min read",
+    views: 1543,
+    likes: 98,
+    comments: 42,
+    image: "/assets/img/blog/blog-img-1-2.jpg",
+    categoryColor: "info",
+    slug: "ecb-lagarde-inflation",
+    status: "published"
+  },
+  {
+    id: 8,
+    title: "AUD/USD: RBA Rate Decision Impact Analysis",
+    description: "How RBA's latest rate decision affects AUD/USD and what traders should watch.",
+    category: "Market Analysis",
+    author: "Vikram Singh",
+    date: "Feb 5, 2026",
+    readTime: "5 min read",
+    views: 645,
+    likes: 43,
+    comments: 16,
+    image: "/assets/img/blog/blog-img-1-3.jpg",
+    categoryColor: "primary",
+    slug: "aud-usd-rba-decision",
+    status: "draft"
+  },
+  {
+    id: 9,
+    title: "China's Stimulus Measures Boost Risk Appetite",
+    description: "New economic stimulus from China improves sentiment, benefiting AUD and NZD.",
+    category: "Economic Events",
+    author: "Li Wei",
+    date: "Feb 4, 2026",
+    readTime: "3 min read",
+    views: 1098,
+    likes: 67,
+    comments: 28,
+    image: "/assets/img/blog/blog-img-1-4.jpg",
+    categoryColor: "success",
+    slug: "china-stimulus-risk",
+    status: "published"
+  },
+  {
+    id: 10,
+    title: "Oil Prices Surge: Impact on USD/CAD",
+    description: "Rising oil prices due to Middle East tensions strengthen Canadian Dollar.",
+    category: "Commodities",
+    author: "Michael Chen",
+    date: "Feb 3, 2026",
+    readTime: "4 min read",
+    views: 1654,
+    likes: 103,
+    comments: 47,
+    image: "/assets/img/blog/blog-img-1-5.jpg",
+    categoryColor: "warning",
+    slug: "oil-prices-impact-usd-cad",
+    status: "published"
+  },
+  {
+    id: 11,
+    title: "USD/JPY: Intervention Risks and Technical Setup",
+    description: "Analysis of potential Japanese intervention and technical levels for USD/JPY.",
+    category: "Technical Analysis",
+    author: "Rajesh Kumar",
+    date: "Feb 2, 2026",
+    readTime: "6 min read",
+    views: 892,
+    likes: 56,
+    comments: 21,
+    image: "/assets/img/blog/blog-img-1-6.jpg",
+    categoryColor: "danger",
+    slug: "usd-jpy-intervention",
+    status: "published"
+  },
+  {
+    id: 12,
+    title: "Stock Market Outlook: Q2 2026 Preview",
+    description: "What to expect from global stock markets in the second quarter of 2026.",
+    category: "Stock Market",
+    author: "Priya Sharma",
+    date: "Feb 1, 2026",
+    readTime: "7 min read",
+    views: 1567,
+    likes: 134,
+    comments: 58,
+    image: "/assets/img/blog/blog-img-1-7.jpg",
+    categoryColor: "purple",
+    slug: "stock-market-outlook-q2-2026",
+    status: "draft"
+  }
+];
+
+// Category color mapping
+const categoryColors = {
+  primary: { bg: 'bg-blue-100', text: 'text-blue-700', darkBg: 'dark:bg-blue-900/30', darkText: 'dark:text-blue-400' },
+  success: { bg: 'bg-green-100', text: 'text-green-700', darkBg: 'dark:bg-green-900/30', darkText: 'dark:text-green-400' },
+  info: { bg: 'bg-cyan-100', text: 'text-cyan-700', darkBg: 'dark:bg-cyan-900/30', darkText: 'dark:text-cyan-400' },
+  warning: { bg: 'bg-amber-100', text: 'text-amber-700', darkBg: 'dark:bg-amber-900/30', darkText: 'dark:text-amber-400' },
+  danger: { bg: 'bg-red-100', text: 'text-red-700', darkBg: 'dark:bg-red-900/30', darkText: 'dark:text-red-400' },
+  purple: { bg: 'bg-purple-100', text: 'text-purple-700', darkBg: 'dark:bg-purple-900/30', darkText: 'dark:text-purple-400' }
+};
+
+export default function BlogAdminPage() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [selectedPosts, setSelectedPosts] = useState([]);
+  const [viewMode, setViewMode] = useState('table'); // 'table' or 'grid'
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check for mobile viewport
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Filter posts based on search
+  const filteredPosts = blogPosts.filter(post =>
+    post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post.author.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentPosts = filteredPosts.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredPosts.length / itemsPerPage);
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      // Scroll to top of table on page change
+      const tableContainer = document.getElementById('blog-table-container');
+      if (tableContainer) {
+        tableContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  };
+
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1);
+  };
+
+  const handleSelectAll = (e) => {
+    if (e.target.checked) {
+      setSelectedPosts(currentPosts.map(post => post.id));
+    } else {
+      setSelectedPosts([]);
+    }
+  };
+
+  const handleSelectPost = (id) => {
+    setSelectedPosts(prev =>
+      prev.includes(id)
+        ? prev.filter(postId => postId !== id)
+        : [...prev, id]
+    );
+  };
+
+  return (
+    <div className="space-y-4 md:space-y-6">
+      {/* Header Section */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 md:gap-4">
+        <div className='md:mb-2 mb-4'>
+          <h1 className="text-xl md:text-2xl font-bold text-[#2E4A5B] dark:text-white">Blog Management</h1>
+          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-0.5 md:mt-1">Manage your blog posts and articles</p>
+        </div>
+        <Link
+          href="/admin/blog/add"
+          className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 bg-gradient-to-r from-[#D16655] to-[#BD7579] text-white font-medium rounded-lg md:rounded-xl text-sm hover:shadow-lg hover:shadow-[#D16655]/20 transition-all duration-300"
+        >
+          <RiAddLine className="text-base md:text-lg" />
+          <span className="hidden xs:inline">Add New Blog</span>
+          <span className="xs:hidden">Add Blog</span>
+        </Link>
+      </div>
+
+      {/* Stats Cards - Responsive Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 md:gap-4 mb-4">
+
+        {/* Total Posts */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg md:rounded-xl p-3 md:p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+          <div className="flex items-center gap-2 md:gap-3">
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+              <RiArticleLine className="text-base md:text-lg text-blue-600 dark:text-blue-400" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-lg md:text-xl font-bold text-[#2E4A5B] dark:text-white truncate">
+                {blogPosts.length}
+              </p>
+              <p className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                Total Posts
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Total Views */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg md:rounded-xl p-3 md:p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+          <div className="flex items-center gap-2 md:gap-3">
+            <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/30">
+              <RiEyeLine className="text-base md:text-lg text-green-600 dark:text-green-400" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-lg md:text-xl font-bold text-[#2E4A5B] dark:text-white truncate">
+                {blogPosts.reduce((acc, post) => acc + post.views, 0).toLocaleString()}
+              </p>
+              <p className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                Total Views
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Total Likes */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg md:rounded-xl p-3 md:p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+          <div className="flex items-center gap-2 md:gap-3">
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+              <RiThumbUpLine className="text-base md:text-lg text-purple-600 dark:text-purple-400" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-lg md:text-xl font-bold text-[#2E4A5B] dark:text-white truncate">
+                {blogPosts.reduce((acc, post) => acc + post.likes, 0)}
+              </p>
+              <p className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                Total Likes
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Total Comments */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg md:rounded-xl p-3 md:p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+          <div className="flex items-center gap-2 md:gap-3">
+            <div className="p-2 rounded-lg bg-amber-100 dark:bg-amber-900/30">
+              <RiMessage3Line className="text-base md:text-lg text-amber-600 dark:text-amber-400" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-lg md:text-xl font-bold text-[#2E4A5B] dark:text-white truncate">
+                {blogPosts.reduce((acc, post) => acc + post.comments, 0)}
+              </p>
+              <p className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                Total Comments
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Search and Filter Bar */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-3 md:p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+        <div className="flex flex-col sm:flex-row gap-3">
+          {/* Search Input */}
+          <div className="relative flex-1">
+            <RiSearchLine className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm md:text-base" />
+            <input
+              type="text"
+              placeholder="Search posts..."
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="w-full pl-9 md:pl-10 pr-4 py-2 md:py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg md:rounded-xl text-sm md:text-base text-gray-800 dark:text-white placeholder-gray-400 focus:outline-none focus:border-[#D16655] focus:ring-2 focus:ring-[#D16655]/20 transition-all"
+            />
+          </div>
+
+          <div className="flex items-center gap-2">
+            {/* View Toggle - Desktop */}
+            <div className="hidden md:flex items-center bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+              <button
+                onClick={() => setViewMode('table')}
+                className={`p-2 rounded-md transition-colors ${viewMode === 'table'
+                    ? 'bg-white dark:bg-gray-600 text-[#D16655] shadow-sm'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  }`}
+                title="Table View"
+              >
+                <RiListCheck className="text-lg" />
+              </button>
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-2 rounded-md transition-colors ${viewMode === 'grid'
+                    ? 'bg-white dark:bg-gray-600 text-[#D16655] shadow-sm'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  }`}
+                title="Grid View"
+              >
+                <RiLayoutGridLine className="text-lg" />
+              </button>
+            </div>
+
+            {/* Mobile Filter Toggle */}
+            <button
+              onClick={() => setShowMobileFilters(!showMobileFilters)}
+              className="md:hidden p-2.5 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-600 dark:text-gray-400"
+            >
+              {showMobileFilters ? <RiCloseLine className="text-lg" /> : <RiSearchLine className="text-lg" />}
+            </button>
+
+            {/* Items Per Page */}
+            <select
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
+              className="px-3 md:px-4 py-2 md:py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm md:text-base text-gray-800 dark:text-white focus:outline-none focus:border-[#D16655] transition-all"
+            >
+              <option value={5}>5/page</option>
+              <option value={10}>10/page</option>
+              <option value={25}>25/page</option>
+              <option value={50}>50/page</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Mobile Filter Dropdown */}
+        {showMobileFilters && (
+          <div className="md:hidden mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
+            <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+              <button
+                onClick={() => setViewMode('table')}
+                className={`flex-1 p-2 rounded-md text-sm transition-colors ${viewMode === 'table'
+                    ? 'bg-white dark:bg-gray-600 text-[#D16655] shadow-sm'
+                    : 'text-gray-500 dark:text-gray-400'
+                  }`}
+              >
+                <RiListCheck className="inline mr-1" /> Table
+              </button>
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`flex-1 p-2 rounded-md text-sm transition-colors ${viewMode === 'grid'
+                    ? 'bg-white dark:bg-gray-600 text-[#D16655] shadow-sm'
+                    : 'text-gray-500 dark:text-gray-400'
+                  }`}
+              >
+                <RiLayoutGridLine className="inline mr-1" /> Grid
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Content Section - Table or Grid View */}
+      <div id="blog-table-container" className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+        {/* Table View */}
+        {viewMode === 'table' ? (
+          <div className="admin-table-container">
+            <table className="w-full">
+              <thead className="bg-gray-50 dark:bg-gray-700/50">
+                <tr>
+                  <th className="px-3 md:px-4 py-3 text-left">
+                    <input
+                      type="checkbox"
+                      onChange={handleSelectAll}
+                      checked={selectedPosts.length === currentPosts.length && currentPosts.length > 0}
+                      className="w-4 h-4 rounded border-gray-300 text-[#D16655] focus:ring-[#D16655]"
+                    />
+                  </th>
+                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Post
+                  </th>
+                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden md:table-cell">
+                    Category
+                  </th>
+                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden lg:table-cell">
+                    Author
+                  </th>
+                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden sm:table-cell">
+                    Status
+                  </th>
+                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden md:table-cell">
+                    Views
+                  </th>
+                  <th className="px-3 md:px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                {currentPosts.length > 0 ? (
+                  currentPosts.map((post) => {
+                    const colors = categoryColors[post.categoryColor] || categoryColors.primary;
+                    return (
+                      <tr key={post.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+                        <td className="px-3 md:px-4 py-3 md:py-4" data-label="Select">
+                          <input
+                            type="checkbox"
+                            checked={selectedPosts.includes(post.id)}
+                            onChange={() => handleSelectPost(post.id)}
+                            className="w-4 h-4 rounded border-gray-300 text-[#D16655] focus:ring-[#D16655]"
+                          />
+                        </td>
+                        <td className="px-3 md:px-4 py-3 md:py-4" data-label="Post">
+                          <div className="flex items-center gap-2 md:gap-3">
+                            <div className="w-12 md:w-16 h-10 md:h-12 relative rounded-lg overflow-hidden flex-shrink-0">
+                              <Image
+                                src={post.image}
+                                alt={post.title}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-xs md:text-sm font-medium text-gray-800 dark:text-white truncate max-w-[120px] md:max-w-[200px] lg:max-w-[300px]">
+                                {post.title}
+                              </p>
+                              <div className="flex items-center gap-1 mt-0.5">
+                                <span className="flex items-center gap-0.5 text-[10px] md:text-xs text-gray-500 dark:text-gray-400">
+                                  <RiCalendarLine className="text-[8px] md:text-xs" />
+                                  {post.date}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-3 md:px-4 py-3 md:py-4 hidden md:table-cell" data-label="Category">
+                          <span className={`inline-flex px-2 md:px-2.5 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-medium ${colors.bg} ${colors.text} ${colors.darkBg} ${colors.darkText}`}>
+                            {post.category}
+                          </span>
+                        </td>
+                        <td className="px-3 md:px-4 py-3 md:py-4 hidden lg:table-cell" data-label="Author">
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 md:w-7 h-6 md:h-7 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-[10px] md:text-xs font-medium text-white">
+                              {post.author.charAt(0)}
+                            </div>
+                            <span className="text-xs md:text-sm text-gray-600 dark:text-gray-300 hidden sm:inline">{post.author}</span>
+                          </div>
+                        </td>
+                        <td className="px-3 md:px-4 py-3 md:py-4 hidden sm:table-cell" data-label="Status">
+                          <span className={`inline-flex px-2 md:px-2.5 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-medium ${post.status === 'published'
+                              ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                              : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+                            }`}>
+                            {post.status.charAt(0).toUpperCase() + post.status.slice(1)}
+                          </span>
+                        </td>
+                        <td className="px-3 md:px-4 py-3 md:py-4 hidden md:table-cell" data-label="Views">
+                          <div className="flex items-center gap-1 text-xs md:text-sm text-gray-600 dark:text-gray-300">
+                            <RiEyeLine className="text-xs md:text-sm" />
+                            {post.views.toLocaleString()}
+                          </div>
+                        </td>
+                        <td className="px-3 md:px-4 py-3 md:py-4 text-right" data-label="Actions">
+                          <div className="flex items-center justify-end gap-0.5 md:gap-1">
+                            <Link
+                              href={`/pages/blog/${post.id}`}
+                              target="_blank"
+                              className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-[#D16655] transition-colors"
+                              title="View"
+                            >
+                              <RiEyeLine className="text-sm md:text-base" />
+                            </Link>
+                            <Link
+                              href={`/admin/blog/edit/${post.id}`}
+                              className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-[#D16655] transition-colors"
+                              title="Edit"
+                            >
+                              <RiEditLine className="text-sm md:text-base" />
+                            </Link>
+                            <button
+                              className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-red-500 transition-colors"
+                              title="Delete"
+                            >
+                              <RiDeleteBinLine className="text-sm md:text-base" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan={7} className="px-4 py-8 md:py-12 text-center">
+                      <div className="flex flex-col items-center">
+                        <RiArticleLine className="text-3xl md:text-4xl text-gray-300 dark:text-gray-600 mb-2" />
+                        <p className="text-sm md:text-base text-gray-500 dark:text-gray-400">No blog posts found</p>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          /* Grid View (Card Layout) */
+          <div className="p-3 md:p-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
+              {currentPosts.length > 0 ? (
+                currentPosts.map((post) => {
+                  const colors = categoryColors[post.categoryColor] || categoryColors.primary;
+                  return (
+                    <div key={post.id} className="bg-gray-50 dark:bg-gray-700/30 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                      <div className="relative h-32 md:h-40">
+                        <Image
+                          src={post.image}
+                          alt={post.title}
+                          fill
+                          className="object-cover"
+                        />
+                        <div className="absolute top-2 left-2">
+                          <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-medium ${colors.bg} ${colors.text}`}>
+                            {post.category}
+                          </span>
+                        </div>
+                        <div className="absolute top-2 right-2">
+                          <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-medium ${post.status === 'published'
+                              ? 'bg-green-100 text-green-700'
+                              : 'bg-gray-100 text-gray-700'
+                            }`}>
+                            {post.status}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="p-3">
+                        <h3 className="text-sm font-medium text-gray-800 dark:text-white line-clamp-2 mb-2">
+                          {post.title}
+                        </h3>
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-[10px] font-medium text-white">
+                            {post.author.charAt(0)}
+                          </div>
+                          <span className="text-xs text-gray-500 dark:text-gray-400">{post.author}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-3">
+                          <span className="flex items-center gap-1">
+                            <RiEyeLine /> {post.views.toLocaleString()}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <RiThumbUpLine /> {post.likes}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <RiMessage3Line /> {post.comments}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Link
+                            href={`/pages/blog/${post.id}`}
+                            target="_blank"
+                            className="flex-1 p-1.5 text-center text-xs bg-gray-200 dark:bg-gray-600 rounded text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
+                          >
+                            View
+                          </Link>
+                          <Link
+                            href={`/admin/blog/edit/${post.id}`}
+                            className="flex-1 p-1.5 text-center text-xs bg-[#D16655] text-white rounded hover:bg-[#c05545] transition-colors"
+                          >
+                            Edit
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="col-span-full py-8 md:py-12 text-center">
+                  <RiArticleLine className="text-4xl text-gray-300 dark:text-gray-600 mx-auto mb-2" />
+                  <p className="text-gray-500 dark:text-gray-400">No blog posts found</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {filteredPosts.length > 0 && (
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 md:p-4 border-t border-gray-100 dark:border-gray-700">
+            <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400 text-center sm:text-left order-2 sm:order-1">
+              Showing <span className="font-medium">{indexOfFirstItem + 1}</span> to <span className="font-medium">{Math.min(indexOfLastItem, filteredPosts.length)}</span> of <span className="font-medium">{filteredPosts.length}</span> entries
+            </div>
+            <div className="flex items-center gap-1 order-1 sm:order-2">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                <RiArrowLeftSLine className="text-lg md:text-xl" />
+              </button>
+
+              {/* Page Numbers */}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => {
+                if (
+                  page === 1 ||
+                  page === totalPages ||
+                  (page >= currentPage - 1 && page <= currentPage + 1)
+                ) {
+                  return (
+                    <button
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                      className={`min-w-[32px] md:min-w-[36px] h-8 md:h-9 px-1 md:px-2 rounded-lg text-xs md:text-sm font-medium transition-colors ${currentPage === page
+                          ? 'bg-[#D16655] text-white'
+                          : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'
+                        }`}
+                    >
+                      {page}
+                    </button>
+                  );
+                }
+                if (page === currentPage - 2 || page === currentPage + 2) {
+                  return (
+                    <span key={page} className="px-0.5 text-gray-400 text-xs">
+                      ...
+                    </span>
+                  );
+                }
+                return null;
+              })}
+
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                <RiArrowRightSLine className="text-lg md:text-xl" />
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
