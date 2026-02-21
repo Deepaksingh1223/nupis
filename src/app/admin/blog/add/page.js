@@ -16,13 +16,9 @@ import { toast } from 'react-hot-toast';
 import { getCategory } from '@/app/redux/slices/categorySlice';
 import { addBlog } from '@/app/redux/slices/blogSlice';
 import Spinner from '@/app/common/spinner';
-import 'react-quill/dist/quill.snow.css';
 
 // Dynamic import for React Quill to avoid SSR issues
-const ReactQuill = dynamic(() => import('react-quill'), { 
-  ssr: false,
-  loading: () => <div className="h-40 bg-gray-100 animate-pulse rounded-lg"></div>
-});
+
 
 const AddBlogPage = () => {
   const router = useRouter();
@@ -284,17 +280,7 @@ const AddBlogPage = () => {
                     Description <span className="text-red-500">*</span>
                   </label>
                   <div className={`${errors.description ? 'border border-red-500 rounded-lg' : ''}`}>
-                    <ReactQuill
-                      theme="snow"
-                      value={description}
-                      onChange={(value) => {
-                        setDescription(value);
-                        if (errors.description) setErrors(prev => ({ ...prev, description: '' }));
-                      }}
-                      modules={quillModules}
-                      placeholder="Write your blog description here..."
-                      className="h-64 mb-12"
-                    />
+                   
                   </div>
                   {errors.description && <p className="text-xs text-red-500 mt-1">{errors.description}</p>}
                 </div> */}
