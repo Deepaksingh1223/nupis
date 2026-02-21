@@ -18,13 +18,9 @@ import { toast } from 'react-hot-toast';
 import { getCategory } from '@/app/redux/slices/categorySlice';
 import { addUserBlog } from '@/app/redux/slices/blogSlice';
 import Spinner from '@/app/common/spinner';
-import 'react-quill/dist/quill.snow.css';
 
 // Dynamic import for React Quill to avoid SSR issues
-const ReactQuill = dynamic(() => import('react-quill'), { 
-  ssr: false,
-  loading: () => <div className="h-40 bg-gray-100 animate-pulse rounded-lg"></div>
-});
+
 
 // Validation schema with Formik
 const validationSchema = Yup.object({

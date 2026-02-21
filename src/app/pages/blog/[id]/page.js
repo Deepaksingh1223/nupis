@@ -4,53 +4,59 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import {
-    FaCalendarAlt,
-    FaUserAlt,
-    FaClock,
-    FaArrowLeft,
-    FaArrowRight,
-    FaChevronRight,
-    FaComments,
-    FaEye,
-    FaThumbsUp,
-    FaTag,
-    FaShareAlt,
-    FaPrint,
-    FaEnvelope,
-    FaTwitter,
-    FaFacebookF,
-    FaLinkedinIn,
-    FaWhatsapp,
-    FaRegBookmark,
-    FaRegHeart
+  FaCalendarAlt,
+  FaUserAlt,
+  FaClock,
+  FaArrowLeft,
+  FaArrowRight,
+  FaChevronRight,
+  FaComments,
+  FaEye,
+  FaThumbsUp,
+  FaTag,
+  FaShareAlt,
+  FaPrint,
+  FaEnvelope,
+  FaTwitter,
+  FaFacebookF,
+  FaLinkedinIn,
+  FaWhatsapp,
+  FaRegBookmark,
+  FaRegHeart,
 } from "react-icons/fa";
 import {
-    RiMailLine,
-    RiNewsLine,
-    RiAlertLine,
-    RiHeartFill,
-    RiBookmarkFill
+  RiMailLine,
+  RiNewsLine,
+  RiAlertLine,
+  RiHeartFill,
+  RiBookmarkFill,
 } from "react-icons/ri";
+import api from "@/app/lib/axios";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "@/app/components/Loading";
+import ErrorState from "@/app/components/ErrorState";
 
 // Blog posts data (same as your BlogSection)
 const blogPosts = [
-    // Row 1 - 6 Posts
-    {
-        id: 1,
-        title: "US Dollar Strengthens Ahead of Fed Decision",
-        description: "Analysis of how the upcoming Federal Reserve interest rate decision could impact major currency pairs.",
-        category: "Market Analysis",
-        author: "Rajesh Kumar",
-        authorBio: "Senior Market Analyst with 12+ years of experience in forex and commodity markets. Previously worked at leading investment banks.",
-        authorAvatar: "/assets/img/blog/comment-author-2.jpg",
-        date: "Feb 12, 2026",
-        readTime: "8 min read",
-        views: 1245,
-        likes: 89,
-        comments: 34,
-        image: "/assets/img/blog/blog-d-1.jpg",
-        categoryColor: "primary",
-        content: `
+  // Row 1 - 6 Posts
+  {
+    id: 1,
+    title: "US Dollar Strengthens Ahead of Fed Decision",
+    description:
+      "Analysis of how the upcoming Federal Reserve interest rate decision could impact major currency pairs.",
+    category: "Market Analysis",
+    author: "Rajesh Kumar",
+    authorBio:
+      "Senior Market Analyst with 12+ years of experience in forex and commodity markets. Previously worked at leading investment banks.",
+    authorAvatar: "/assets/img/blog/comment-author-2.jpg",
+    date: "Feb 12, 2026",
+    readTime: "8 min read",
+    views: 1245,
+    likes: 89,
+    comments: 34,
+    image: "/assets/img/blog/blog-d-1.jpg",
+    categoryColor: "primary",
+    content: `
       <h2>Federal Reserve's Upcoming Decision: What to Expect</h2>
       <p>The US Dollar has shown remarkable strength in recent trading sessions as markets eagerly await the Federal Reserve's interest rate decision. With inflation data showing mixed signals, traders are positioning themselves for various scenarios.</p>
       
@@ -82,25 +88,33 @@ const blogPosts = [
         <li><strong>Neutral Scenario:</strong> Range trading strategies with defined support/resistance levels may be most effective.</li>
       </ol>
     `,
-        tags: ["Federal Reserve", "US Dollar", "Interest Rates", "Forex", "Market Analysis"],
-        relatedPosts: [2, 3, 5]
-    },
-    {
-        id: 2,
-        title: "EUR/USD Technical Outlook: Key Levels to Watch",
-        description: "Detailed technical analysis of EUR/USD with support and resistance levels for this week.",
-        category: "Technical Analysis",
-        author: "Priya Sharma",
-        authorBio: "CFA charterholder and technical analysis expert. Regular contributor to leading financial publications.",
-        authorAvatar: "/assets/img/blog/comment-author-2.jpg",
-        date: "Feb 11, 2026",
-        readTime: "6 min read",
-        views: 987,
-        likes: 67,
-        comments: 23,
-        image: "/assets/img/blog/blog-d-2.jpg",
-        categoryColor: "success",
-        content: `
+    tags: [
+      "Federal Reserve",
+      "US Dollar",
+      "Interest Rates",
+      "Forex",
+      "Market Analysis",
+    ],
+    relatedPosts: [2, 3, 5],
+  },
+  {
+    id: 2,
+    title: "EUR/USD Technical Outlook: Key Levels to Watch",
+    description:
+      "Detailed technical analysis of EUR/USD with support and resistance levels for this week.",
+    category: "Technical Analysis",
+    author: "Priya Sharma",
+    authorBio:
+      "CFA charterholder and technical analysis expert. Regular contributor to leading financial publications.",
+    authorAvatar: "/assets/img/blog/comment-author-2.jpg",
+    date: "Feb 11, 2026",
+    readTime: "6 min read",
+    views: 987,
+    likes: 67,
+    comments: 23,
+    image: "/assets/img/blog/blog-d-2.jpg",
+    categoryColor: "success",
+    content: `
       <h2>EUR/USD Technical Analysis: Weekly Outlook</h2>
       <p>The EUR/USD pair continues to trade within a well-defined range as traders assess the interest rate differential between the ECB and Fed.</p>
       
@@ -116,24 +130,26 @@ const blogPosts = [
         <li><strong>Bollinger Bands:</strong> Price trading near the middle band with expanding volatility</li>
       </ul>
     `,
-        relatedPosts: [1, 3, 4]
-    },
-    {
-        id: 3,
-        title: "Fed Signals Potential Rate Cuts in Q2 2026",
-        description: "Following news on Federal Reserve's latest statements about possible rate cuts and market impact.",
-        category: "Forex News",
-        author: "Amit Patel",
-        authorBio: "Former Reuters journalist specializing in central bank policies and global macroeconomics.",
-        authorAvatar: "/assets/img/blog/comment-author-2.jpg",
-        date: "Feb 10, 2026",
-        readTime: "4 min read",
-        views: 2341,
-        likes: 156,
-        comments: 67,
-        image: "/assets/img/blog/blog-d-3.jpg",
-        categoryColor: "info",
-        content: `
+    relatedPosts: [1, 3, 4],
+  },
+  {
+    id: 3,
+    title: "Fed Signals Potential Rate Cuts in Q2 2026",
+    description:
+      "Following news on Federal Reserve's latest statements about possible rate cuts and market impact.",
+    category: "Forex News",
+    author: "Amit Patel",
+    authorBio:
+      "Former Reuters journalist specializing in central bank policies and global macroeconomics.",
+    authorAvatar: "/assets/img/blog/comment-author-2.jpg",
+    date: "Feb 10, 2026",
+    readTime: "4 min read",
+    views: 2341,
+    likes: 156,
+    comments: 67,
+    image: "/assets/img/blog/blog-d-3.jpg",
+    categoryColor: "info",
+    content: `
       <h2>Federal Reserve Signals Potential Rate Cuts in Q2 2026</h2>
       <p>In a surprising development, Federal Reserve officials have hinted at the possibility of rate cuts in the second quarter of 2026, citing improving inflation data and potential economic slowdown risks.</p>
       
@@ -146,25 +162,27 @@ const blogPosts = [
         <li>Stock futures turned positive</li>
       </ul>
     `,
-        
-        relatedPosts: [1, 5, 6]
-    },
-    {
-        id: 4,
-        title: "Gold Prices: Can XAU/USD Break Above $2,000?",
-        description: "Technical and fundamental analysis of gold prices with key levels to watch for breakout.",
-        category: "Commodities",
-        author: "Anita Desai",
-        authorBio: "Precious metals specialist with expertise in gold and silver markets. Former commodity trader.",
-        authorAvatar: "/assets/img/blog/comment-author-2.jpg",
-        date: "Feb 9, 2026",
-        readTime: "7 min read",
-        views: 1123,
-        likes: 78,
-        comments: 29,
-        image: "/assets/img/blog/blog-d-4.jpg",
-        categoryColor: "warning",
-        content: `
+
+    relatedPosts: [1, 5, 6],
+  },
+  {
+    id: 4,
+    title: "Gold Prices: Can XAU/USD Break Above $2,000?",
+    description:
+      "Technical and fundamental analysis of gold prices with key levels to watch for breakout.",
+    category: "Commodities",
+    author: "Anita Desai",
+    authorBio:
+      "Precious metals specialist with expertise in gold and silver markets. Former commodity trader.",
+    authorAvatar: "/assets/img/blog/comment-author-2.jpg",
+    date: "Feb 9, 2026",
+    readTime: "7 min read",
+    views: 1123,
+    likes: 78,
+    comments: 29,
+    image: "/assets/img/blog/blog-d-4.jpg",
+    categoryColor: "warning",
+    content: `
       <h2>Gold Prices Eyeing $2,000 Breakout</h2>
       <p>Gold prices are approaching the critical $2,000 level as a combination of factors support the precious metal.</p>
       
@@ -176,547 +194,612 @@ const blogPosts = [
         <li>Inflation hedge demand</li>
       </ul>
     `,
-        tags: ["Gold", "XAU/USD", "Commodities", "Precious Metals"],
-        relatedPosts: [1, 2, 10]
-    },
-    {
-        id: 5,
-        title: "BOJ Maintains Ultra-Loose Policy: Yen Weakens",
-        description: "Bank of Japan keeps negative interest rates, leading to continued Yen weakness.",
-        category: "Forex News",
-        author: "Takeshi Tanaka",
-        authorBio: "Tokyo-based financial analyst covering Japanese markets and BOJ policy.",
-        authorAvatar: "/assets/img/blog/comment-author-2.jpg",
-        date: "Feb 8, 2026",
-        readTime: "4 min read",
-        views: 1876,
-        likes: 112,
-        comments: 53,
-        image: "/assets/img/blog/blog-img-1-1.jpg",
-        categoryColor: "danger",
-        content: `
+    tags: ["Gold", "XAU/USD", "Commodities", "Precious Metals"],
+    relatedPosts: [1, 2, 10],
+  },
+  {
+    id: 5,
+    title: "BOJ Maintains Ultra-Loose Policy: Yen Weakens",
+    description:
+      "Bank of Japan keeps negative interest rates, leading to continued Yen weakness.",
+    category: "Forex News",
+    author: "Takeshi Tanaka",
+    authorBio:
+      "Tokyo-based financial analyst covering Japanese markets and BOJ policy.",
+    authorAvatar: "/assets/img/blog/comment-author-2.jpg",
+    date: "Feb 8, 2026",
+    readTime: "4 min read",
+    views: 1876,
+    likes: 112,
+    comments: 53,
+    image: "/assets/img/blog/blog-img-1-1.jpg",
+    categoryColor: "danger",
+    content: `
       <h2>BOJ Maintains Ultra-Loose Policy as Expected</h2>
       <p>The Bank of Japan maintained its negative interest rate policy and yield curve control program, causing the Yen to weaken further against major currencies.</p>
       
       <h3>USD/JPY Reacts</h3>
       <p>USD/JPY surged past 150.00, approaching levels that previously prompted intervention threats from Japanese authorities.</p>
     `,
-        tags: ["BOJ", "Japanese Yen", "USD/JPY", "Monetary Policy"],
-        relatedPosts: [3, 6, 11]
-    },
-    {
-        id: 6,
-        title: "UK Economy Shows Resilience: GBP Strengthens",
-        description: "Better-than-expected UK GDP data leads to broad-based Sterling strength.",
-        category: "Market Analysis",
-        author: "Sarah Williams",
-        authorBio: "UK economic specialist with focus on Brexit impact and BoE policy analysis.",
-        authorAvatar: "/assets/img/blog/comment-author-2.jpg",
-        date: "Feb 7, 2026",
-        readTime: "3 min read",
-        views: 1432,
-        likes: 87,
-        comments: 36,
-        image: "/assets/img/blog/blog-img-1-1.jpg",
-        categoryColor: "purple",
-        content: `
+    tags: ["BOJ", "Japanese Yen", "USD/JPY", "Monetary Policy"],
+    relatedPosts: [3, 6, 11],
+  },
+  {
+    id: 6,
+    title: "UK Economy Shows Resilience: GBP Strengthens",
+    description:
+      "Better-than-expected UK GDP data leads to broad-based Sterling strength.",
+    category: "Market Analysis",
+    author: "Sarah Williams",
+    authorBio:
+      "UK economic specialist with focus on Brexit impact and BoE policy analysis.",
+    authorAvatar: "/assets/img/blog/comment-author-2.jpg",
+    date: "Feb 7, 2026",
+    readTime: "3 min read",
+    views: 1432,
+    likes: 87,
+    comments: 36,
+    image: "/assets/img/blog/blog-img-1-1.jpg",
+    categoryColor: "purple",
+    content: `
       <h2>UK Economy Shows Unexpected Resilience</h2>
       <p>The UK economy grew 0.3% in Q4, surpassing expectations of 0.1% contraction, leading to broad-based Sterling strength across the board.</p>
       
       <h3>BoE Implications</h3>
       <p>The strong GDP data reduces pressure on the Bank of England to cut rates aggressively, supporting the Pound.</p>
     `,
-        tags: ["UK Economy", "GBP", "BoE", "GDP"],
-        relatedPosts: [1, 2, 5]
-    },
-    {
-        id: 7,
-        title: "ECB's Lagarde: Inflation Progress Continues",
-        description: "Latest comments from ECB President on inflation and future monetary policy direction.",
-        category: "Forex News",
-        author: "Neha Gupta",
-        authorBio: "EU correspondent covering European Central Bank and Eurozone economies.",
-        authorAvatar: "/assets/img/blog/comment-author-2.jpg",
-        date: "Feb 6, 2026",
-        readTime: "3 min read",
-        views: 1543,
-        likes: 98,
-        comments: 42,
-        image: "/assets/img/blog/blog-img-1-2.jpg",
-        categoryColor: "info",
-        content: `
+    tags: ["UK Economy", "GBP", "BoE", "GDP"],
+    relatedPosts: [1, 2, 5],
+  },
+  {
+    id: 7,
+    title: "ECB's Lagarde: Inflation Progress Continues",
+    description:
+      "Latest comments from ECB President on inflation and future monetary policy direction.",
+    category: "Forex News",
+    author: "Neha Gupta",
+    authorBio:
+      "EU correspondent covering European Central Bank and Eurozone economies.",
+    authorAvatar: "/assets/img/blog/comment-author-2.jpg",
+    date: "Feb 6, 2026",
+    readTime: "3 min read",
+    views: 1543,
+    likes: 98,
+    comments: 42,
+    image: "/assets/img/blog/blog-img-1-2.jpg",
+    categoryColor: "info",
+    content: `
       <h2>Lagarde: Inflation Progress Continues, but Vigilance Needed</h2>
       <p>ECB President Christine Lagarde stated that while inflation progress continues, the central bank must remain vigilant against potential risks.</p>
     `,
-        tags: ["ECB", "Lagarde", "Euro", "Inflation"],
-        relatedPosts: [2, 3, 8]
-    },
-    {
-        id: 8,
-        title: "AUD/USD: RBA Rate Decision Impact Analysis",
-        description: "How RBA's latest rate decision affects AUD/USD and what traders should watch.",
-        category: "Market Analysis",
-        author: "Vikram Singh",
-        authorBio: "Asia-Pacific markets specialist with focus on Australian and New Zealand economies.",
-        authorAvatar: "/assets/img/blog/comment-author-2.jpg",
-        date: "Feb 5, 2026",
-        readTime: "5 min read",
-        views: 645,
-        likes: 43,
-        comments: 16,
-        image: "/assets/img/blog/blog-img-1-3.jpg",
-        categoryColor: "primary",
-        content: `
+    tags: ["ECB", "Lagarde", "Euro", "Inflation"],
+    relatedPosts: [2, 3, 8],
+  },
+  {
+    id: 8,
+    title: "AUD/USD: RBA Rate Decision Impact Analysis",
+    description:
+      "How RBA's latest rate decision affects AUD/USD and what traders should watch.",
+    category: "Market Analysis",
+    author: "Vikram Singh",
+    authorBio:
+      "Asia-Pacific markets specialist with focus on Australian and New Zealand economies.",
+    authorAvatar: "/assets/img/blog/comment-author-2.jpg",
+    date: "Feb 5, 2026",
+    readTime: "5 min read",
+    views: 645,
+    likes: 43,
+    comments: 16,
+    image: "/assets/img/blog/blog-img-1-3.jpg",
+    categoryColor: "primary",
+    content: `
       <h2>RBA Holds Rates Steady: AUD/USD Analysis</h2>
       <p>The Reserve Bank of Australia kept rates unchanged at 4.35%, as expected, but maintained a hawkish bias in their statement.</p>
     `,
-        tags: ["AUD/USD", "RBA", "Australian Dollar", "Interest Rates"],
-        relatedPosts: [1, 4, 10]
-    },
-    {
-        id: 9,
-        title: "China's Stimulus Measures Boost Risk Appetite",
-        description: "New economic stimulus from China improves sentiment, benefiting AUD and NZD.",
-        category: "Economic Events",
-        author: "Li Wei",
-        authorBio: "China markets expert with 15 years experience covering Asian economies.",
-        authorAvatar: "/assets/img/blog/comment-author-2.jpg",
-        date: "Feb 4, 2026",
-        readTime: "3 min read",
-        views: 1098,
-        likes: 67,
-        comments: 28,
-        image: "/assets/img/blog/blog-img-1-4.jpg",
-        categoryColor: "success",
-        content: `
+    tags: ["AUD/USD", "RBA", "Australian Dollar", "Interest Rates"],
+    relatedPosts: [1, 4, 10],
+  },
+  {
+    id: 9,
+    title: "China's Stimulus Measures Boost Risk Appetite",
+    description:
+      "New economic stimulus from China improves sentiment, benefiting AUD and NZD.",
+    category: "Economic Events",
+    author: "Li Wei",
+    authorBio:
+      "China markets expert with 15 years experience covering Asian economies.",
+    authorAvatar: "/assets/img/blog/comment-author-2.jpg",
+    date: "Feb 4, 2026",
+    readTime: "3 min read",
+    views: 1098,
+    likes: 67,
+    comments: 28,
+    image: "/assets/img/blog/blog-img-1-4.jpg",
+    categoryColor: "success",
+    content: `
       <h2>China Announces Major Stimulus Package</h2>
       <p>China announced a comprehensive stimulus package aimed at boosting economic growth, improving risk sentiment across Asian markets.</p>
     `,
-        tags: ["China", "Stimulus", "AUD", "NZD", "Risk Appetite"],
-        relatedPosts: [4, 8, 10]
-    },
-    {
-        id: 10,
-        title: "Oil Prices Surge: Impact on USD/CAD",
-        description: "Rising oil prices due to Middle East tensions strengthen Canadian Dollar.",
-        category: "Commodities",
-        author: "Michael Chen",
-        authorBio: "Energy markets specialist and commodity trading advisor.",
-        authorAvatar: "/assets/img/blog/comment-author-2.jpg",
-        date: "Feb 3, 2026",
-        readTime: "4 min read",
-        views: 1654,
-        likes: 103,
-        comments: 47,
-        image: "/assets/img/blog/blog-img-1-5.jpg",
-        categoryColor: "warning",
-        content: `
+    tags: ["China", "Stimulus", "AUD", "NZD", "Risk Appetite"],
+    relatedPosts: [4, 8, 10],
+  },
+  {
+    id: 10,
+    title: "Oil Prices Surge: Impact on USD/CAD",
+    description:
+      "Rising oil prices due to Middle East tensions strengthen Canadian Dollar.",
+    category: "Commodities",
+    author: "Michael Chen",
+    authorBio: "Energy markets specialist and commodity trading advisor.",
+    authorAvatar: "/assets/img/blog/comment-author-2.jpg",
+    date: "Feb 3, 2026",
+    readTime: "4 min read",
+    views: 1654,
+    likes: 103,
+    comments: 47,
+    image: "/assets/img/blog/blog-img-1-5.jpg",
+    categoryColor: "warning",
+    content: `
       <h2>Oil Surges on Middle East Tensions</h2>
       <p>Oil prices jumped 3% following increased tensions in the Middle East, benefiting the Canadian Dollar due to Canada's oil exports.</p>
     `,
-        tags: ["Oil", "USD/CAD", "Canadian Dollar", "Commodities"],
-        relatedPosts: [4, 5, 8]
-    },
-    {
-        id: 11,
-        title: "USD/JPY: Intervention Risks and Technical Setup",
-        description: "Analysis of potential Japanese intervention and technical levels for USD/JPY.",
-        category: "Technical Analysis",
-        author: "Rajesh Kumar",
-        authorBio: "Senior Market Analyst with 12+ years of experience in forex and commodity markets.",
-        authorAvatar: "/assets/img/blog/comment-author-2.jpg",
-        date: "Feb 2, 2026",
-        readTime: "6 min read",
-        views: 892,
-        likes: 56,
-        comments: 21,
-        image: "/assets/img/blog/blog-img-1-6.jpg",
-        categoryColor: "danger",
-        slug: "usd-jpy-intervention",
-        content: `
+    tags: ["Oil", "USD/CAD", "Canadian Dollar", "Commodities"],
+    relatedPosts: [4, 5, 8],
+  },
+  {
+    id: 11,
+    title: "USD/JPY: Intervention Risks and Technical Setup",
+    description:
+      "Analysis of potential Japanese intervention and technical levels for USD/JPY.",
+    category: "Technical Analysis",
+    author: "Rajesh Kumar",
+    authorBio:
+      "Senior Market Analyst with 12+ years of experience in forex and commodity markets.",
+    authorAvatar: "/assets/img/blog/comment-author-2.jpg",
+    date: "Feb 2, 2026",
+    readTime: "6 min read",
+    views: 892,
+    likes: 56,
+    comments: 21,
+    image: "/assets/img/blog/blog-img-1-6.jpg",
+    categoryColor: "danger",
+    slug: "usd-jpy-intervention",
+    content: `
       <h2>USD/JPY: Approaching Intervention Territory</h2>
       <p>USD/JPY is approaching 152.00, levels that previously prompted verbal intervention from Japanese officials.</p>
     `,
-        tags: ["USD/JPY", "Intervention", "Technical Analysis", "BOJ"],
-        relatedPosts: [3, 5, 6]
-    },
-    {
-        id: 12,
-        title: "Stock Market Outlook: Q2 2026 Preview",
-        description: "What to expect from global stock markets in the second quarter of 2026.",
-        category: "Stock Market",
-        author: "Priya Sharma",
-        authorBio: "CFA charterholder and technical analysis expert. Regular contributor to leading financial publications.",
-        authorAvatar: "/assets/img/blog/comment-author-2.jpg",
-        date: "Feb 1, 2026",
-        readTime: "7 min read",
-        views: 1567,
-        likes: 134,
-        comments: 58,
-        image: "/assets/img/blog/blog-img-1-7.jpg",
-        categoryColor: "purple",
-        content: `
+    tags: ["USD/JPY", "Intervention", "Technical Analysis", "BOJ"],
+    relatedPosts: [3, 5, 6],
+  },
+  {
+    id: 12,
+    title: "Stock Market Outlook: Q2 2026 Preview",
+    description:
+      "What to expect from global stock markets in the second quarter of 2026.",
+    category: "Stock Market",
+    author: "Priya Sharma",
+    authorBio:
+      "CFA charterholder and technical analysis expert. Regular contributor to leading financial publications.",
+    authorAvatar: "/assets/img/blog/comment-author-2.jpg",
+    date: "Feb 1, 2026",
+    readTime: "7 min read",
+    views: 1567,
+    likes: 134,
+    comments: 58,
+    image: "/assets/img/blog/blog-img-1-7.jpg",
+    categoryColor: "purple",
+    content: `
       <h2>Q2 2026 Stock Market Preview</h2>
       <p>As we enter the second quarter of 2026, several factors will influence global stock markets including earnings, Fed policy, and economic data.</p>
     `,
-        tags: ["Stock Market", "Equities", "Q2 Outlook", "Investing"],
-        relatedPosts: [1, 3, 6]
-    }
+    tags: ["Stock Market", "Equities", "Q2 Outlook", "Investing"],
+    relatedPosts: [1, 3, 6],
+  },
 ];
+const fetchBlogById = async (id) => {
+  const response = await api.get(`/api/Blog/getUserBlogByBlogId?BlogId=${id}`);
 
+  return response?.data?.data[0] ?? null; // 👈 MUST RETURN
+};
+const fetchBlogs = async () => {
+  const { data } = await api.get("/api/Blog/getUserBlog");
+  return data?.data;
+};
 const BlogDetail = () => {
-    const params = useParams();
-    const [email, setEmail] = useState("");
-    const [liked, setLiked] = useState(false);
-    const [bookmarked, setBookmarked] = useState(false);
-    const [likeCount, setLikeCount] = useState(0);
-    const id = Number(params?.id);
-    const post = blogPosts.find(p => p.id === id);
-
-    const relatedPosts = post?.relatedPosts
-        ? blogPosts.filter(p => post.relatedPosts.includes(p.id))
-        : [];
-    useEffect(() => {
-        if (post) {
-            setLikeCount(post.likes);
-        }
-    }, [post]);
-
-    // Fixed handleShare function with proper checking
-    const handleShare = (platform) => {
-        if (typeof window !== 'undefined') {
-            const url = window.location.href;
-            const title = post?.title || '';
-
-            const shareUrls = {
-                twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`,
-                facebook: `https://www.facebook.com/sharer.php?u=${encodeURIComponent(url)}`,
-                linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
-                whatsapp: `https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`,
-                email: `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent('Check out this article: ' + url)}`
-            };
-
-            if (shareUrls[platform]) {
-                window.open(shareUrls[platform], '_blank');
-            }
-        }
-    };
-
-    if (!post) {
-        return (
-            <div className="fx-blog-detail-wrapper">
-                <div className="fx-blog-container">
-                    <div className="fx-blog-error-state">
-                        <RiAlertLine size={48} />
-                        <h2>Post Not Found</h2>
-                        <p>The blog post you're looking for doesn't exist or has been removed.</p>
-                        <Link href="/blog" className="fx-blog-back-to-blog">
-                            <FaArrowLeft /> Back to Blog
-                        </Link>
-                    </div>
-                </div>
-
-
-            </div>
-        );
+  const params = useParams();
+  const [email, setEmail] = useState("");
+  const [liked, setLiked] = useState(false);
+  const [bookmarked, setBookmarked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  //   const id = Number(params?.id);
+  const id = params?.id;
+  const post = blogPosts.find((p) => p.id === id);
+  const { data, isLoading, isError, error, refetch } = useQuery({
+    queryKey: ["blogById", id],
+    queryFn: () => fetchBlogById(id),
+    enabled: !!id,
+  });
+  // All Blogs
+  const {
+    data: blogs,
+    isLoading: blogsLoading,
+    isError: blogsError,
+    error: blogsErrorData,
+  } = useQuery({
+    queryKey: ["blogs"],
+    queryFn: fetchBlogs,
+  });
+  const relatedPosts = blogs?.slice(0, 4);
+  useEffect(() => {
+    if (post) {
+      setLikeCount(post.likes);
     }
+  }, [post]);
 
-    const handleLike = () => {
-        if (liked) {
-            setLikeCount(prev => prev - 1);
-        } else {
-            setLikeCount(prev => prev + 1);
-        }
-        setLiked(!liked);
-    };
+  // Fixed handleShare function with proper checking
+  const handleShare = (platform) => {
+    if (typeof window !== "undefined") {
+      const url = window.location.href;
+      const title = post?.title || "";
 
+      const shareUrls = {
+        twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`,
+        facebook: `https://www.facebook.com/sharer.php?u=${encodeURIComponent(url)}`,
+        linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+        whatsapp: `https://wa.me/?text=${encodeURIComponent(title + " " + url)}`,
+        email: `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent("Check out this article: " + url)}`,
+      };
+
+      if (shareUrls[platform]) {
+        window.open(shareUrls[platform], "_blank");
+      }
+    }
+  };
+  const handleLike = () => {
+    if (liked) {
+      setLikeCount((prev) => prev - 1);
+    } else {
+      setLikeCount((prev) => prev + 1);
+    }
+    setLiked(!liked);
+  };
+  const categoryCount = (blogs || []).reduce((acc, post) => {
+    const category = post?.categoryName;
+    if (!category) return acc;
+
+    acc[category] = (acc[category] || 0) + 1;
+    return acc;
+  }, {});
+  const uniqueCategories = Object.keys(categoryCount);
+  if (isLoading) {
+    <Loading />;
+  }
+  if (isError) {
     return (
-        <>
-            <div className="fx-blog-header">
-                <div className="container">
-                    {/* Breadcrumb */}
-                    <div className="fx-blog-breadcrumb">
-                        <Link href="/">Home</Link>
-                        <FaChevronRight className="fx-blog-breadcrumb-icon" />
-                        <Link href="/blog">Blog</Link>
-                        <FaChevronRight className="fx-blog-breadcrumb-icon" />
-                        <span>{post.category}</span>
-                    </div>
-                    <div className="fx-blog-category">
-                        <span className={`fx-blog-category-badge fx-blog-category-${post.categoryColor}`}>
-                            <FaTag /> {post.category}
-                        </span>
-                        <span className="fx-blog-reading-time">
-                            <FaClock /> {post.readTime}
-                        </span>
-                    </div>
-                    <h1 className="fx-blog-title">{post.title}</h1>
-                    <div className="fx-blog-meta-info">
-                        <div className="fx-blog-author">
-                            <div className="fx-blog-author-avatar">
-                                <Image
-                                    src={post.authorAvatar || "/assets/img/blog/comment-author-1.jpg"}
-                                    alt={post.author}
-                                    width={48}
-                                    height={48}
-                                />
-                            </div>
-                            <div className="fx-blog-author-details">
-                                <span className="fx-blog-author-name">{post.author}</span>
-                                <span className="fx-blog-author-title">Market Analyst</span>
-                            </div>
-                        </div>
-
-                        <div className="fx-blog-stats">
-                            <span><FaCalendarAlt /> {post.date}</span>
-                            <span><FaEye /> {post.views.toLocaleString()} views</span>
-                            <span><FaComments /> {post.comments} comments</span>
-                        </div>
-                    </div>
-                </div> 
-            </div>
-            <div className="fx-blog-detail-wrapper">
-                <div className="fx-blog-container">
-
-
-                    {/* Article Header */}
-
-
-
-
-                    {/* Article Content */}
-                    <div className="fx-blog-content-wrapper">
-                        <div className="fx-blog-main">
-                            {/* Featured Image */}
-                            <div className="fx-blog-featured-image">
-                                <Image
-                                    src={post.image}
-                                    alt={post.title}
-                                    width={1200}
-                                    height={600}
-                                    style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
-                                    priority
-                                />
-                            </div>
-                            {/* Social Share Sidebar */}
-                            <div className="fx-blog-share-sidebar">
-                                <span className="fx-blog-share-label">Share</span>
-                                <button onClick={() => handleShare('facebook')} className="fx-blog-share-btn fx-blog-share-facebook">
-                                    <FaFacebookF />
-                                </button>
-                                <button onClick={() => handleShare('twitter')} className="fx-blog-share-btn fx-blog-share-twitter">
-                                    <FaTwitter />
-                                </button>
-                                <button onClick={() => handleShare('linkedin')} className="fx-blog-share-btn fx-blog-share-linkedin">
-                                    <FaLinkedinIn />
-                                </button>
-                                <button onClick={() => handleShare('whatsapp')} className="fx-blog-share-btn fx-blog-share-whatsapp">
-                                    <FaWhatsapp />
-                                </button>
-                                <button onClick={() => handleShare('email')} className="fx-blog-share-btn fx-blog-share-email">
-                                    <FaEnvelope />
-                                </button>
-                            </div>
-
-                            {/* Article Body */}
-                            <div className="fx-blog-body">
-                                <div dangerouslySetInnerHTML={{ __html: post.content }} />
-
-                                {/* Tags */}
-                                <div className="fx-blog-tags">
-                                    <span className="fx-blog-tags-label">Tags:</span>
-                                    <div className="fx-blog-tag-list">
-                                        {post?.tags?.map((tag, index) => (
-                                            <Link href={`#`} key={index} className="fx-blog-tag-item">
-                                                {tag}
-                                            </Link>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Article Actions */}
-                                <div className="fx-blog-actions">
-                                    <div className="fx-blog-action-buttons">
-                                        <button
-                                            className={`fx-blog-action-btn ${liked ? 'fx-blog-action-active' : ''}`}
-                                            onClick={handleLike}
-                                        >
-                                            {liked ? <RiHeartFill /> : <FaRegHeart />} {likeCount} Likes
-                                        </button>
-                                        <button
-                                            className={`fx-blog-action-btn ${bookmarked ? 'fx-blog-action-active' : ''}`}
-                                            onClick={() => setBookmarked(!bookmarked)}
-                                        >
-                                            {bookmarked ? <RiBookmarkFill /> : <FaRegBookmark />} {bookmarked ? 'Saved' : 'Save'}
-                                        </button>
-                                        <button className="fx-blog-action-btn">
-                                            <FaPrint /> Print
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Author Bio */}
-                                <div className="fx-blog-author-bio">
-                                    <div className="fx-blog-author-bio-avatar">
-                                        <Image
-                                            src={post.authorAvatar || "/assets/img/blog/comment-author-1.jpg"}
-                                            alt={post.author}
-                                            width={80}
-                                            height={80}
-                                        />
-                                    </div>
-                                    <div className="fx-blog-author-bio-content">
-                                        <h4>About {post.author}</h4>
-                                        <p>{post.authorBio}</p>
-                                        <div className="fx-blog-author-social">
-                                            <Link href="#" className="fx-blog-author-social-link"><FaTwitter /></Link>
-                                            <Link href="#" className="fx-blog-author-social-link"><FaLinkedinIn /></Link>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Comments Section */}
-                                <div className="fx-blog-comments">
-                                    <h3>Comments ({post.comments})</h3>
-
-                                    {/* Comment Form */}
-                                    <div className="fx-blog-comment-form">
-                                        <textarea
-                                            placeholder="Leave a comment..."
-                                            rows={4}
-                                        ></textarea>
-                                        <button className="fx-blog-submit-comment">
-                                            Post Comment
-                                        </button>
-                                    </div>
-
-                                    {/* Sample Comments */}
-                                    <div className="fx-blog-comments-list">
-                                        <div className="fx-blog-single-comment">
-                                            <div className="fx-blog-comment-avatar">
-                                                <Image
-                                                    src="/assets/img/blog/comment-author-1.jpg"
-                                                    alt="User"
-                                                    width={50}
-                                                    height={50}
-                                                />
-                                            </div>
-                                            <div className="fx-blog-comment-content">
-                                                <div className="fx-blog-comment-header">
-                                                    <span className="fx-blog-commenter-name">John Doe</span>
-                                                    <span className="fx-blog-comment-date">2 hours ago</span>
-                                                </div>
-                                                <p>Great analysis! Really helpful for my trading decisions.</p>
-                                                <button className="fx-blog-comment-reply">Reply</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Sidebar */}
-                        <div className="fx-blog-sidebar">
-                            {/* Related Posts */}
-                            {relatedPosts.length > 0 && (
-                                <div className="fx-blog-widget" style={{position:'sticky',top:'0'}}>
-                                    <h3>Related Posts</h3>
-                                    <div className="fx-blog-related-posts">
-                                        {relatedPosts.map(related => (
-                                            <Link href={`#`} key={related.id} className="fx-blog-related-item">
-                                                <div className="fx-blog-related-image">
-                                                    <Image
-                                                        src={related.image}
-                                                        alt={related.title}
-                                                        width={80}
-                                                        height={80}
-                                                    />
-                                                </div>
-                                                <div className="fx-blog-related-content">
-                                                    <h4>{related.title}</h4>
-                                                    <span className="fx-blog-related-date">
-                                                        <FaCalendarAlt /> {related.date}
-                                                    </span>
-                                                </div>
-                                            </Link>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Popular Posts */}
-                            <div className="fx-blog-widget">
-                                <h3>Popular Posts</h3>
-                                <div className="fx-blog-popular-posts">
-                                    {blogPosts.slice(0, 4).map(popular => (
-                                        <Link href={`#`} key={popular.id} className="fx-blog-popular-item">
-                                            <div className="fx-blog-popular-image">
-                                                <Image
-                                                    src={popular.image}
-                                                    alt={popular.title}
-                                                    width={70}
-                                                    height={70}
-                                                />
-                                            </div>
-                                            <div className="fx-blog-popular-content">
-                                                <h4>{popular.title}</h4>
-                                                <div className="fx-blog-popular-meta">
-                                                    <span><FaEye /> {popular.views.toLocaleString()}</span>
-                                                    <span><FaThumbsUp /> {popular.likes}</span>
-                                                </div>
-                                            </div>
-                                        </Link>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Categories */}
-                            <div className="fx-blog-widget">
-                                <h3>Categories</h3>
-                                <div className="fx-blog-category-list">
-                                    <Link href="#" className="fx-blog-category-item">
-                                        Market Analysis <span>(24)</span>
-                                    </Link>
-                                    <Link href="#" className="fx-blog-category-item">
-                                        Technical Analysis <span>(18)</span>
-                                    </Link>
-                                    <Link href="#" className="fx-blog-category-item">
-                                        Forex News <span>(32)</span>
-                                    </Link>
-                                    <Link href="#" className="fx-blog-category-item">
-                                        Commodities <span>(15)</span>
-                                    </Link>
-                                    <Link href="#" className="fx-blog-category-item">
-                                        Economic Events <span>(21)</span>
-                                    </Link>
-                                </div>
-                            </div>
-
-                            {/* Newsletter */}
-                            <div className="fx-blog-widget fx-blog-newsletter">
-                                <h3>Newsletter</h3>
-                                <p>Get the latest market updates directly in your inbox</p>
-                                <div className="fx-blog-newsletter-form">
-                                    <input
-                                        type="email"
-                                        placeholder="Your email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                    />
-                                    <button>
-                                        <FaArrowRight />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-
-        </>
+      <div className="fx-blog-detail-wrapper">
+        <div className="fx-blog-container">
+          <div className="fx-blog-error-state">
+            <RiAlertLine size={48} />
+            <h2>Post Not Found</h2>
+            <p>
+              The blog post you're looking for doesn't exist or has been
+              removed.
+            </p>
+            <Link href="/blog" className="fx-blog-back-to-blog">
+              <FaArrowLeft /> Back to Blog
+            </Link>
+          </div>
+        </div>
+      </div>
     );
+  }
+  return (
+    <>
+      <div className="fx-blog-header">
+        <div className="container">
+          {/* Breadcrumb */}
+          <div className="fx-blog-breadcrumb">
+            <Link href="/">Home</Link>
+            <FaChevronRight className="fx-blog-breadcrumb-icon" />
+            <Link href="/pages/blog">Blog</Link>
+            <FaChevronRight className="fx-blog-breadcrumb-icon" />
+            <span>{data?.categoryName}</span>
+          </div>
+          <div className="fx-blog-category">
+            <span className={`fx-blog-category-badge fx-blog-category-primary`}>
+              <FaTag /> {data?.categoryName}
+            </span>
+            <span className="fx-blog-reading-time">
+              <FaClock /> {data?.readTime} min read
+            </span>
+          </div>
+          <h1 className="fx-blog-title">{data?.tittle}</h1>
+          <div className="fx-blog-meta-info">
+            <div className="fx-blog-author">
+              <div className="fx-blog-author-avatar">
+                <Image
+                  src={
+                    post?.authorAvatar ||
+                    "/assets/img/blog/comment-author-1.jpg"
+                  }
+                  alt="author"
+                  width={48}
+                  height={48}
+                />
+              </div>
+              <div className="fx-blog-author-details">
+                <span className="fx-blog-author-name">{data?.createdBy}</span>
+                <span className="fx-blog-author-title">
+                  {data?.categoryName}
+                </span>
+              </div>
+            </div>
+
+            <div className="fx-blog-stats">
+              <span>
+                <FaCalendarAlt /> {data?.createdDate}
+              </span>
+              <span>
+                <FaEye /> {data?.totalView} views
+              </span>
+              <span>
+                <FaComments /> 34 comments
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="fx-blog-detail-wrapper">
+        <div className="fx-blog-container">
+          {/* Article Header */}
+
+          {/* Article Content */}
+          <div className="fx-blog-content-wrapper">
+            <div className="fx-blog-main">
+              {/* Featured Image */}
+              <div className="fx-blog-featured-image">
+                <img
+                  src={data?.image}
+                  alt="blog"
+                  width={1200}
+                  height={600}
+                  style={{ width: "100%", height: "auto", objectFit: "cover" }}
+                  priority
+                />
+              </div>
+              {/* Social Share Sidebar */}
+              <div className="fx-blog-share-sidebar">
+                <span className="fx-blog-share-label">Share</span>
+                <button
+                  onClick={() => handleShare("facebook")}
+                  className="fx-blog-share-btn fx-blog-share-facebook"
+                >
+                  <FaFacebookF />
+                </button>
+                <button
+                  onClick={() => handleShare("twitter")}
+                  className="fx-blog-share-btn fx-blog-share-twitter"
+                >
+                  <FaTwitter />
+                </button>
+                <button
+                  onClick={() => handleShare("linkedin")}
+                  className="fx-blog-share-btn fx-blog-share-linkedin"
+                >
+                  <FaLinkedinIn />
+                </button>
+                <button
+                  onClick={() => handleShare("whatsapp")}
+                  className="fx-blog-share-btn fx-blog-share-whatsapp"
+                >
+                  <FaWhatsapp />
+                </button>
+                <button
+                  onClick={() => handleShare("email")}
+                  className="fx-blog-share-btn fx-blog-share-email"
+                >
+                  <FaEnvelope />
+                </button>
+              </div>
+
+              {/* Article Body */}
+              <div className="fx-blog-body">
+                <div dangerouslySetInnerHTML={{ __html: data?.description }} />
+
+                {/* Tags */}
+                {/* <div className="fx-blog-tags">
+                  <span className="fx-blog-tags-label">Tags:</span>
+                  <div className="fx-blog-tag-list">
+                    {post?.tags?.map((tag, index) => (
+                      <Link href={`#`} key={index} className="fx-blog-tag-item">
+                        {tag}
+                      </Link>
+                    ))}
+                  </div>
+                </div> */}
+
+                {/* Article Actions */}
+                {/* <div className="fx-blog-actions">
+                  <div className="fx-blog-action-buttons">
+                    <button
+                      className={`fx-blog-action-btn ${liked ? "fx-blog-action-active" : ""}`}
+                      onClick={handleLike}
+                    >
+                      {liked ? <RiHeartFill /> : <FaRegHeart />} {likeCount}{" "}
+                      Likes
+                    </button>
+                    <button
+                      className={`fx-blog-action-btn ${bookmarked ? "fx-blog-action-active" : ""}`}
+                      onClick={() => setBookmarked(!bookmarked)}
+                    >
+                      {bookmarked ? <RiBookmarkFill /> : <FaRegBookmark />}{" "}
+                      {bookmarked ? "Saved" : "Save"}
+                    </button>
+                    <button className="fx-blog-action-btn">
+                      <FaPrint /> Print
+                    </button>
+                  </div>
+                </div> */}
+
+                {/* Author Bio */}
+                <div className="fx-blog-author-bio">
+                  <div className="fx-blog-author-bio-avatar">
+                    <Image
+                      src={
+                        post?.authorAvatar ||
+                        "/assets/img/blog/comment-author-1.jpg"
+                      }
+                      alt="author"
+                      width={80}
+                      height={80}
+                    />
+                  </div>
+                  <div className="fx-blog-author-bio-content">
+                    <h4>About {data?.createdBy}</h4>
+                    <p>{post?.authorBio}</p>
+                    <div className="fx-blog-author-social">
+                      <Link href="#" className="fx-blog-author-social-link">
+                        <FaTwitter />
+                      </Link>
+                      <Link href="#" className="fx-blog-author-social-link">
+                        <FaLinkedinIn />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Comments Section */}
+                <div className="fx-blog-comments">
+                  <h3>Comments ({post?.comments})</h3>
+
+                  {/* Comment Form */}
+                  <div className="fx-blog-comment-form">
+                    <textarea
+                      placeholder="Leave a comment..."
+                      rows={4}
+                    ></textarea>
+                    <button className="fx-blog-submit-comment">
+                      Post Comment
+                    </button>
+                  </div>
+
+                  {/* Sample Comments */}
+                  <div className="fx-blog-comments-list">
+                    <div className="fx-blog-single-comment">
+                      <div className="fx-blog-comment-avatar">
+                        <img
+                          src="/assets/img/blog/comment-author-1.jpg"
+                          alt="User"
+                          width={50}
+                          height={50}
+                        />
+                      </div>
+                      <div className="fx-blog-comment-content">
+                        <div className="fx-blog-comment-header">
+                          <span className="fx-blog-commenter-name">
+                            John Doe
+                          </span>
+                          <span className="fx-blog-comment-date">
+                            2 hours ago
+                          </span>
+                        </div>
+                        <p>
+                          Great analysis! Really helpful for my trading
+                          decisions.
+                        </p>
+                        <button className="fx-blog-comment-reply">Reply</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Sidebar */}
+            <div className="fx-blog-sidebar">
+              {/* Related Posts */}
+              {relatedPosts?.length > 0 && (
+                <div
+                  className="fx-blog-widget"
+                  style={{ position: "sticky", top: "0" }}
+                >
+                  <h3>Related Posts</h3>
+                  <div className="fx-blog-related-posts">
+                    {relatedPosts?.map((related, index) => (
+                      <Link
+                        href={`/pages/blog/${related?.blogId}`}
+                        key={index}
+                        className="fx-blog-related-item"
+                      >
+                        <div className="fx-blog-related-image">
+                          <Image
+                            src={related?.image}
+                            alt={related?.tittle}
+                            width={80}
+                            height={80}
+                          />
+                        </div>
+                        <div className="fx-blog-related-content">
+                          <h4>{related?.tittle}</h4>
+                          <span className="fx-blog-related-date">
+                            <FaCalendarAlt /> {related?.createdDate}
+                          </span>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Categories */}
+              <div className="fx-blog-widget">
+                <h3>Categories</h3>
+                <div className="fx-blog-category-list">
+                  {/* {relatedPosts?.map((related, index) => (
+                    <Link
+                      key={index}
+                      href="#"
+                      className="fx-blog-category-item"
+                    >
+                      {related?.categoryName}
+                      <span>({categoryCount[related?.categoryName]})</span>
+                    </Link>
+                  ))} */}
+                  {uniqueCategories.map((category) => (
+                    <Link
+                      key={category}
+                      href="#"
+                      className="fx-blog-category-item"
+                    >
+                      {category}
+                      <span>({categoryCount[category]})</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Newsletter */}
+              <div className="fx-blog-widget fx-blog-newsletter">
+                <h3>Newsletter</h3>
+                <p>Get the latest market updates directly in your inbox</p>
+                <div className="fx-blog-newsletter-form">
+                  <input
+                    type="email"
+                    placeholder="Your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <button>
+                    <FaArrowRight />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default memo(BlogDetail);

@@ -8309,6 +8309,8 @@
     font-weight: 500;
     color: white;
     z-index: 1;
+    backdrop-filter: blur(1px);
+    background: #fcfffc7a;
   }
 
   .topic-tag.primary {
