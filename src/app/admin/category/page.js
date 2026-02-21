@@ -1,11 +1,10 @@
 "use client";
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCategory, getCategory, deleteCategory, updateCategory } from '@/app/redux/slices/categorySlice';
+import { getCategory, deleteCategory, addorUpdateCategory } from '@/app/redux/slices/categorySlice';
 import Table from '@/app/common/datatable';
 import { Columns } from '@/app/constants/category-constant';
-import { toast } from 'react-toastify';
-import Image from "next/image";
+import { toast } from 'react-hot-toast';
 import { categoryData, categoryLoading } from "./category-selectors";
 import DeletePopup from '@/app/common/utils/delete-popup';
 import { limitToCharacters, validateRequiredField } from '@/app/common/utils/validationHelpers';
@@ -17,7 +16,6 @@ const Category = () => {
   const data = useSelector(categoryData);
 
   const [name, setName] = useState('');
-  const [image, setImage] = useState(null);
   const [active, setActive] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editCategoryId, setEditCategoryId] = useState(null);
@@ -32,7 +30,6 @@ const Category = () => {
 
   const resetForm = useCallback(() => {
     setName('');
-    setImage(null);
     setActive(false);
     setEditMode(false);
     setEditCategoryId(null);
@@ -40,45 +37,29 @@ const Category = () => {
     setErrors({});
   }, []);
 
+
   const validateForm = () => {
     const newErrors = {};
     const limitedName = limitToCharacters(name);
     const nameError = validateRequiredField(limitedName, "Category Name");
     if (nameError) newErrors.name = nameError;
 
-    const imageError = validateRequiredField(image, " Category Image");
-
-    if (imageError) newErrors.image = imageError;
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
-
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
-    if (errors.image) {
-      setErrors((prevErrors) => ({ ...prevErrors, image: '' }));
-    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('active', active);
+    // Prepare JSON body as per API requirement
+    const categoryData = {
+      id: editMode ? editCategoryId : 0,
+      categoryName: name,
+      status: active ? 1 : 0
+    };
 
     try {
-      let response;
-
-      if (editMode) {
-        formData.append('categoryId', editCategoryId);
-        formData.append('image', typeof image === 'string' ? "" : image);
-        response = await dispatch(updateCategory(formData)).unwrap();
-      } else {
-        formData.append('image', image);
-        response = await dispatch(addCategory(formData)).unwrap();
-      }
+      const response = await dispatch(addorUpdateCategory(categoryData)).unwrap();
 
       if (response.statusCode === 200) toast.success(response.message);
       else if (response.statusCode === 417) toast.warn(response.message);
@@ -88,18 +69,21 @@ const Category = () => {
       dispatch(getCategory());
     } catch (error) {
       console.error("Error during category submit:", error);
-      toast.error(error?.response?.data?.message || "Failed to process request.");
+      toast.error(error?.message || "Failed to process request.");
     }
   };
 
   const handleEdit = (category) => {
-    setName(category.name);
-    setEditCategoryId(category.categoryId);
-    setActive(category.active);
+    console.log(category)
+    // Extract the correct ID - API returns categoryId
+    const categoryId = category.categoryId || 0;
+    setName(category.categoryName || category.name || '');
+    setEditCategoryId(categoryId);
+    setActive(category.status === 1 || category.active === true);
     setEditMode(true);
     setShowForm(true);
-    setImage(category.image);
   };
+
 
   const handleDelete = (category) => {
     setCategoryToDelete(category);
@@ -121,39 +105,27 @@ const Category = () => {
     }
   };
 
-  const previewImage = useMemo(() => {
-    if (!image) return null;
-    const src = typeof image === 'string' ? image : URL.createObjectURL(image);
-    return (
-      <img
-        src={src}
-        width={128}
-        height={128}
-        alt="Preview"
-        className="object-cover w-32 h-32 mt-2 border rounded"
-      />
-    );
-  }, [image]);
-
   const formTitle = editMode ? "Edit Category" : "Add Category";
+
+
   const submitButtonText = loading ? (editMode ? "Updating..." : "Adding...") : (editMode ? "Update" : "Submit");
 
   return (
-    <div className="max-w-full mx-auto bg-white rounded-lg">
+    <div className="max-w-full mx-auto bg-white px-4 rounded-lg">
       {/* Add Category Button */}
-      <div className="flex items-center justify-start p-4 pb-5 md:justify-start">
+      <div className="rounded-md pb-4">
         {!showForm && (
           <button
             onClick={() => {
               setShowForm(true);
               setEditMode(false);
               setName('');
-              setImage(null);
               setActive(false);
             }}
             className="px-4 py-2 mx-auto mt-3 text-white rounded-md bg-add-btn md:mx-0"
           >
             + Add Category
+
           </button>
         )}
       </div>
@@ -177,14 +149,7 @@ const Category = () => {
             className="w-full p-3 border border-gray-300 rounded-md"
           />
           {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
-          <label className="block font-medium">Add Image</label>
-          <input
-            type="file"
-            onChange={handleImageChange}
-            className="w-full p-3 border border-gray-300 rounded-md"
-          />
-          {previewImage}
-          {errors.image && <p className="text-sm text-red-500">{errors.image}</p>}
+          
 
           {editMode && (
             <div className="flex items-center">
@@ -192,19 +157,18 @@ const Category = () => {
                 type="checkbox"
                 checked={active}
                 onChange={(e) => setActive(e.target.checked)}
-                className="w-5 h-5 mr-2"
+                className="w-5 h-5 mr-2 "
               />
-              <label className="text-sm font-medium text-gray-700">Active</label>
+              <label className="text-sm font-medium text-gray-700 pt-2">Active</label>
             </div>
           )}
 
-          <div className="flex gap-2">
+          <div className="flex gap-2" style={{marginTop:"18px"}}>
             <button
               type="submit"
               className="px-4 py-2 text-white rounded-md bg-submit-btn hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               disabled={loading}
             >
-              {loading && <Spinner size={4} color="text-white" />}
               {submitButtonText}
             </button>
             <button

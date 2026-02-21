@@ -68,8 +68,10 @@ export default function BlogAdminPage() {
   // Filter posts based on search
   const filteredPosts = blogPosts.filter(post =>
     post.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.createdBy?.toLowerCase().includes(searchTerm.toLowerCase())
+    post.createdBy?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post.metaTitle?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post.metaDescription?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post.createdDate?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Pagination
@@ -138,7 +140,11 @@ export default function BlogAdminPage() {
           <h1 className="text-xl md:text-2xl font-bold text-[#2E4A5B] dark:text-white">Blog Management</h1>
           <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-0.5 md:mt-1">Manage your blog posts and articles</p>
         </div>
-        <Link
+
+        
+      </div>
+
+      <Link
           href="/admin/blog/add"
           className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 mb-3 md:py-2.5 bg-gradient-to-r from-[#D16655] to-[#BD7579] font-medium rounded-lg md:rounded-xl text-sm hover:shadow-lg hover:shadow-[#D16655]/20 transition-all duration-300"
         >
@@ -146,7 +152,6 @@ export default function BlogAdminPage() {
           <span className="hidden sm:inline">Add New Blog</span>
           <span className="sm:hidden">Add Blog</span>
         </Link>
-      </div>
 
       {/* Stats Cards - Responsive Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 md:gap-4 mb-4">
@@ -168,24 +173,24 @@ export default function BlogAdminPage() {
           </div>
         </div>
 
-        {/* Total Views */}
+        {/* Read Time */}
         <div className="bg-white dark:bg-gray-800 rounded-lg md:rounded-xl p-3 md:p-4 shadow-sm border border-gray-100 dark:border-gray-700">
           <div className="flex items-center gap-2 md:gap-3">
             <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/30">
-              <RiEyeLine className="text-base md:text-lg text-green-600 dark:text-green-400" />
+              <RiTimeLine className="text-base md:text-lg text-green-600 dark:text-green-400" />
             </div>
             <div className="min-w-0">
               <p className="text-lg md:text-xl font-bold text-[#2E4A5B] dark:text-white truncate">
-                {blogPosts.reduce((acc, post) => acc + post.views, 0).toLocaleString()}
+                {blogPosts.reduce((acc, post) => acc + (post.readTime || 0), 0)}
               </p>
               <p className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                Total Views
+                Total Read Time
               </p>
             </div>
           </div>
         </div>
 
-        {/* Total Likes */}
+        {/* Published */}
         <div className="bg-white dark:bg-gray-800 rounded-lg md:rounded-xl p-3 md:p-4 shadow-sm border border-gray-100 dark:border-gray-700">
           <div className="flex items-center gap-2 md:gap-3">
             <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
@@ -193,16 +198,16 @@ export default function BlogAdminPage() {
             </div>
             <div className="min-w-0">
               <p className="text-lg md:text-xl font-bold text-[#2E4A5B] dark:text-white truncate">
-                {blogPosts.reduce((acc, post) => acc + post.likes, 0)}
+                {blogPosts.filter(post => post.status === 1).length}
               </p>
               <p className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                Total Likes
+                Published
               </p>
             </div>
           </div>
         </div>
 
-        {/* Total Comments */}
+        {/* Draft */}
         <div className="bg-white dark:bg-gray-800 rounded-lg md:rounded-xl p-3 md:p-4 shadow-sm border border-gray-100 dark:border-gray-700">
           <div className="flex items-center gap-2 md:gap-3">
             <div className="p-2 rounded-lg bg-amber-100 dark:bg-amber-900/30">
@@ -210,10 +215,10 @@ export default function BlogAdminPage() {
             </div>
             <div className="min-w-0">
               <p className="text-lg md:text-xl font-bold text-[#2E4A5B] dark:text-white truncate">
-                {blogPosts.reduce((acc, post) => acc + post.comments, 0)}
+                {blogPosts.filter(post => post.status === 0).length}
               </p>
               <p className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                Total Comments
+                Draft
               </p>
             </div>
           </div>
@@ -333,13 +338,22 @@ export default function BlogAdminPage() {
                     Post
                   </th>
                   <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden md:table-cell">
-                    Category
+                    Read Time
                   </th>
                   <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden lg:table-cell">
-                    Author
+                    Created Date
+                  </th>
+                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden lg:table-cell">
+                    Created By
                   </th>
                   <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden sm:table-cell">
                     Status
+                  </th>
+                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden xl:table-cell">
+                    Meta Title
+                  </th>
+                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden xl:table-cell">
+                    Meta Desc
                   </th>
                   <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden md:table-cell">
                     Views
@@ -351,15 +365,32 @@ export default function BlogAdminPage() {
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                 {currentPosts.length > 0 ? (
-                  currentPosts.map((post) => {
-                    const colors = categoryColors[post.categoryColor] || categoryColors.primary;
+                  currentPosts.map((post, index) => {
+                    const blogData = {
+                      id: post.id || index + 1,
+                      title: post.title || post.tittle || '-',
+                      image: post.image || '/assets/img/blog/blog-img-1-1.jpg',
+                      date: post.createdDate || post.date || '-',
+                      readTime: post.readTime || 0,
+                      createdDate: post.createdDate || '-',
+                      createdBy: post.createdBy || '-',
+                      status: post.status !== undefined ? post.status : 1,
+                      metaTitle: post.metaTitle || '-',
+                      metaDescription: post.metaDescription || '-',
+                      views: post.views || 0,
+                      likes: post.likes || 0,
+                      comments: post.comments || 0,
+                      category: post.metaKeyWord || '-',
+                      author: post.createdBy || '-'
+                    };
+                    
                     return (
-                      <tr key={post.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+                      <tr key={blogData.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
                         <td className="px-3 md:px-4 py-3 md:py-4" data-label="Select">
                           <input
                             type="checkbox"
-                            checked={selectedPosts.includes(post.id)}
-                            onChange={() => handleSelectPost(post.id)}
+                            checked={selectedPosts.includes(blogData.id)}
+                            onChange={() => handleSelectPost(blogData.id)}
                             className="w-4 h-4 rounded border-gray-300 text-[#D16655] focus:ring-[#D16655]"
                           />
                         </td>
@@ -367,56 +398,73 @@ export default function BlogAdminPage() {
                           <div className="flex items-center gap-2 md:gap-3">
                             <div className="w-12 md:w-16 h-10 md:h-12 relative rounded-lg overflow-hidden flex-shrink-0">
                               <Image
-                                src={post.image}
-                                alt={post.title}
+                                src={blogData.image}
+                                alt={blogData.title}
                                 fill
                                 className="object-cover"
                               />
                             </div>
                             <div className="min-w-0">
                               <p className="text-xs md:text-sm font-medium text-gray-800 dark:text-white truncate max-w-[120px] md:max-w-[200px] lg:max-w-[300px]">
-                                {post.title}
+                                {blogData.title}
                               </p>
                               <div className="flex items-center gap-1 mt-0.5">
                                 <span className="flex items-center gap-0.5 text-[10px] md:text-xs text-gray-500 dark:text-gray-400">
                                   <RiCalendarLine className="text-[8px] md:text-xs" />
-                                  {post.date}
+                                  {blogData.date}
                                 </span>
                               </div>
                             </div>
                           </div>
                         </td>
-                        <td className="px-3 md:px-4 py-3 md:py-4 hidden md:table-cell" data-label="Category">
-                          <span className={`inline-flex px-2 md:px-2.5 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-medium ${colors.bg} ${colors.text} ${colors.darkBg} ${colors.darkText}`}>
-                            {post.category}
+                        <td className="px-3 md:px-4 py-3 md:py-4 hidden md:table-cell" data-label="Read Time">
+                          <span className="text-xs md:text-sm text-gray-600 dark:text-gray-300">
+                            {blogData.readTime ? `${blogData.readTime} min` : '-'}
                           </span>
                         </td>
-                        <td className="px-3 md:px-4 py-3 md:py-4 hidden lg:table-cell" data-label="Author">
+                        <td className="px-3 md:px-4 py-3 md:py-4 hidden lg:table-cell" data-label="Created Date">
+                          <span className="text-xs md:text-sm text-gray-600 dark:text-gray-300">
+                            {blogData.createdDate}
+                          </span>
+                        </td>
+                        <td className="px-3 md:px-4 py-3 md:py-4 hidden lg:table-cell" data-label="Created By">
                           <div className="flex items-center gap-2">
                             <div className="w-6 md:w-7 h-6 md:h-7 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-[10px] md:text-xs font-medium text-white">
-                              {post?.author?.charAt(0)}
+                              {blogData.createdBy ? blogData.createdBy.charAt(0) : 'U'}
                             </div>
-                            <span className="text-xs md:text-sm text-gray-600 dark:text-gray-300 hidden sm:inline">{post.author}</span>
+                            <span className="text-xs md:text-sm text-gray-600 dark:text-gray-300 hidden sm:inline">
+                              {blogData.createdBy}
+                            </span>
                           </div>
                         </td>
                         <td className="px-3 md:px-4 py-3 md:py-4 hidden sm:table-cell" data-label="Status">
-                          <span className={`inline-flex px-2 md:px-2.5 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-medium ${post.status === 'published'
+                          <span className={`inline-flex px-2 md:px-2.5 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-medium ${blogData.status === 1 || blogData.status === 'published' || blogData.status === 1
                               ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
                               : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
                             }`}>
-                            {post?.status?.charAt(0)?.toUpperCase() + post.status.slice(1)}
+                            {blogData.status === 1 ? 'Published' : blogData.status === 0 ? 'Draft' : blogData.status || 'N/A'}
+                          </span>
+                        </td>
+                        <td className="px-3 md:px-4 py-3 md:py-4 hidden xl:table-cell" data-label="Meta Title">
+                          <span className="text-xs md:text-sm text-gray-600 dark:text-gray-300 truncate block max-w-[150px]" title={blogData.metaTitle}>
+                            {blogData.metaTitle}
+                          </span>
+                        </td>
+                        <td className="px-3 md:px-4 py-3 md:py-4 hidden xl:table-cell" data-label="Meta Description">
+                          <span className="text-xs md:text-sm text-gray-600 dark:text-gray-300 truncate block max-w-[150px]" title={blogData.metaDescription}>
+                            {blogData.metaDescription}
                           </span>
                         </td>
                         <td className="px-3 md:px-4 py-3 md:py-4 hidden md:table-cell" data-label="Views">
                           <div className="flex items-center gap-1 text-xs md:text-sm text-gray-600 dark:text-gray-300">
                             <RiEyeLine className="text-xs md:text-sm" />
-                            {post.views.toLocaleString()}
+                            {blogData.views?.toLocaleString() || 0}
                           </div>
                         </td>
                         <td className="px-3 md:px-4 py-3 md:py-4 text-right" data-label="Actions">
                           <div className="flex items-center justify-end gap-0.5 md:gap-1">
                             <Link
-                              href={`/pages/blog/${post.id}`}
+                              href={`/pages/blog/${blogData.id}`}
                               target="_blank"
                               className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-[#D16655] transition-colors"
                               title="View"
@@ -424,7 +472,7 @@ export default function BlogAdminPage() {
                               <RiEyeLine className="text-sm md:text-base" />
                             </Link>
                             <Link
-                              href={`/admin/blog/edit/${post.id}`}
+                              href={`/admin/blog/edit/${blogData.id}`}
                               className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-[#D16655] transition-colors"
                               title="Edit"
                             >
@@ -443,7 +491,7 @@ export default function BlogAdminPage() {
                   })
                 ) : (
                   <tr>
-                    <td colSpan={7} className="px-4 py-8 md:py-12 text-center">
+                    <td colSpan={10} className="px-4 py-8 md:py-12 text-center">
                       <div className="flex flex-col items-center">
                         <RiArticleLine className="text-3xl md:text-4xl text-gray-300 dark:text-gray-600 mb-2" />
                         <p className="text-sm md:text-base text-gray-500 dark:text-gray-400">No blog posts found</p>
@@ -460,61 +508,80 @@ export default function BlogAdminPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
               {currentPosts.length > 0 ? (
                 currentPosts.map((post) => {
+                  // Map API fields to table fields
+                  const blogData = {
+                    id: post.id || index + 1,
+                    title: post.title || post.tittle || '-',
+                    image: post.image || '/assets/img/blog/blog-img-1-1.jpg',
+                    date: post.createdDate || post.date || '-',
+                    readTime: post.readTime || 0,
+                    createdDate: post.createdDate || '-',
+                    createdBy: post.createdBy || '-',
+                    status: post.status !== undefined ? post.status : 1,
+                    metaTitle: post.metaTitle || '-',
+                    metaDescription: post.metaDescription || '-',
+                    views: post.views || 0,
+                    likes: post.likes || 0,
+                    comments: post.comments || 0,
+                    category: post.metaKeyWord || '-',
+                    author: post.createdBy || '-'
+                  };
+                  
                   const colors = categoryColors[post.categoryColor] || categoryColors.primary;
                   return (
-                    <div key={post.id} className="bg-gray-50 dark:bg-gray-700/30 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                    <div key={blogData.id} className="bg-gray-50 dark:bg-gray-700/30 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
                       <div className="relative h-32 md:h-40">
                         <Image
-                          src={post.image}
-                          alt={post.title}
+                          src={blogData.image}
+                          alt={blogData.title}
                           fill
                           className="object-cover"
                         />
                         <div className="absolute top-2 left-2">
                           <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-medium ${colors.bg} ${colors.text}`}>
-                            {post.category}
+                            {blogData.category}
                           </span>
                         </div>
                         <div className="absolute top-2 right-2">
-                          <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-medium ${post.status === 'published'
+                          <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-medium ${blogData.status === 1 || blogData.status === 'published'
                               ? 'bg-green-100 text-green-700'
                               : 'bg-gray-100 text-gray-700'
                             }`}>
-                            {post.status}
+                            {blogData.status === 1 ? 'Published' : 'Draft'}
                           </span>
                         </div>
                       </div>
                       <div className="p-3">
                         <h3 className="text-sm font-medium text-gray-800 dark:text-white line-clamp-2 mb-2">
-                          {post.title}
+                          {blogData.title}
                         </h3>
                         <div className="flex items-center gap-2 mb-3">
                           <div className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-[10px] font-medium text-white">
-                            {post.author.charAt(0)}
+                            {blogData.author.charAt(0)}
                           </div>
-                          <span className="text-xs text-gray-500 dark:text-gray-400">{post.author}</span>
+                          <span className="text-xs text-gray-500 dark:text-gray-400">{blogData.author}</span>
                         </div>
                         <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-3">
                           <span className="flex items-center gap-1">
-                            <RiEyeLine /> {post.views.toLocaleString()}
+                            <RiEyeLine /> {blogData.views.toLocaleString()}
                           </span>
                           <span className="flex items-center gap-1">
-                            <RiThumbUpLine /> {post.likes}
+                            <RiThumbUpLine /> {blogData.likes}
                           </span>
                           <span className="flex items-center gap-1">
-                            <RiMessage3Line /> {post.comments}
+                            <RiMessage3Line /> {blogData.comments}
                           </span>
                         </div>
                         <div className="flex items-center gap-1">
                           <Link
-                            href={`/pages/blog/${post.id}`}
+                            href={`/pages/blog/${blogData.id}`}
                             target="_blank"
                             className="flex-1 p-1.5 text-center text-xs bg-gray-200 dark:bg-gray-600 rounded text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
                           >
                             View
                           </Link>
                           <Link
-                            href={`/admin/blog/edit/${post.id}`}
+                            href={`/admin/blog/edit/${blogData.id}`}
                             className="flex-1 p-1.5 text-center text-xs bg-[#D16655] text-white rounded hover:bg-[#c05545] transition-colors"
                           >
                             Edit

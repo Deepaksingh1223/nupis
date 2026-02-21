@@ -1,12 +1,12 @@
 "use client";
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCategory, getCategory, deleteCategory, updateCategory } from '@/app/redux/slices/categorySlice';
+import { addCategory, getCategory, deleteCategory, updateCategory, setPagination } from '@/app/redux/slices/categorySlice';
 import Table from '@/app/common/datatable';
 import { Columns } from '@/app/constants/category-constant';
 import { toast } from 'react-toastify';
 import Image from "next/image";
-import { categoryData, categoryLoading } from "./category-selectors";
+import { categoryData, categoryLoading, categoryPagination } from "./category-selectors";
 import DeletePopup from '@/app/common/utils/delete-popup';
 import { limitToCharacters, validateRequiredField } from '@/app/common/utils/validationHelpers';
 import Spinner from '@/app/common/spinner';
@@ -15,6 +15,17 @@ const Category = () => {
   const dispatch = useDispatch();
   const loading = useSelector(categoryLoading);
   const data = useSelector(categoryData);
+  const pagination = useSelector(categoryPagination);
+
+  // Transform API data to match component expectations
+  const transformedData = useMemo(() => {
+    if (!data || data.length === 0) return [];
+    return data.map(item => ({
+      ...item,
+      name: item.categoryName || item.name,
+      active: item.status === 'Active' || item.active === true
+    }));
+  }, [data]);
 
   const [name, setName] = useState('');
   const [image, setImage] = useState(null);
@@ -121,6 +132,18 @@ const Category = () => {
     }
   };
 
+  // Pagination handlers
+  const handlePageChange = (newPage) => {
+    dispatch(setPagination({ currentPage: newPage }));
+  };
+
+  const handleItemsPerPageChange = (newItemsPerPage) => {
+    dispatch(setPagination({ 
+      itemsPerPage: newItemsPerPage,
+      currentPage: 1 // Reset to first page when changing items per page
+    }));
+  };
+
   const previewImage = useMemo(() => {
     if (!image) return null;
     const src = typeof image === 'string' ? image : URL.createObjectURL(image);
@@ -151,7 +174,7 @@ const Category = () => {
               setImage(null);
               setActive(false);
             }}
-            className="px-4 py-2 mx-auto mt-3 text-white rounded-md bg-add-btn md:mx-0"
+            className="px-4 py-2  mt-3 text-white rounded-md bg-add-btn md:mx-0"
           >
             + Add Category
           </button>
@@ -177,7 +200,7 @@ const Category = () => {
             className="w-full p-3 border border-gray-300 rounded-md"
           />
           {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
-          <label className="block font-medium">Add Image</label>
+          <label className="block font-medium " >Add Image</label>
           <input
             type="file"
             onChange={handleImageChange}
@@ -198,7 +221,7 @@ const Category = () => {
             </div>
           )}
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 mb-4 ">
             <button
               type="submit"
               className="px-4 py-2 text-white rounded-md bg-submit-btn hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
@@ -222,11 +245,14 @@ const Category = () => {
       {!showForm && (
         <Table
           columns={Columns}
-          data={data}
+          data={transformedData}
           onEdit={handleEdit}
           onDelete={handleDelete}
           loading={loading}
           title={'Category'}
+          pagination={pagination}
+          onPageChange={handlePageChange}
+          onItemsPerPageChange={handleItemsPerPageChange}
         />
       )}
 

@@ -378,7 +378,7 @@ export default function AdminDashboard() {
                         ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
                         : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
                       }`}>
-                      {course.status.charAt(0).toUpperCase() + course.status.slice(1)}
+                      {course?.status?.charAt(0)?.toUpperCase() + course.status.slice(1)}
                     </span>
                   </td>
                   <td className="px-3 lg:px-5 py-3 lg:py-4 text-right" data-label="Action">

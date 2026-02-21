@@ -1,14 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+// API endpoint for admin login
+const API_URL = 'https://agentondemand.ai/api/Blog/adminLogin';
 
 // Create async thunk for admin login
 export const adminLogin = createAsyncThunk(
     'auth/adminLogin',
     async (credentials, { rejectWithValue }) => {
         try {
-            const response = await axios.post(`${API_URL}/admin/login`, credentials);
+            const response = await axios.post(API_URL, credentials);
             return response.data;
         } catch (error) {
             if (error.response) {
