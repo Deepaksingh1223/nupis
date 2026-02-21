@@ -311,7 +311,7 @@ return (
                     className="flex items-center gap-2 lg:gap-3 p-1.5 lg:p-2 rounded-xl hover:bg-[#F8EBE5] dark:hover:bg-gray-700 transition-colors"
                   >
                     <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-xl bg-gradient-to-br from-[#D16655] to-[#BD7579] flex items-center justify-center text-white font-medium text-sm shadow-lg shadow-[#D16655]/20">
-                      {user.name.charAt(0)}
+                      {user?.name?.charAt(0)}
                     </div>
                     <div className="hidden lg:block text-left">
                       <p className="text-sm font-semibold text-[#2E4A5B] dark:text-white">{user.name}</p>

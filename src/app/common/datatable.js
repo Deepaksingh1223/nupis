@@ -1,7 +1,17 @@
 "use client";
 import React from 'react';
 
-const Table = ({ columns, data, onEdit, onDelete, loading, title }) => {
+const Table = ({ columns, data, onEdit, onDelete, loading, title, pagination, onPageChange, onItemsPerPageChange }) => {
+    // Calculate paginated data
+    const currentPage = pagination?.currentPage || 1;
+    const itemsPerPage = pagination?.itemsPerPage || 10;
+    const totalItems = pagination?.totalItems || data?.length || 0;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedData = data?.slice(startIndex, endIndex) || [];
+
     if (loading) {
         return (
             <div className="flex items-center justify-center p-8">
@@ -21,6 +31,18 @@ const Table = ({ columns, data, onEdit, onDelete, loading, title }) => {
         );
     }
 
+    const handlePageChange = (newPage) => {
+        if (onPageChange) {
+            onPageChange(newPage);
+        }
+    };
+
+    const handleItemsPerPageChange = (e) => {
+        if (onItemsPerPageChange) {
+            onItemsPerPageChange(Number(e.target.value));
+        }
+    };
+
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -38,7 +60,7 @@ const Table = ({ columns, data, onEdit, onDelete, loading, title }) => {
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                    {data.map((row, rowIndex) => (
+                    {paginatedData.map((row, rowIndex) => (
                         <tr key={rowIndex} className="hover:bg-gray-50">
                             {columns.map((col, colIndex) => (
                                 <td
@@ -46,7 +68,7 @@ const Table = ({ columns, data, onEdit, onDelete, loading, title }) => {
                                     className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
                                 >
                                     {col.render ? (
-                                        col.render(row, { onEdit, onDelete })
+                                        col.render(row, { onEdit, onDelete }, startIndex + rowIndex)
                                     ) : (
                                         col.field.split('.').reduce((obj, key) => obj?.[key], row)
                                     )}
@@ -56,6 +78,92 @@ const Table = ({ columns, data, onEdit, onDelete, loading, title }) => {
                     ))}
                 </tbody>
             </table>
+            
+            {/* Pagination Controls */}
+            {totalItems > 0 && (
+                <div className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200">
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-700">Show</span>
+                        <select
+                            value={itemsPerPage}
+                            onChange={handleItemsPerPageChange}
+                            className="border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                            <option value={5}>5</option>
+                            <option value={10}>10</option>
+                            <option value={25}>25</option>
+                            <option value={50}>50</option>
+                        </select>
+                        <span className="text-sm text-gray-700">entries</span>
+                    </div>
+                    
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-700">
+                            Showing {startIndex + 1} to {Math.min(endIndex, totalItems)} of {totalItems} entries
+                        </span>
+                    </div>
+                    
+                    <div className="flex items-center gap-1">
+                        <button
+                            onClick={() => handlePageChange(1)}
+                            disabled={currentPage === 1}
+                            className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            First
+                        </button>
+                        <button
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            Previous
+                        </button>
+                        
+                        {/* Page Numbers */}
+                        {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                            let pageNum;
+                            if (totalPages <= 5) {
+                                pageNum = i + 1;
+                            } else if (currentPage <= 3) {
+                                pageNum = i + 1;
+                            } else if (currentPage >= totalPages - 2) {
+                                pageNum = totalPages - 4 + i;
+                            } else {
+                                pageNum = currentPage - 2 + i;
+                            }
+                            
+                            return (
+                                <button
+                                    key={pageNum}
+                                    onClick={() => handlePageChange(pageNum)}
+                                    className={`px-3 py-1 text-sm border rounded ${
+                                        currentPage === pageNum
+                                            ? 'bg-blue-600 text-white border-blue-600'
+                                            : 'border-gray-300 hover:bg-gray-50'
+                                    }`}
+                                >
+                                    {pageNum}
+                                </button>
+                            );
+                        })}
+                        
+                        <button
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                            className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            Next
+                        </button>
+                        <button
+                            onClick={() => handlePageChange(totalPages)}
+                            disabled={currentPage === totalPages}
+                            className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            Last
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

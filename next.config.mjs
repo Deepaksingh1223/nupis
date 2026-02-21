@@ -3,7 +3,13 @@ const nextConfig = {
   /* config options here */
   reactCompiler: true,
   images: {
-    domains: ["imagedelivery.net"],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'imagedelivery.net',
+        pathname: '/nq9qT5FHZv9Sg48UUnD1-A/**',
+      },
+    ],
   },
 };
 

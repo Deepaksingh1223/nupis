@@ -1289,6 +1289,7 @@ input[type=checkbox]:checked~label:before {
   color: var(--white-color);
   background-color: var(--theme-color);
   border-color: var(--theme-color);
+  margin-top: 10px;
 }
 
 input[type=checkbox]~label {

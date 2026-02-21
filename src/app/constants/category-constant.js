@@ -1,32 +1,18 @@
 export const Columns = [
     {
-        field: "categoryId",
-        header: "ID",
-        sortable: true,
-        width: "10%"
+        field: "serialNumber",
+        header: "S.No",
+        sortable: false,
+        width: "8%",
+        render: (rowData, actions, index) => {
+            return index;
+        }
     },
     {
-        field: "name",
+        field: "categoryName",
         header: "Category Name",
         sortable: true,
         width: "30%"
-    },
-    {
-        field: "image",
-        header: "Image",
-        sortable: false,
-        width: "20%",
-        render: (rowData) => {
-            return rowData.image ? (
-                <img 
-                    src={rowData.image} 
-                    alt={rowData.name} 
-                    style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }}
-                />
-            ) : (
-                <span>No Image</span>
-            );
-        }
     },
     {
         field: "active",

@@ -1,9 +1,17 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo, useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getContactUs } from "@/app/redux/slices/blogSlice";
 
 const ContactUs = () => {
+  const dispatch = useDispatch();
+  const { contactUsData, loading } = useSelector((state) => state.blog);
   const [activeFaq, setActiveFaq] = useState(null);
+
+  useEffect(() => {
+    dispatch(getContactUs());
+  }, [dispatch]);
 
   const toggleFaq = (index) => {
     setActiveFaq(activeFaq === index ? null : index);
