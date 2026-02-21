@@ -501,7 +501,7 @@ const BlogDetail = () => {
           <div className="fx-blog-breadcrumb">
             <Link href="/">Home</Link>
             <FaChevronRight className="fx-blog-breadcrumb-icon" />
-            <Link href="/blog">Blog</Link>
+            <Link href="/pages/blog">Blog</Link>
             <FaChevronRight className="fx-blog-breadcrumb-icon" />
             <span>{data?.categoryName}</span>
           </div>
@@ -510,7 +510,7 @@ const BlogDetail = () => {
               <FaTag /> {data?.categoryName}
             </span>
             <span className="fx-blog-reading-time">
-              <FaClock /> 8 min read
+              <FaClock /> {data?.readTime} min read
             </span>
           </div>
           <h1 className="fx-blog-title">{data?.tittle}</h1>
@@ -607,7 +607,7 @@ const BlogDetail = () => {
                 <div dangerouslySetInnerHTML={{ __html: data?.description }} />
 
                 {/* Tags */}
-                <div className="fx-blog-tags">
+                {/* <div className="fx-blog-tags">
                   <span className="fx-blog-tags-label">Tags:</span>
                   <div className="fx-blog-tag-list">
                     {post?.tags?.map((tag, index) => (
@@ -616,10 +616,10 @@ const BlogDetail = () => {
                       </Link>
                     ))}
                   </div>
-                </div>
+                </div> */}
 
                 {/* Article Actions */}
-                <div className="fx-blog-actions">
+                {/* <div className="fx-blog-actions">
                   <div className="fx-blog-action-buttons">
                     <button
                       className={`fx-blog-action-btn ${liked ? "fx-blog-action-active" : ""}`}
@@ -639,7 +639,7 @@ const BlogDetail = () => {
                       <FaPrint /> Print
                     </button>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Author Bio */}
                 <div className="fx-blog-author-bio">
