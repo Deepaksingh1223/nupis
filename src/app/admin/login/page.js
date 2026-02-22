@@ -82,7 +82,6 @@ export default function AdminLogin() {
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         try {
             const result = await dispatch(adminLogin(values)).unwrap();
-            console.log(result);
             if (result.statusCode === 409) {
                 toast.error(result.message)
                 resetForm();

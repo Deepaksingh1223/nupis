@@ -251,10 +251,13 @@ export default function AdminDashboard() {
               View All
             </Link>
           </div>
-          <div className="admin-table-container">
-            <table className="w-full">
+          {/* Added overflow-x-auto for horizontal scroll on small screens */}
+         
+
+          <div className="overflow-x-auto w-full">
+            <table className="w-full text-left border-collapse min-w-[700px]">
               <thead className="bg-gray-50 dark:bg-gray-700/50">
-                <tr>
+              <tr>
                   <th className="px-3 lg:px-5 py-2 lg:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">User</th>
                   <th className="px-3 lg:px-5 py-2 lg:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden sm:table-cell">Role</th>
                   <th className="px-3 lg:px-5 py-2 lg:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden md:table-cell">Joined</th>
@@ -262,7 +265,7 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                {mockRecentUsers.map((user) => (
+                 {mockRecentUsers.map((user) => (
                   <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/30">
                     <td className="px-3 lg:px-5 py-3 lg:py-4" data-label="User">
                       <div className="flex items-center gap-2 lg:gap-3">
@@ -344,9 +347,10 @@ export default function AdminDashboard() {
             View All Courses
           </Link>
         </div>
-        <div className="admin-table-container">
-          <table className="w-full">
-            <thead className="bg-gray-50 dark:bg-gray-700/50">
+
+        <div className="overflow-x-auto w-full">
+            <table className="w-full text-left border-collapse min-w-[700px]">
+              <thead className="bg-gray-50 dark:bg-gray-700/50">
               <tr>
                 <th className="px-3 lg:px-5 py-2 lg:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Course</th>
                 <th className="px-3 lg:px-5 py-2 lg:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden sm:table-cell">Students</th>
@@ -354,8 +358,8 @@ export default function AdminDashboard() {
                 <th className="px-3 lg:px-5 py-2 lg:py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden sm:table-cell">Status</th>
                 <th className="px-3 lg:px-5 py-2 lg:py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Action</th>
               </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+              </thead>
+              <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
               {mockCourses.map((course) => (
                 <tr key={course.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/30">
                   <td className="px-3 lg:px-5 py-3 lg:py-4" data-label="Course">
@@ -375,8 +379,8 @@ export default function AdminDashboard() {
                   </td>
                   <td className="px-3 lg:px-5 py-3 lg:py-4 hidden sm:table-cell" data-label="Status">
                     <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${course.status === 'published'
-                        ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                        : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+                      ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                      : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
                       }`}>
                       {course?.status?.charAt(0)?.toUpperCase() + course.status.slice(1)}
                     </span>
@@ -391,12 +395,13 @@ export default function AdminDashboard() {
                   </td>
                 </tr>
               ))}
-            </tbody>
-          </table>
-        </div>
+              </tbody>
+            </table>
+          </div>
+
       </div>
 
-  
+
     </div>
   );
 }

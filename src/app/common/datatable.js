@@ -37,11 +37,6 @@ const Table = ({ columns, data, onEdit, onDelete, loading, title, pagination, on
         }
     };
 
-    const handleItemsPerPageChange = (e) => {
-        if (onItemsPerPageChange) {
-            onItemsPerPageChange(Number(e.target.value));
-        }
-    };
 
     return (
         <div className="overflow-x-auto">
@@ -82,20 +77,7 @@ const Table = ({ columns, data, onEdit, onDelete, loading, title, pagination, on
             {/* Pagination Controls */}
             {totalItems > 0 && (
                 <div className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200">
-                    <div className="flex items-center gap-2">
-                        <span className="text-sm text-gray-700">Show</span>
-                        <select
-                            value={itemsPerPage}
-                            onChange={handleItemsPerPageChange}
-                            className="border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                            <option value={5}>5</option>
-                            <option value={10}>10</option>
-                            <option value={25}>25</option>
-                            <option value={50}>50</option>
-                        </select>
-                        <span className="text-sm text-gray-700">entries</span>
-                    </div>
+            
                     
                     <div className="flex items-center gap-2">
                         <span className="text-sm text-gray-700">
@@ -105,18 +87,11 @@ const Table = ({ columns, data, onEdit, onDelete, loading, title, pagination, on
                     
                     <div className="flex items-center gap-1">
                         <button
-                            onClick={() => handlePageChange(1)}
-                            disabled={currentPage === 1}
-                            className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            First
-                        </button>
-                        <button
                             onClick={() => handlePageChange(currentPage - 1)}
                             disabled={currentPage === 1}
                             className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            Previous
+                             {"<"}
                         </button>
                         
                         {/* Page Numbers */}
@@ -152,14 +127,7 @@ const Table = ({ columns, data, onEdit, onDelete, loading, title, pagination, on
                             disabled={currentPage === totalPages}
                             className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            Next
-                        </button>
-                        <button
-                            onClick={() => handlePageChange(totalPages)}
-                            disabled={currentPage === totalPages}
-                            className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            Last
+                            {">"}
                         </button>
                     </div>
                 </div>

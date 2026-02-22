@@ -5,7 +5,6 @@ import { addCategory, getCategory, deleteCategory, updateCategory, setPagination
 import Table from '@/app/common/datatable';
 import { Columns } from '@/app/constants/category-constant';
 import { toast } from 'react-toastify';
-import Image from "next/image";
 import { categoryData, categoryLoading, categoryPagination } from "./category-selectors";
 import DeletePopup from '@/app/common/utils/delete-popup';
 import { limitToCharacters, validateRequiredField } from '@/app/common/utils/validationHelpers';

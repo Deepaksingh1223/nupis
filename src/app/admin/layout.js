@@ -55,16 +55,38 @@ const getUserData = () => {
 export default function AdminLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  
+  // Mobile: sidebar hidden by default, Desktop: sidebar visible by default
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Mobile state
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false); // Desktop collapsed state
+  const [isMobile, setIsMobile] = useState(false);
   const [isDark, setIsDark] = useState(false);
-const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Close sidebar when navigating to a new page
+  // Check if viewport is mobile
   useEffect(() => {
-    setSidebarOpen(false);
-  }, [pathname]);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+      if (window.innerWidth < 1024) {
+        setSidebarOpen(false); // Close sidebar on mobile by default
+      } else {
+        setSidebarOpen(true); // Open sidebar on desktop by default
+      }
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Close sidebar when navigating to a new page (mobile only)
+  useEffect(() => {
+    if (isMobile) {
+      setSidebarOpen(false);
+    }
+  }, [pathname, isMobile]);
 
   // Mock user data
   const [user, setUser] = useState({
@@ -143,6 +165,25 @@ const [userMenuOpen, setUserMenuOpen] = useState(false);
     setIsAuthenticated(false);
     router.push('/admin/login');
   };
+
+  // Toggle sidebar - different behavior for mobile vs desktop
+  const toggleSidebar = () => {
+    if (isMobile) {
+      // Mobile: slide-in/out
+      setSidebarOpen(!sidebarOpen);
+    } else {
+      // Desktop: collapse/expand
+      setSidebarCollapsed(!sidebarCollapsed);
+    }
+  };
+
+  // Determine sidebar width based on state
+  const getSidebarWidth = () => {
+    if (isMobile) {
+      return 'w-72'; // Fixed width on mobile
+    }
+    return sidebarCollapsed ? 'w-20' : 'w-64'; // Collapsed or expanded on desktop
+  };
   
   // Show loading while checking auth
   if (isLoading) {
@@ -179,36 +220,60 @@ return (
     <ReduxProvider>
       <Toaster position="top-right" />
       <div className={`min-h-screen ${isDark ? 'dark' : ''}`}>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative">
+          {/* Mobile Overlay */}
+          {isMobile && sidebarOpen && (
+            <div 
+              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
+              onClick={() => setSidebarOpen(false)}
+            />
+          )}
+
           {/* Sidebar */}
           <aside 
-            className={`fixed lg:static inset-y-0 left-0 z-50 flex flex-col bg-[#29d2cc] dark:bg-[#2E4A5B] border-r border-[#e6edfd] dark:border-gray-700 transition-all duration-300 ${
-              sidebarOpen ? 'w-64' : 'w-0 lg:w-20'
-            } ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
+            className={`fixed top-16 left-0 z-50 flex flex-col bg-[#29d2cc] dark:bg-[#2E4A5B] border-r border-[#e6edfd] dark:border-gray-700 transition-all duration-300 ${
+              getSidebarWidth()
+            } ${
+              // Mobile: slide in from left, Desktop: always visible
+              isMobile 
+                ? `${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`
+                : ''
+            }`}
+            style={{ marginTop: 0 }}
           >
             {/* Logo */}
             <div className="h-16 lg:h-20 flex items-center justify-between px-2 lg:px-4 border-b border-white/20 dark:border-gray-700 bg-transparent dark:bg-transparent">
-              {sidebarOpen ? (
-                <Link href="/admin" className="flex items-center gap-3">
-                  <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-xl bg-white flex items-center justify-center shadow-lg">
-                    <span className="text-[#D16655] font-bold text-sm lg:text-lg">N</span>
+              {/* Logo - Always show on mobile when sidebar is open, on desktop based on collapsed state */}
+              {(!isMobile || sidebarOpen) && (
+                !isMobile && sidebarCollapsed ? (
+                  <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-lg mx-auto">
+                    <span className="text-[#D16655] font-bold text-lg">N</span>
                   </div>
-                  <div className="flex flex-col">
-                    <span className="font-bold text-sm lg:text-lg text-white dark:text-white tracking-tight">NUPIS</span>
-                    <span className="text-[8px] lg:text-[10px] text-white/80 -mt-1 hidden lg:block">Admin Panel</span>
-                  </div>
-                </Link>
-              ) : (
-                <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-xl bg-white flex items-center justify-center shadow-lg">
-                  <span className="text-[#D16655] font-bold text-sm lg:text-lg">N</span>
-                </div>
+                ) : (
+                  <Link href="/admin" className="flex items-center gap-3">
+                    <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-xl bg-white flex items-center justify-center shadow-lg">
+                      <span className="text-[#D16655] font-bold text-sm lg:text-lg">N</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="font-bold text-sm lg:text-lg text-white dark:text-white tracking-tight">NUPIS</span>
+                      <span className="text-[8px] lg:text-[10px] text-white/80 -mt-1 hidden lg:block">Admin Panel</span>
+                    </div>
+                  </Link>
+                )
               )}
-              <button 
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="lg:hidden p-1.5 lg:p-2 rounded-lg hover:bg-white/20 dark:hover:bg-gray-700 text-white dark:text-gray-300 transition-colors"
-              >
-                <RiCloseLine className="text-lg lg:text-xl" />
-              </button>
+              {/* Close button - show on mobile, show on desktop when expanded */}
+              {isMobile ? (
+                <button 
+                  onClick={() => setSidebarOpen(false)}
+                  className="p-1.5 lg:p-2 rounded-lg hover:bg-white/20 dark:hover:bg-gray-700 text-white dark:text-gray-300 transition-colors"
+                >
+                  <RiCloseLine className="text-lg lg:text-xl" />
+                </button>
+              ) : (
+                sidebarOpen && (
+                  ""
+                )
+              )}
             </div>
 
             {/* Navigation */}
@@ -233,15 +298,6 @@ return (
                             <span className="font-medium text-black">{item.label}</span>
                           )}
                         </div>
-                        {sidebarOpen && item.badge && (
-                          <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${
-                            isActive 
-                              ? 'bg-[#D16655]/20 text-[#D16655]' 
-                              : 'bg-white/20 text-black'
-                          }`}>
-                            {item.badge}
-                          </span>
-                        )}
                       </Link>
                     </li>
                   );
@@ -263,28 +319,23 @@ return (
 
           {/* Main Content */}
           <div className={`flex-1 flex flex-col min-h-screen transition-all duration-300 ${
-            sidebarOpen ? 'lg:ml-64 ml-0' : 'lg:ml-20 ml-0'
+            sidebarOpen ? 'ml-[20%]' : 'ml-32'
           }`}>
             {/* Header */}
             <header className="h-16 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-[#e6edfd] dark:border-gray-700 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-40">
               {/* Left side */}
               <div className="flex items-center gap-4">
+                {/* Hamburger button - always visible */}
                 <button
                   onClick={() => setSidebarOpen(!sidebarOpen)}
-                  className="hidden lg:flex p-2.5 rounded-xl hover:bg-[#F8EBE5] dark:hover:bg-gray-700 text-[#505050] dark:text-gray-300 transition-colors"
+                  className="p-2.5 rounded-xl hover:bg-[#F8EBE5] dark:hover:bg-gray-700 text-[#505050] dark:text-gray-300 transition-colors"
                 >
-                  <RiMenu3Line className="text-xl" />
+                  {sidebarOpen ? (
+                    ""
+                  ) : (
+                    <RiMenu3Line className="text-xl" />
+                  )}
                 </button>
-                
-                {/* Mobile menu button */}
-                <button
-                  onClick={() => setSidebarOpen(true)}
-                  className="lg:hidden p-2.5 rounded-xl hover:bg-[#F8EBE5] dark:hover:bg-gray-700 text-[#505050] dark:text-gray-300 transition-colors"
-                >
-                  <RiMenu3Line className="text-xl" />
-                </button>
-
-                
               </div>
 
               {/* Right side */}
@@ -303,74 +354,17 @@ return (
                   <RiNotification3Line className="text-xl" />
                   <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#D16655] rounded-full border-2 border-white dark:border-gray-800"></span>
                 </button>
-
-                {/* User Menu */}
-                <div className="relative">
-                  <button
-                    onClick={() => setUserMenuOpen(!userMenuOpen)}
-                    className="flex items-center gap-2 lg:gap-3 p-1.5 lg:p-2 rounded-xl hover:bg-[#F8EBE5] dark:hover:bg-gray-700 transition-colors"
-                  >
-                    <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-xl bg-gradient-to-br from-[#D16655] to-[#BD7579] flex items-center justify-center text-white font-medium text-sm shadow-lg shadow-[#D16655]/20">
-                      {user?.name?.charAt(0)}
-                    </div>
-                    <div className="hidden lg:block text-left">
-                      <p className="text-sm font-semibold text-[#2E4A5B] dark:text-white">{user.name}</p>
-                      <p className="text-xs text-[#BD7579] dark:text-gray-400">{user.role}</p>
-                    </div>
-                    <RiArrowDownSLine className={`hidden lg:block text-[#BD7579] dark:text-gray-400 transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
-                  </button>
-
-                  {/* Dropdown Menu */}
-                  {userMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
-                      <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
-                        <p className="text-sm font-medium text-gray-800 dark:text-white">{user.name}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
-                      </div>
-                      <Link
-                        href="/admin/profile"
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                      >
-                        <RiUser3Line className="text-lg" />
-                        Profile
-                      </Link>
-                      <Link
-                        href="/admin/settings"
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                      >
-                        <RiSettings4Line className="text-lg" />
-                        Settings
-                      </Link>
-                      <hr className="my-1 border-gray-200 dark:border-gray-700" />
-                      <button
-                        onClick={handleLogout}
-                        className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700"
-                      >
-                        <RiLogoutCircleLine className="text-lg" />
-                        Logout
-                      </button>
-                    </div>
-                  )}
-                </div>
               </div>
             </header>
 
             {/* Page Content */}
-            <main className="flex-1 p-4 lg:p-6 w-full">
+            <main className="flex-1 p-3 lg:p-3 w-full">
               {children}
             </main>
           </div>
 
-          {/* Mobile Sidebar Overlay */}
-          {sidebarOpen && (
-            <div 
-              className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-              onClick={() => setSidebarOpen(false)}
-            />
-          )}
         </div>
       </div>
     </ReduxProvider>
   );
 }
-
