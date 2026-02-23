@@ -1,20 +1,18 @@
 "use client";
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCategory, deleteCategory, addorUpdateCategory } from '@/app/redux/slices/categorySlice';
+import { getCategory, addorUpdateCategory } from '@/app/redux/slices/categorySlice';
 import Table from '@/app/common/datatable';
 import { Columns } from '@/app/constants/category-constant';
 import { toast } from 'react-hot-toast';
 import { categoryData, categoryLoading } from "./category-selectors";
 import DeletePopup from '@/app/common/utils/delete-popup';
 import { limitToCharacters, validateRequiredField } from '@/app/common/utils/validationHelpers';
-import Spinner from '@/app/common/spinner';
 
 const Category = () => {
   const dispatch = useDispatch();
   const loading = useSelector(categoryLoading);
   const data = useSelector(categoryData);
-
   const [name, setName] = useState('');
   const [active, setActive] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -23,6 +21,36 @@ const Category = () => {
   const [errors, setErrors] = useState({});
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState(null);
+  const [currentCategoryStatus, setCurrentCategoryStatus] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  // Calculate pagination values
+  const totalItems = data?.length || 0;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedData = data?.slice(startIndex, endIndex) || [];
+
+  // Pagination handlers
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleItemsPerPageChange = (count) => {
+    setItemsPerPage(count);
+    setCurrentPage(1); 
+  };
+
+  // Reset pagination when data changes
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const maxPage = Math.ceil(data.length / itemsPerPage);
+      if (currentPage > maxPage) {
+        setCurrentPage(1);
+      }
+    }
+  }, [data, itemsPerPage]);
 
   useEffect(() => {
     dispatch(getCategory());
@@ -48,12 +76,12 @@ const Category = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-    // Prepare JSON body as per API requirement
+
     const categoryData = {
-      id: editMode ? editCategoryId : 0,
+      id: editCategoryId || 0,
       categoryName: name,
       status: active ? 1 : 0
     };
@@ -73,26 +101,31 @@ const Category = () => {
     }
   };
 
-  const handleEdit = (category) => {
-    console.log(category)
-    // Extract the correct ID - API returns categoryId
-    const categoryId = category.categoryId || 0;
-    setName(category.categoryName || category.name || '');
-    setEditCategoryId(categoryId);
-    setActive(category.status === 1 || category.active === true);
+  const handleEdit = (category, index) => {
+    setEditCategoryId(index+1);
+    setName(category.categoryName  || '');
+    setActive(category.status === "Active");
     setEditMode(true);
     setShowForm(true);
   };
 
 
-  const handleDelete = (category) => {
-    setCategoryToDelete(category);
+  const handleDelete = (category, index) => {
+    setCategoryToDelete(category.categoryName);
+    setEditCategoryId(index + 1);
+    setCurrentCategoryStatus(category.status === "Active" ? 0 : 1);
     setShowDeletePopup(true);
   };
 
-  const confirmDelete = async () => {
+const confirmDelete = async () => {
+    const categoryData = {
+      id: editCategoryId,
+      categoryName: categoryToDelete,
+      status: currentCategoryStatus
+    };
+
     try {
-      const res = await dispatch(deleteCategory(categoryToDelete.categoryId)).unwrap();
+      const res = await dispatch(addorUpdateCategory(categoryData)).unwrap();
       if (res.statusCode === 200) toast.success(res.message);
       else toast.error(res.message);
       dispatch(getCategory());
@@ -111,7 +144,7 @@ const Category = () => {
   const submitButtonText = loading ? (editMode ? "Updating..." : "Adding...") : (editMode ? "Update" : "Submit");
 
   return (
-    <div className="max-w-full mx-auto bg-white px-4 rounded-lg">
+    <div className="max-w-fullo bg-white px-4 rounded-lg">
       {/* Add Category Button */}
       <div className="rounded-md pb-4">
         {!showForm && (
@@ -159,7 +192,7 @@ const Category = () => {
                 onChange={(e) => setActive(e.target.checked)}
                 className="w-5 h-5 mr-2 "
               />
-              <label className="text-sm font-medium text-gray-700 pt-2">Active</label>
+              <label className="text-sm font-medium text-gray-700 pt-3">Active</label>
             </div>
           )}
 
@@ -184,20 +217,30 @@ const Category = () => {
 
       {/* Category Table */}
       {!showForm && (
-        <Table
-          columns={Columns}
-          data={data}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          loading={loading}
-          title={'Category'}
-        />
+        <>
+          <Table
+            columns={Columns}
+            data={data}
+            pagination={{
+              currentPage,
+              itemsPerPage,
+              totalItems
+            }}
+            onPageChange={handlePageChange}
+            onItemsPerPageChange={handleItemsPerPageChange}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            loading={loading}
+            title={'Category'}
+          />
+          
+        </>
       )}
 
       <DeletePopup
         show={showDeletePopup}
         type="category"
-        name={categoryToDelete?.name}
+        name={categoryToDelete}
         onCancel={() => setShowDeletePopup(false)}
         onConfirm={confirmDelete}
       />
@@ -207,3 +250,4 @@ const Category = () => {
 };
 
 export default React.memo(Category);
+

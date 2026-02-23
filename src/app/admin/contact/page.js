@@ -8,21 +8,14 @@ import {
   RiArrowLeftSLine,
   RiArrowRightSLine,
   RiCloseLine,
-  RiLoader4Line
+  RiLoader4Line,
+  RiEyeLine // Added for a view action
 } from 'react-icons/ri';
 
 const statusColors = {
-  new: {
-    bg: 'bg-blue-100 dark:bg-blue-900/30',
-    text: 'text-blue-700 dark:text-blue-400'
-  },
-  read: {
+  unapproved: {
     bg: 'bg-amber-100 dark:bg-amber-900/30',
     text: 'text-amber-700 dark:text-amber-400'
-  },
-  replied: {
-    bg: 'bg-green-100 dark:bg-green-900/30',
-    text: 'text-green-700 dark:text-green-400'
   },
   approved: {
     bg: 'bg-green-100 dark:bg-green-900/30',
@@ -33,7 +26,7 @@ const statusColors = {
 export default function AdminContactPage() {
   const dispatch = useDispatch();
   const { contactUsData, loading } = useSelector((state) => state.blog);
-  
+
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
@@ -44,32 +37,29 @@ export default function AdminContactPage() {
     dispatch(getContactUs());
   }, [dispatch]);
 
-  // Map API response to display format
-  const contactSubmissions = contactUsData && contactUsData.length > 0 
+  const contactSubmissions = contactUsData && contactUsData.length > 0
     ? contactUsData.map((item, index) => ({
-        id: item.id || index + 1,
-        fullName: item.name || '-',
-        email: item.email || '-',
-        subject: item.subject || '-',
-        message: item.message || '-',
-        status: item.status?.toLowerCase() || 'new',
-        date: item.createdDate ? new Date(item.createdDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
-        time: item.createdDate ? new Date(item.createdDate).toLocaleTimeString() : '-'
-      }))
+      id: item.id || index + 1,
+      fullName: item.name || '-',
+      email: item.email || '-',
+      subject: item.subject || '-',
+      message: item.message || '-',
+      status: item.status?.toLowerCase() || 'new',
+      date: item.createdDate ? new Date(item.createdDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+      time: item.createdDate ? new Date(item.createdDate).toLocaleTimeString() : '-'
+    }))
     : [];
 
-  // Filter contacts based on search
   const filteredContacts = contactSubmissions.filter(contact => {
-    const matchesSearch =
-      contact.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      contact.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      contact.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      contact.message.toLowerCase().includes(searchTerm.toLowerCase());
-
-    return matchesSearch;
+    const searchStr = searchTerm.toLowerCase();
+    return (
+      contact.fullName.toLowerCase().includes(searchStr) ||
+      contact.email.toLowerCase().includes(searchStr) ||
+      contact.subject.toLowerCase().includes(searchStr) ||
+      contact.message.toLowerCase().includes(searchStr)
+    );
   });
 
-  // Pagination calculations
   const totalPages = Math.ceil(filteredContacts.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -80,17 +70,9 @@ export default function AdminContactPage() {
     setCurrentPage(1);
   };
 
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const getStatusBadge = (status) => {
-    const colors = statusColors[status] || statusColors.new;
-    return (
-      <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${colors.bg} ${colors.text}`}>
-        {status.charAt(0).toUpperCase() + status.slice(1)}
-      </span>
-    );
+  const handleViewDetails = (contact) => {
+    setSelectedContact(contact);
+    setShowModal(true);
   };
 
   const handleCloseModal = () => {
@@ -98,91 +80,92 @@ export default function AdminContactPage() {
     setSelectedContact(null);
   };
 
+  const getStatusBadge = (status) => {
+    const colors = statusColors[status] || statusColors.new;
+    return (
+      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] md:text-xs font-medium whitespace-nowrap ${colors.bg} ${colors.text}`}>
+        {status.charAt(0).toUpperCase() + status.slice(1)}
+      </span>
+    );
+  };
+
   return (
-    <div className="space-y-4 md:space-y-6">
+    <div className="p-2 md:p-4 lg:p-4 space-y-6 ">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 md:gap-4">
-        <div>
-          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white">
-            Contact Us
-          </h1>
-          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Here is the list of Contact Us page.
-          </p>
-        </div>
+      <div className="flex flex-col gap-1">
+        <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white">
+          Contact Us
+        </h1>
+        <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
+          Manage and respond to your website inquiries.
+        </p>
       </div>
 
-      {/* Loading Indicator */}
+      {/* Loading */}
       {loading && (
-        <div className="flex items-center justify-center py-12">
-          <RiLoader4Line className="text-4xl text-[#D16655] animate-spin" />
-          <span className="ml-3 text-gray-500 dark:text-gray-400">Loading contact submissions...</span>
+        <div className="flex flex-col items-center justify-center py-20">
+          <RiLoader4Line className="text-4xl text-emerald-500 animate-spin" />
+          <p className="mt-2 text-sm text-gray-500">Fetching messages...</p>
         </div>
       )}
 
-      {/* Contact List */}
+      {/* Main Content */}
       {!loading && (
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-          {/* Search Bar */}
-          <div className="p-3 md:p-4 border-b border-gray-100 dark:border-gray-700">
-            <div className="relative w-full">
-              <RiSearchLine className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm md:text-base" />
+          {/* Search */}
+          <div className="p-4 border-b border-gray-100 dark:border-gray-700">
+            <div className="relative max-w-sm">
               <input
                 type="text"
-                placeholder="Search contacts..."
+                placeholder="Search by name, email...."
                 value={searchTerm}
                 onChange={handleSearchChange}
-                className="w-full pl-9 md:pl-10 pr-4 py-2 md:py-2.5 rounded-lg md:rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
               />
             </div>
           </div>
 
-          {/* Table */}
-          <div className="admin-table-container">
-            <table className="w-full">
+          {/* Table Wrapper for Horizontal Scroll on Mobile */}
+          <div className="overflow-x-auto w-full">
+            <table className="w-full text-left border-collapse min-w-[700px]">
               <thead className="bg-gray-50 dark:bg-gray-700/50">
                 <tr>
-                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">S.No</th>
-                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
-                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Email</th>
-                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden sm:table-cell">Subject</th>
-                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden lg:table-cell">Message</th>
-                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
-                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden md:table-cell">Date</th>
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider w-16">S.No</th>
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Email</th>
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Subject</th>
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                 {currentItems.length > 0 ? (
                   currentItems.map((contact, index) => (
-                    <tr key={contact.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
-                      <td className="px-3 md:px-4 py-3 md:py-4" data-label="S.No">
-                        <p className="text-sm text-gray-800 dark:text-white">{indexOfFirstItem + index + 1}</p>
+                    <tr 
+                      key={contact.id} 
+                      className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors cursor-pointer"
+                      onClick={() => handleViewDetails(contact)}
+                    >
+                      <td className="px-4 py-4 text-sm text-gray-500">{indexOfFirstItem + index + 1}</td>
+                      <td className="px-4 py-4 text-sm font-medium text-gray-800 dark:text-white">{contact.fullName}</td>
+                      <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-300">{contact.email}</td>
+                      <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-300">
+                        <div className="max-w-[150px] md:max-w-[200px] truncate">{contact.subject}</div>
                       </td>
-                      <td className="px-3 md:px-4 py-3 md:py-4" data-label="Name">
-                        <p className="text-sm font-medium text-gray-800 dark:text-white">{contact.fullName}</p>
+                      <td className="px-4 py-4">{getStatusBadge(contact.status)}</td>
+                      <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{contact.date}</td>
+                      <td className="px-4 py-4 text-right">
+                        <button className="p-2 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 text-emerald-600 rounded-lg transition-colors">
+                          <RiEyeLine className="text-lg" />
+                        </button>
                       </td>
-                      <td className="px-3 md:px-4 py-3 md:py-4" data-label="Email">
-                        <p className="text-sm text-gray-600 dark:text-gray-300">{contact.email}</p>
-                      </td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 hidden sm:table-cell" data-label="Subject">
-                        <p className="text-sm text-gray-800 dark:text-white max-w-xs truncate">{contact.subject}</p>
-                      </td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 hidden lg:table-cell" data-label="Message">
-                        <p className="text-sm text-gray-600 dark:text-gray-300 max-w-xs truncate">{contact.message}</p>
-                      </td>
-                      <td className="px-3 md:px-4 py-3 md:py-4" data-label="Status">
-                        {getStatusBadge(contact.status)}
-                      </td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 hidden md:table-cell" data-label="Date">
-                        <p className="text-sm text-gray-500 dark:text-gray-400">{contact.date}</p>
-                      </td>
-                    
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={7} className="px-4 py-8 md:py-12 text-center">
-                      <p className="text-gray-500 dark:text-gray-400">No contact submissions found.</p>
+                    <td colSpan={7} className="px-4 py-12 text-center text-gray-500">
+                      No submissions found matching your search.
                     </td>
                   </tr>
                 )}
@@ -192,55 +175,48 @@ export default function AdminContactPage() {
 
           {/* Pagination */}
           {filteredContacts.length > 0 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 md:p-4 border-t border-gray-100 dark:border-gray-700">
-              <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400 text-center sm:text-left order-2 sm:order-1">
-                Showing <span className="font-medium">{indexOfFirstItem + 1}</span> to <span className="font-medium">{Math.min(indexOfLastItem, filteredContacts.length)}</span> of <span className="font-medium">{filteredContacts.length}</span> entries
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 border-t border-gray-100 dark:border-gray-700">
+              <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
+                Showing <span className="font-medium text-gray-900 dark:text-white">{indexOfFirstItem + 1}</span> to <span className="font-medium text-gray-900 dark:text-white">{Math.min(indexOfLastItem, filteredContacts.length)}</span> of <span className="font-medium text-gray-900 dark:text-white">{filteredContacts.length}</span> entries
               </div>
-              <div className="flex items-center gap-1 order-1 sm:order-2">
+              
+              <div className="flex items-center gap-2">
                 <button
                   onClick={() => paginate(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="p-2 rounded-lg border border-gray-200 dark:border-gray-600 disabled:opacity-30 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                 >
-                  <RiArrowLeftSLine className="text-lg md:text-xl" />
+                  <RiArrowLeftSLine />
                 </button>
-                
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => {
-                  if (
-                    page === 1 ||
-                    page === totalPages ||
-                    (page >= currentPage - 1 && page <= currentPage + 1)
-                  ) {
-                    return (
-                      <button
-                        key={page}
-                        onClick={() => paginate(page)}
-                        className={`min-w-[32px] md:min-w-[36px] h-8 md:h-9 px-1 md:px-2 rounded-lg text-xs md:text-sm font-medium transition-colors ${
-                          currentPage === page
-                            ? 'bg-emerald-500 text-white'
-                            : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'
-                        }`}
-                      >
-                        {page}
-                      </button>
-                    );
-                  }
-                  if (page === currentPage - 2 || page === currentPage + 2) {
-                    return (
-                      <span key={page} className="px-0.5 text-gray-400 text-xs">
-                        ...
-                      </span>
-                    );
-                  }
-                  return null;
-                })}
+
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => {
+                     // Simple pagination logic for brevity
+                     if (page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)) {
+                        return (
+                          <button
+                            key={page}
+                            onClick={() => paginate(page)}
+                            className={`w-8 h-8 rounded-lg text-xs font-medium transition-all ${
+                              currentPage === page 
+                              ? 'bg-emerald-500  shadow-sm shadow-emerald-200' 
+                              : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        );
+                     }
+                     return null;
+                  })}
+                </div>
 
                 <button
                   onClick={() => paginate(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="p-2 rounded-lg border border-gray-200 dark:border-gray-600 disabled:opacity-30 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                 >
-                  <RiArrowRightSLine className="text-lg md:text-xl" />
+                  <RiArrowRightSLine />
                 </button>
               </div>
             </div>
@@ -248,68 +224,53 @@ export default function AdminContactPage() {
         </div>
       )}
 
-      {/* View Modal */}
+      {/* Responsive Modal */}
       {showModal && selectedContact && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={handleCloseModal}
-          ></div>
-          <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-            {/* Modal Header */}
-            <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 p-4 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-gray-800 dark:text-white">Contact Details</h2>
-              <button
-                onClick={handleCloseModal}
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400"
-              >
-                <RiCloseLine className="text-xl" />
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div 
+            className="bg-white dark:bg-gray-900 rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between p-3 border-b border-gray-100 dark:border-gray-800">
+              <h2 className="text-lg font-bold text-gray-800 dark:text-white">Contact Details</h2>
+              <button onClick={handleCloseModal} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors">
+                <RiCloseLine className="text-2xl text-gray-400" />
               </button>
             </div>
 
-            {/* Modal Content */}
-            <div className="p-4 space-y-4">
-              {/* Status & Date */}
-              <div className="flex items-center justify-between">
-                {getStatusBadge(selectedContact.status)}
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  {selectedContact.date}
-                </span>
-              </div>
-
-              {/* Name & Email */}
-              <div>
-                <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</label>
-                <p className="mt-1 text-base text-gray-800 dark:text-white">{selectedContact.fullName}</p>
-              </div>
-
-              <div>
-                <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Email</label>
-                <p className="mt-1 text-base text-gray-800 dark:text-white">{selectedContact.email}</p>
-              </div>
-
-              {/* Subject */}
-              <div>
-                <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Subject</label>
-                <p className="mt-1 text-base text-gray-800 dark:text-white">{selectedContact.subject}</p>
-              </div>
-
-              {/* Message */}
-              <div>
-                <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Message</label>
-                <div className="mt-1 p-4 rounded-lg bg-gray-50 dark:bg-gray-700/50">
-                  <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{selectedContact.message}</p>
+            <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="text-[10px] uppercase font-bold text-gray-400 tracking-widest">Name</label>
+                  <p className="mt-1 text-gray-900 dark:text-gray-100 font-medium">{selectedContact.fullName}</p>
+                </div>
+                <div>
+                  <label className="text-[10px] uppercase font-bold text-gray-400 tracking-widest">Status</label>
+                  <div className="mt-1">{getStatusBadge(selectedContact.status)}</div>
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="text-[10px] uppercase font-bold text-gray-400 tracking-widest">Email Address</label>
+                  <p className="mt-1 text-emerald-600 dark:text-emerald-400">{selectedContact.email}</p>
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="text-[10px] uppercase font-bold text-gray-400 tracking-widest">Subject</label>
+                  <p className="mt-1 text-gray-900 dark:text-gray-100 font-semibold">{selectedContact.subject}</p>
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="text-[10px] uppercase font-bold text-gray-400 tracking-widest">Message</label>
+                  <div className="mt-2 p-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-sm leading-relaxed text-gray-600 dark:text-gray-300 whitespace-pre-wrap">
+                    {selectedContact.message}
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Modal Footer */}
-            <div className="sticky bottom-0 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 p-4 flex justify-end">
+            <div className="p-4 bg-gray-50 dark:bg-gray-800/50 flex justify-end">
               <button
                 onClick={handleCloseModal}
-                className="px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                className="px-6 py-2 text-sm font-medium bg-black text-white dark:text-gray-300 hover:text-gray-800 transition-colors"
               >
-                Close
+                Done
               </button>
             </div>
           </div>
@@ -318,4 +279,3 @@ export default function AdminContactPage() {
     </div>
   );
 }
-

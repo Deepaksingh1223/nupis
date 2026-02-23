@@ -23,9 +23,8 @@ import {
   RiTimeLine,
   RiLoader4Line
 } from 'react-icons/ri';
-import { getBlogs, deleteBlog } from '@/app/redux/slices/blogSlice';
+import { getBlogs, updateUserBlog } from '@/app/redux/slices/blogSlice';
 import { toast } from 'react-hot-toast';
-import DeletePopup from '@/app/common/utils/delete-popup';
 
 // Category color mapping
 const categoryColors = {
@@ -40,7 +39,7 @@ const categoryColors = {
 export default function BlogAdminPage() {
   const dispatch = useDispatch();
   const { data: blogPosts, loading } = useSelector((state) => state.blog);
-  
+
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -49,6 +48,8 @@ export default function BlogAdminPage() {
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [deletePopup, setDeletePopup] = useState({ show: false, id: null });
+  const [editModal, setEditModal] = useState({ show: false, blog: null });
+  const [isEditing, setIsEditing] = useState(false);
 
   // Fetch blogs on mount
   useEffect(() => {
@@ -67,11 +68,11 @@ export default function BlogAdminPage() {
 
   // Filter posts based on search
   const filteredPosts = blogPosts.filter(post =>
-    post.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.createdBy?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.metaTitle?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.metaDescription?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.createdDate?.toLowerCase().includes(searchTerm.toLowerCase())
+    post?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post?.createdBy?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post?.metaTitle?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post?.metaDescription?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post?.createdDate?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Pagination
@@ -112,25 +113,52 @@ export default function BlogAdminPage() {
     );
   };
 
-  // Handle delete
-  const handleDelete = async () => {
-    try {
-      const result = await dispatch(deleteBlog(deletePopup.id)).unwrap();
-      if (result.statusCode === 200) {
-        toast.success('Blog deleted successfully!');
-        setSelectedPosts(prev => prev.filter(id => id !== deletePopup.id));
-      }
-    } catch (error) {
-      toast.error(error?.message || 'Failed to delete blog');
-    } finally {
-      setDeletePopup({ show: false, id: null });
-    }
-  };
 
   // Reset page when search changes
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm]);
+
+  // Handle edit click
+  const handleEditClick = (blog) => {
+    setEditModal({ show: true, blog: blog });
+  };
+
+  // Handle update blog
+  const handleUpdateBlog = async (updatedData) => {
+    try {
+      setIsEditing(true);
+      const blogData = {
+        BlogId: updatedData.blogId,
+        Tittle: updatedData.title,
+        Description: updatedData.description,
+        ReadTime: updatedData.readTime,
+        Status: updatedData.status === 'published' ? 1 : 0,
+        MetaKeyWord: updatedData.metaKeyword || '',
+        MetaDescription: updatedData.metaDescription || '',
+        MetaTitle: updatedData.metaTitle || '',
+        Canonical: updatedData.canonical || '',
+        categoryId: updatedData.categoryId,
+        UpdatedBy: '',
+        Image: updatedData.image || null
+      };
+
+      const result = await dispatch(updateUserBlog(blogData)).unwrap();
+
+      if (result.statusCode === 200) {
+        toast.success(result.message || 'Blog updated successfully!');
+        setEditModal({ show: false, blog: null });
+        dispatch(getBlogs());
+      } else {
+        toast.error(result.message || 'Failed to update blog');
+      }
+    } catch (error) {
+      console.error('Error updating blog:', error);
+      toast.error(error?.message || 'Failed to update blog');
+    } finally {
+      setIsEditing(false);
+    }
+  };
 
   return (
     <div className="space-y-4 md:space-y-6">
@@ -141,17 +169,17 @@ export default function BlogAdminPage() {
           <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-0.5 md:mt-1">Manage your blog posts and articles</p>
         </div>
 
-        
+
       </div>
 
       <Link
-          href="/admin/blog/add"
-          className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 mb-3 md:py-2.5 bg-gradient-to-r from-[#D16655] to-[#BD7579] font-medium rounded-lg md:rounded-xl text-sm hover:shadow-lg hover:shadow-[#D16655]/20 transition-all duration-300"
-        >
-          <RiAddLine className="text-base md:text-lg" />
-          <span className="hidden sm:inline">Add New Blog</span>
-          <span className="sm:hidden">Add Blog</span>
-        </Link>
+        href="/admin/blog/add"
+        className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 mb-3 md:py-2.5 bg-gradient-to-r from-[#D16655] to-[#BD7579] font-medium rounded-lg md:rounded-xl text-sm hover:shadow-lg hover:shadow-[#D16655]/20 transition-all duration-300"
+      >
+        <RiAddLine className="text-base md:text-lg" />
+        <span className="hidden sm:inline">Add New Blog</span>
+        <span className="bg-black text-white p-2">Add Blog</span>
+      </Link>
 
       {/* Stats Cards - Responsive Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 md:gap-4 mb-4">
@@ -181,7 +209,7 @@ export default function BlogAdminPage() {
             </div>
             <div className="min-w-0">
               <p className="text-lg md:text-xl font-bold text-[#2E4A5B] dark:text-white truncate">
-                {blogPosts.reduce((acc, post) => acc + (post.readTime || 0), 0)}
+                {blogPosts.reduce((acc, post) => acc + (post?.readTime || 0), 0)}
               </p>
               <p className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
                 Total Read Time
@@ -227,11 +255,10 @@ export default function BlogAdminPage() {
       </div>
 
       {/* Search and Filter Bar */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-3 md:p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-3 md:p-4 mb-4 shadow-sm border border-gray-100 dark:border-gray-700">
         <div className="flex flex-col sm:flex-row gap-3">
           {/* Search Input */}
           <div className="relative flex-1">
-            <RiSearchLine className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm md:text-base" />
             <input
               type="text"
               placeholder="Search posts..."
@@ -250,8 +277,8 @@ export default function BlogAdminPage() {
               <button
                 onClick={() => setViewMode('table')}
                 className={`p-2 rounded-md transition-colors ${viewMode === 'table'
-                    ? 'bg-white dark:bg-gray-600 text-[#D16655] shadow-sm'
-                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  ? 'bg-white dark:bg-gray-600 text-[#D16655] shadow-sm'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                   }`}
                 title="Table View"
               >
@@ -260,8 +287,8 @@ export default function BlogAdminPage() {
               <button
                 onClick={() => setViewMode('grid')}
                 className={`p-2 rounded-md transition-colors ${viewMode === 'grid'
-                    ? 'bg-white dark:bg-gray-600 text-[#D16655] shadow-sm'
-                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  ? 'bg-white dark:bg-gray-600 text-[#D16655] shadow-sm'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                   }`}
                 title="Grid View"
               >
@@ -298,8 +325,8 @@ export default function BlogAdminPage() {
               <button
                 onClick={() => setViewMode('table')}
                 className={`flex-1 p-2 rounded-md text-sm transition-colors ${viewMode === 'table'
-                    ? 'bg-white dark:bg-gray-600 text-[#D16655] shadow-sm'
-                    : 'text-gray-500 dark:text-gray-400'
+                  ? 'bg-white dark:bg-gray-600 text-[#D16655] shadow-sm'
+                  : 'text-gray-500 dark:text-gray-400'
                   }`}
               >
                 <RiListCheck className="inline mr-1" /> Table
@@ -307,8 +334,8 @@ export default function BlogAdminPage() {
               <button
                 onClick={() => setViewMode('grid')}
                 className={`flex-1 p-2 rounded-md text-sm transition-colors ${viewMode === 'grid'
-                    ? 'bg-white dark:bg-gray-600 text-[#D16655] shadow-sm'
-                    : 'text-gray-500 dark:text-gray-400'
+                  ? 'bg-white dark:bg-gray-600 text-[#D16655] shadow-sm'
+                  : 'text-gray-500 dark:text-gray-400'
                   }`}
               >
                 <RiLayoutGridLine className="inline mr-1" /> Grid
@@ -319,11 +346,11 @@ export default function BlogAdminPage() {
       </div>
 
       {/* Content Section - Table or Grid View */}
-      <div id="blog-table-container" className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+      <div id="blog-table-container" className="bg-white dark:bg-gray-800  rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
         {/* Table View */}
         {viewMode === 'table' ? (
-          <div className="admin-table-container">
-            <table className="w-full">
+          <div className="overflow-x-auto w-full">
+            <table className="w-full text-left border-collapse min-w-[700px]">
               <thead className="bg-gray-50 dark:bg-gray-700/50">
                 <tr>
                   <th className="px-3 md:px-4 py-3 text-left">
@@ -334,56 +361,42 @@ export default function BlogAdminPage() {
                       className="w-4 h-4 rounded border-gray-300 text-[#D16655] focus:ring-[#D16655]"
                     />
                   </th>
-                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Post
-                  </th>
-                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden md:table-cell">
-                    Read Time
-                  </th>
-                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden lg:table-cell">
-                    Created Date
-                  </th>
-                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden lg:table-cell">
-                    Created By
-                  </th>
-                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden sm:table-cell">
-                    Status
-                  </th>
-                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden xl:table-cell">
-                    Meta Title
-                  </th>
-                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden xl:table-cell">
-                    Meta Desc
-                  </th>
-                  <th className="px-3 md:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider hidden md:table-cell">
-                    Views
-                  </th>
-                  <th className="px-3 md:px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Actions
-                  </th>
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider w-16">Post</th>
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider"> Read Time</th>
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Created Date</th>
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Created By</th>
+                  {/* <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th> */}
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">  Meta Title</th>
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">  Meta Keyword</th>
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">  Canonical</th>
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">  Meta Desc</th>
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">  Total View</th>
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">  Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                 {currentPosts.length > 0 ? (
                   currentPosts.map((post, index) => {
                     const blogData = {
-                      id: post.id || index + 1,
+                      id: index,
                       title: post.title || post.tittle || '-',
-                      image: post.image || '/assets/img/blog/blog-img-1-1.jpg',
+                      image: post.image || '',
                       date: post.createdDate || post.date || '-',
                       readTime: post.readTime || 0,
                       createdDate: post.createdDate || '-',
                       createdBy: post.createdBy || '-',
                       status: post.status !== undefined ? post.status : 1,
                       metaTitle: post.metaTitle || '-',
+                      canonical: post.canonical || '-',
+                      metaKeyWord: post.metaKeyWord || '-',
                       metaDescription: post.metaDescription || '-',
-                      views: post.views || 0,
+                      views: post.totalView || 0,
                       likes: post.likes || 0,
                       comments: post.comments || 0,
                       category: post.metaKeyWord || '-',
                       author: post.createdBy || '-'
                     };
-                    
+
                     return (
                       <tr key={blogData.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
                         <td className="px-3 md:px-4 py-3 md:py-4" data-label="Select">
@@ -417,50 +430,63 @@ export default function BlogAdminPage() {
                             </div>
                           </div>
                         </td>
-                        <td className="px-3 md:px-4 py-3 md:py-4 hidden md:table-cell" data-label="Read Time">
+                        <td className="px-3 md:px-4 py-3 md:py-4 " data-label="Read Time">
                           <span className="text-xs md:text-sm text-gray-600 dark:text-gray-300">
                             {blogData.readTime ? `${blogData.readTime} min` : '-'}
                           </span>
                         </td>
-                        <td className="px-3 md:px-4 py-3 md:py-4 hidden lg:table-cell" data-label="Created Date">
+                        <td className="px-3 md:px-4 py-3 md:py-4" data-label="Created Date">
                           <span className="text-xs md:text-sm text-gray-600 dark:text-gray-300">
                             {blogData.createdDate}
                           </span>
                         </td>
-                        <td className="px-3 md:px-4 py-3 md:py-4 hidden lg:table-cell" data-label="Created By">
+                        <td className="px-3 md:px-4 py-3 md:py-4" data-label="Created By">
                           <div className="flex items-center gap-2">
                             <div className="w-6 md:w-7 h-6 md:h-7 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-[10px] md:text-xs font-medium text-white">
                               {blogData.createdBy ? blogData.createdBy.charAt(0) : 'U'}
                             </div>
-                            <span className="text-xs md:text-sm text-gray-600 dark:text-gray-300 hidden sm:inline">
+                            <span className="text-xs md:text-sm text-gray-600 dark:text-gray-300 ">
                               {blogData.createdBy}
                             </span>
                           </div>
                         </td>
-                        <td className="px-3 md:px-4 py-3 md:py-4 hidden sm:table-cell" data-label="Status">
+                        {/* <td className="px-3 md:px-4 py-3 md:py-4 hidden sm:table-cell" data-label="Status">
                           <span className={`inline-flex px-2 md:px-2.5 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-medium ${blogData.status === 1 || blogData.status === 'published' || blogData.status === 1
-                              ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                              : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+                            ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                            : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
                             }`}>
                             {blogData.status === 1 ? 'Published' : blogData.status === 0 ? 'Draft' : blogData.status || 'N/A'}
                           </span>
-                        </td>
-                        <td className="px-3 md:px-4 py-3 md:py-4 hidden xl:table-cell" data-label="Meta Title">
+                        </td> */}
+                        <td className="px-3 md:px-4 py-3 md:py-4 " data-label="Meta Title">
                           <span className="text-xs md:text-sm text-gray-600 dark:text-gray-300 truncate block max-w-[150px]" title={blogData.metaTitle}>
                             {blogData.metaTitle}
                           </span>
                         </td>
-                        <td className="px-3 md:px-4 py-3 md:py-4 hidden xl:table-cell" data-label="Meta Description">
+                        <td className="px-3 md:px-4 py-3 md:py-4 " data-label="Meta Title">
+                          <span className="text-xs md:text-sm text-gray-600 dark:text-gray-300 truncate block max-w-[150px]" title={blogData.metaTitle}>
+                            {blogData.metaKeyWord}
+                          </span>
+                        </td>
+                        <td className="px-3 md:px-4 py-3 md:py-4 " data-label="Meta Title">
+                          <span className="text-xs md:text-sm text-gray-600 dark:text-gray-300 truncate block max-w-[150px]" title={blogData.metaTitle}>
+                            {blogData.canonical}
+                          </span>
+                        </td>
+                        <td className="px-3 md:px-4 py-3 md:py-4 " data-label="Meta Description">
                           <span className="text-xs md:text-sm text-gray-600 dark:text-gray-300 truncate block max-w-[150px]" title={blogData.metaDescription}>
                             {blogData.metaDescription}
                           </span>
                         </td>
-                        <td className="px-3 md:px-4 py-3 md:py-4 hidden md:table-cell" data-label="Views">
-                          <div className="flex items-center gap-1 text-xs md:text-sm text-gray-600 dark:text-gray-300">
-                            <RiEyeLine className="text-xs md:text-sm" />
-                            {blogData.views?.toLocaleString() || 0}
-                          </div>
+
+                        <td className="px-3 md:px-4 py-3 md:py-4 " data-label="Meta Description">
+                          <span className="text-xs md:text-sm text-gray-600 dark:text-gray-300 truncate block max-w-[150px]" title={blogData.metaDescription}>
+                            {blogData.views}
+                          </span>
                         </td>
+
+                       
+                      
                         <td className="px-3 md:px-4 py-3 md:py-4 text-right" data-label="Actions">
                           <div className="flex items-center justify-end gap-0.5 md:gap-1">
                             <Link
@@ -471,13 +497,13 @@ export default function BlogAdminPage() {
                             >
                               <RiEyeLine className="text-sm md:text-base" />
                             </Link>
-                            <Link
-                              href={`/admin/blog/edit/${blogData.id}`}
+                            <button
+                              onClick={() => handleEditClick(post)}
                               className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-[#D16655] transition-colors"
                               title="Edit"
                             >
                               <RiEditLine className="text-sm md:text-base" />
-                            </Link>
+                            </button>
                             <button
                               className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-red-500 transition-colors"
                               title="Delete"
@@ -502,15 +528,16 @@ export default function BlogAdminPage() {
               </tbody>
             </table>
           </div>
+
         ) : (
           /* Grid View (Card Layout) */
           <div className="p-3 md:p-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
               {currentPosts.length > 0 ? (
-                currentPosts.map((post) => {
+                currentPosts.map((post, index) => {
                   // Map API fields to table fields
                   const blogData = {
-                    id: post.id || index + 1,
+                    id: index,
                     title: post.title || post.tittle || '-',
                     image: post.image || '/assets/img/blog/blog-img-1-1.jpg',
                     date: post.createdDate || post.date || '-',
@@ -526,7 +553,7 @@ export default function BlogAdminPage() {
                     category: post.metaKeyWord || '-',
                     author: post.createdBy || '-'
                   };
-                  
+
                   const colors = categoryColors[post.categoryColor] || categoryColors.primary;
                   return (
                     <div key={blogData.id} className="bg-gray-50 dark:bg-gray-700/30 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
@@ -544,8 +571,8 @@ export default function BlogAdminPage() {
                         </div>
                         <div className="absolute top-2 right-2">
                           <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-medium ${blogData.status === 1 || blogData.status === 'published'
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-gray-100 text-gray-700'
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-gray-100 text-gray-700'
                             }`}>
                             {blogData.status === 1 ? 'Published' : 'Draft'}
                           </span>
@@ -580,12 +607,12 @@ export default function BlogAdminPage() {
                           >
                             View
                           </Link>
-                          <Link
-                            href={`/admin/blog/edit/${blogData.id}`}
+                          <button
+                            onClick={() => handleEditClick(post)}
                             className="flex-1 p-1.5 text-center text-xs bg-[#D16655] text-white rounded hover:bg-[#c05545] transition-colors"
                           >
                             Edit
-                          </Link>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -628,8 +655,8 @@ export default function BlogAdminPage() {
                       key={page}
                       onClick={() => handlePageChange(page)}
                       className={`min-w-[32px] md:min-w-[36px] h-8 md:h-9 px-1 md:px-2 rounded-lg text-xs md:text-sm font-medium transition-colors ${currentPage === page
-                          ? 'bg-[#D16655] text-white'
-                          : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'
+                        ? 'bg-[#D16655] text-white'
+                        : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'
                         }`}
                     >
                       {page}
@@ -656,6 +683,206 @@ export default function BlogAdminPage() {
             </div>
           </div>
         )}
+      </div>
+
+      {/* Edit Blog Modal */}
+      {editModal.show && (
+        <EditBlogModal
+          blog={editModal.blog}
+          onClose={() => setEditModal({ show: false, blog: null })}
+          onUpdate={handleUpdateBlog}
+          isEditing={isEditing}
+        />
+      )}
+    </div>
+  );
+}
+
+// Edit Blog Modal Component
+function EditBlogModal({ blog, onClose, onUpdate, isEditing }) {
+  const [formData, setFormData] = useState({
+    blogId: blog.blogId || blog.id,
+    title: blog.title || blog.tittle || '',
+    description: blog.description || '',
+    readTime: blog.readTime || '',
+    status: blog.status === 1 || blog.status === 'published' ? 'published' : 'draft',
+    metaTitle: blog.metaTitle || '',
+    metaDescription: blog.metaDescription || '',
+    metaKeyword: blog.metaKeyWord || '',
+    canonical: blog.canonical || '',
+    categoryId: blog.categoryId || '',
+    image: blog.image || null
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onUpdate(formData);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 md:p-6 flex items-center justify-between">
+          <h2 className="text-xl font-bold text-[#2E4A5B] dark:text-white">Edit Blog</h2>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400"
+          >
+            <RiCloseLine className="text-xl" />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-4 md:p-6 space-y-4">
+          {/* Title */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Title <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
+            />
+          </div>
+
+          {/* Category */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Category <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="categoryId"
+              value={formData.categoryId}
+              onChange={handleChange}
+              placeholder="Category ID"
+              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Description <span className="text-red-500">*</span>
+            </label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              required
+              rows={4}
+              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc] resize-none"
+            />
+          </div>
+
+          {/* Read Time */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Read Time <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="readTime"
+              value={formData.readTime}
+              onChange={handleChange}
+              required
+              placeholder="e.g., 5 min read"
+              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
+            />
+          </div>
+
+          {/* Status */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Status
+            </label>
+            <select
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
+            >
+              <option value="draft">Draft</option>
+              <option value="published">Published</option>
+            </select>
+          </div>
+
+          {/* Meta Title */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Meta Title
+            </label>
+            <input
+              type="text"
+              name="metaTitle"
+              value={formData.metaTitle}
+              onChange={handleChange}
+              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
+            />
+          </div>
+
+          {/* Meta Description */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Meta Description
+            </label>
+            <textarea
+              name="metaDescription"
+              value={formData.metaDescription}
+              onChange={handleChange}
+              rows={2}
+              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc] resize-none"
+            />
+          </div>
+
+          {/* Meta Keywords */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Meta Keywords
+            </label>
+            <input
+              type="text"
+              name="metaKeyword"
+              value={formData.metaKeyword}
+              onChange={handleChange}
+              placeholder="keyword1, keyword2, keyword3"
+              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
+            />
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-3 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 px-4 py-3 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isEditing}
+              className="flex-1 px-4 py-3 bg-[#D16655] text-white font-medium rounded-lg hover:bg-[#c05545] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+            >
+              {isEditing ? (
+                <>
+                  <RiLoader4Line className="animate-spin" />
+                  Updating...
+                </>
+              ) : (
+                'Update Blog'
+              )}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

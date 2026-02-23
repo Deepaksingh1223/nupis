@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -12,11 +12,12 @@ import {
   RiArrowLeftSLine,
   RiImageLine,
   RiCloseLine,
-  RiAddLine
+  RiAddLine,
+  RiLoader4Line
 } from 'react-icons/ri';
 import { toast } from 'react-hot-toast';
 import { getCategory } from '@/app/redux/slices/categorySlice';
-import { addUserBlog } from '@/app/redux/slices/blogSlice';
+import { updateUserBlog } from '@/app/redux/slices/blogSlice';
 
 
 // Validation schema with Formik
@@ -41,24 +42,67 @@ const getUserData = () => {
   return null;
 };
 
-const AddBlogPage = () => {
+const EditBlogPage = () => {
   const router = useRouter();
+  const params = useParams();
+  const blogId = params.id;
+  
   const dispatch = useDispatch();
   const categoryData = useSelector((state) => state.category?.data || []);
-  const blogLoading = useSelector((state) => state.blog?.loading || false);
-
+  const { loading, currentBlog } = useSelector((state) => state.blog);
+  
   // Get user ID from localStorage
   const userData = useMemo(() => getUserData(), []);
-  const userId = userData?.adminUserId|| '';
+  const userId = userData?.adminUserId || '';
 
   // Image state
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [existingImage, setExistingImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Fetch categories on mount
   useEffect(() => {
     dispatch(getCategory());
   }, [dispatch]);
+
+  // Fetch blog data by ID
+  useEffect(() => {
+    const fetchBlogData = async () => {
+      if (blogId) {
+        try {
+          const result = await dispatch(getBlogByI(blogId)).unwrap();
+          if (result.data) {
+            const blog = result.data;
+            // Set existing image
+            if (blog.image) {
+              setExistingImage(blog.image);
+              setImagePreview(blog.image);
+            }
+            // Set form values
+            formik.setValues({
+              title: blog.title || blog.tittle || '',
+              categoryId: blog.categoryId || '',
+              description: blog.description || '',
+              readTime: blog.readTime || '',
+              status: blog.status === 1 || blog.status === 'published' ? 'published' : 'draft',
+              metaTitle: blog.metaTitle || '',
+              metaDescription: blog.metaDescription || '',
+              metaKeyword: blog.metaKeyWord || '',
+              canonical: blog.canonical || '',
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching blog:', error);
+          toast.error('Failed to load blog data');
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchBlogData();
+  }, [blogId, dispatch]);
 
   // Formik form handling
   const formik = useFormik({
@@ -75,17 +119,12 @@ const AddBlogPage = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      // Validate image
-      if (!image && !imagePreview) {
-        toast.error('Please fill all required fields');
-        return;
-      }
-
       try {
         // Convert status to number (1 for published, 0 for draft)
         const statusValue = values.status === 'published' ? 1 : 0;
 
         const blogData = {
+          BlogId: blogId,
           Tittle: values.title,
           Description: values.description,
           ReadTime: values.readTime,
@@ -95,21 +134,21 @@ const AddBlogPage = () => {
           MetaTitle: values.metaTitle,
           Canonical: values.canonical,
           categoryId: values.categoryId,
-          CreatedBy: userId,
-          Image: image
+          UpdatedBy: userId,
+          Image: image // Only send new image if uploaded
         };
 
-        const result = await dispatch(addUserBlog(blogData)).unwrap();
+        const result = await dispatch(updateUserBlog(blogData)).unwrap();
 
         if (result.statusCode === 200) {
-          toast.success(result.message || 'Blog added successfully!');
+          toast.success(result.message || 'Blog updated successfully!');
           router.push('/admin/blog');
         } else {
-          toast.error(result.message || 'Failed to add blog');
+          toast.error(result.message || 'Failed to update blog');
         }
       } catch (error) {
-        console.error('Error adding blog:', error);
-        toast.error(error?.message || 'Failed to add blog');
+        console.error('Error updating blog:', error);
+        toast.error(error?.message || 'Failed to update blog');
       }
     },
   });
@@ -126,9 +165,19 @@ const AddBlogPage = () => {
   // Remove image
   const removeImage = () => {
     setImage(null);
-    setImagePreview(null);
+    setImagePreview(existingImage);
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="flex flex-col items-center gap-3">
+          <RiLoader4Line className="text-4xl text-[#D16655] animate-spin" />
+          <p className="text-gray-500 dark:text-gray-400">Loading blog data...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -143,10 +192,10 @@ const AddBlogPage = () => {
           </Link>
           <div>
             <h1 className="text-xl md:text-2xl font-bold text-[#2E4A5B] dark:text-white">
-              Add New Blog
+              Edit Blog
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Create a new blog post
+              Update your blog post
             </p>
           </div>
         </div>
@@ -325,7 +374,7 @@ const AddBlogPage = () => {
               {/* Image Upload Card */}
               <div className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-sm border border-gray-100 dark:border-gray-700">
                 <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
-                  Featured Image <span className="text-red-500">*</span>
+                  Featured Image
                 </h2>
                 
                 {!imagePreview ? (
@@ -348,9 +397,6 @@ const AddBlogPage = () => {
                       <RiAddLine className="text-lg" />
                       Choose Image
                     </label>
-                    {!image && !imagePreview && (
-                      <p className="text-xs text-red-500 mt-2">Image is required</p>
-                    )}
                   </div>
                 ) : (
                   <div className="relative">
@@ -401,17 +447,18 @@ const AddBlogPage = () => {
               <div className="flex flex-col gap-3">
                 <button
                   type="submit"
-                  disabled={formik.isSubmitting || blogLoading}
+                  disabled={formik.isSubmitting || loading}
                   className="w-full px-4 py-3 bg-[#D16655] text-white font-medium rounded-lg hover:bg-[#c05545] hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  {formik.isSubmitting || blogLoading ? (
+                  {formik.isSubmitting || loading ? (
                     <>
-                      <span>Publishing...</span>
+                      <RiLoader4Line className="text-lg animate-spin" />
+                      <span>Updating...</span>
                     </>
                   ) : (
                     <>
                       <RiAddLine className="text-lg" />
-                      <span>Publish Blog</span>
+                      <span>Update Blog</span>
                     </>
                   )}
                 </button>
@@ -430,5 +477,4 @@ const AddBlogPage = () => {
   );
 };
 
-export default AddBlogPage;
-
+export default EditBlogPage;
