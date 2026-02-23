@@ -3,8 +3,8 @@ import Header from "./components/Header";
 import "./globals.css";
 import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
-import ReduxProvider from "./components/ReduxProvider";
 import AppLayout from "./components/AppLayout";
+import Providers from "./providers";
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -50,9 +50,9 @@ export default function RootLayout({ children }) {
       </head>
 
       <body className={`${geistSans.variable}`}>
-        <ReduxProvider>
+        <Providers>
           <AppLayout>{children}</AppLayout>
-        </ReduxProvider>
+        </Providers>
       </body>
     </html>
   );
