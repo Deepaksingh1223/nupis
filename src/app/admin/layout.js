@@ -231,7 +231,7 @@ return (
 
           {/* Sidebar */}
           <aside 
-            className={`fixed top-16 left-0 z-50 flex flex-col bg-[#29d2cc] dark:bg-[#2E4A5B] border-r border-[#e6edfd] dark:border-gray-700 transition-all duration-300 ${
+            className={`fixed top-0 left-0 z-50 h-screen flex flex-col bg-[#29d2cc] dark:bg-[#2E4A5B] border-r border-[#e6edfd] dark:border-gray-700 transition-all duration-300 ${
               getSidebarWidth()
             } ${
               // Mobile: slide in from left, Desktop: always visible
@@ -319,10 +319,10 @@ return (
 
           {/* Main Content */}
           <div className={`flex-1 flex flex-col min-h-screen transition-all duration-300 ${
-            sidebarOpen ? 'ml-[20%]' : 'ml-32'
+            sidebarOpen ? 'ml-[18%]' : 'ml-32'
           }`}>
             {/* Header */}
-            <header className="h-16 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-[#e6edfd] dark:border-gray-700 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-40">
+            <header className="h-16 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-[#e6edfd] dark:border-gray-700 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-40 w-full">
               {/* Left side */}
               <div className="flex items-center gap-4">
                 {/* Hamburger button - always visible */}
