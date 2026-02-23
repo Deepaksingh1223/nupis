@@ -19,11 +19,8 @@ import api from "@/app/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "@/app/components/Loading";
 import ErrorState from "@/app/components/ErrorState";
+import { fetchBlogs } from "@/app/services/blog.service";
 
-const fetchBlogs = async () => {
-  const { data } = await api.get("/api/Blog/getUserBlog");
-  return data?.data;
-};
 const BlogSection = () => {
   const [email, setEmail] = useState("");
   const [showAll, setShowAll] = useState(false);
@@ -32,9 +29,12 @@ const BlogSection = () => {
     queryKey: ["blogs"],
     queryFn: fetchBlogs,
   });
+  const totalViews = data?.reduce((acc, curr) => {
+    return acc + (curr.totalView || 0);
+  }, 0);
+
   const zeroIndex = data?.slice(0, 1);
   const objOfBlog = zeroIndex?.[0];
-  console.log(zeroIndex);
   // Blog posts data - 12 posts (6 visible + 6 hidden)
   const blogPosts = [
     // Row 1 - 6 Posts
@@ -304,8 +304,11 @@ const BlogSection = () => {
                       WebkitBoxOrient: "vertical",
                       overflow: "hidden",
                     }}
+                     dangerouslySetInnerHTML={{
+                          __html: objOfBlog?.description?.replace(/&nbsp;/g, " "),
+                        }}
                   >
-                    {objOfBlog?.description}
+                    {/* {objOfBlog?.description} */}
                   </p>
                   <div className="spotlight-meta">
                     <span className="meta-block">
@@ -337,7 +340,7 @@ const BlogSection = () => {
               <p>Expert analysis and market updates</p>
             </div>
             <div className="views-pill">
-              <FaEye /> 16,403 total views
+              <FaEye /> {totalViews} total views
             </div>
           </div>
 
@@ -389,7 +392,13 @@ const BlogSection = () => {
                       <h3>
                         <Link href={`/blog/${post.slug}`}>{post.tittle}</Link>
                       </h3>
-                      <p>{post?.description}</p>
+                      <p
+                        dangerouslySetInnerHTML={{
+                          __html: post?.description?.replace(/&nbsp;/g, " "),
+                        }}
+                      >
+                        {/* {post?.description} */}
+                      </p>
                       <div className="card-footer">
                         <div className="post-stats">
                           <span className="stat-block">

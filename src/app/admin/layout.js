@@ -259,7 +259,7 @@ return (
                       <span className="text-[#D16655] font-bold text-sm lg:text-lg">N</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="font-bold text-sm lg:text-lg text-white dark:text-white tracking-tight">NUPIS</span>
+                      <span className="font-bold text-sm lg:text-lg text-white dark:text-white tracking-tight">NUPIPS</span>
                       <span className="text-[8px] lg:text-[10px] text-white/80 -mt-1 hidden lg:block">Admin Panel</span>
                     </div>
                   </Link>

@@ -32,10 +32,15 @@ import {
   RiBookmarkFill,
 } from "react-icons/ri";
 import api from "@/app/lib/axios";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import Loading from "@/app/components/Loading";
 import ErrorState from "@/app/components/ErrorState";
-
+import {
+  getCommentsByBlogId,
+  fetchBlogById,
+  addComment,
+  fetchBlogs,
+} from "@/app/services/blog.service";
 // Blog posts data (same as your BlogSection)
 const blogPosts = [
   // Row 1 - 6 Posts
@@ -396,21 +401,49 @@ const blogPosts = [
     relatedPosts: [1, 3, 6],
   },
 ];
-const fetchBlogById = async (id) => {
-  const response = await api.get(`/api/Blog/getUserBlogByBlogId?BlogId=${id}`);
 
-  return response?.data?.data[0] ?? null; // 👈 MUST RETURN
-};
-const fetchBlogs = async () => {
-  const { data } = await api.get("/api/Blog/getUserBlog");
-  return data?.data;
-};
 const BlogDetail = () => {
   const params = useParams();
   const [email, setEmail] = useState("");
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
+  const [showAll, setShowAll] = useState(false);
+
+  const [comment, setComment] = useState({
+    name: "",
+    email: "",
+    comment: "",
+  });
+
+  const mutation = useMutation({
+    mutationFn: addComment,
+    onSuccess: () => {
+      setComment({
+        name: "",
+        email: "",
+        comment: "",
+      });
+      refetchComments(); 
+    },
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setComment((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    mutation.mutate({
+      blogId: id,
+      ...comment,
+    });
+  };
   //   const id = Number(params?.id);
   const id = params?.id;
   const post = blogPosts.find((p) => p.id === id);
@@ -429,12 +462,35 @@ const BlogDetail = () => {
     queryKey: ["blogs"],
     queryFn: fetchBlogs,
   });
+  const {
+    data: comments,
+    isLoading: commentsLoading,
+    isError: isCommentsError,
+    error: commentsError,
+    refetch: refetchComments,
+  } = useQuery({
+    queryKey: ["commetsByBlogId", id],
+    queryFn: () => getCommentsByBlogId(id),
+    enabled: !!id,
+  });
   const relatedPosts = blogs?.slice(0, 4);
   useEffect(() => {
     if (post) {
       setLikeCount(post.likes);
     }
   }, [post]);
+  const visibleComments = showAll ? comments : comments?.slice(0, 3);
+  const handleShowMore = () => {
+    setShowAll(true);
+  };
+
+  const handleShowLess = () => {
+    setShowAll(false);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   // Fixed handleShare function with proper checking
   const handleShare = (platform) => {
@@ -455,14 +511,7 @@ const BlogDetail = () => {
       }
     }
   };
-  const handleLike = () => {
-    if (liked) {
-      setLikeCount((prev) => prev - 1);
-    } else {
-      setLikeCount((prev) => prev + 1);
-    }
-    setLiked(!liked);
-  };
+
   const categoryCount = (blogs || []).reduce((acc, post) => {
     const category = post?.categoryName;
     if (!category) return acc;
@@ -543,7 +592,7 @@ const BlogDetail = () => {
                 <FaEye /> {data?.totalView} views
               </span>
               <span>
-                <FaComments /> 34 comments
+                <FaComments /> {comments?.length} comments
               </span>
             </div>
           </div>
@@ -560,10 +609,8 @@ const BlogDetail = () => {
               <div className="fx-blog-featured-image">
                 <img
                   src={data?.image}
-                  alt="blog"
-                  width={1200}
-                  height={600}
-                  style={{ width: "100%", height: "auto", objectFit: "cover" }}
+                  alt="blog" 
+                  style={{ objectFit: "cover" }}
                   priority
                 />
               </div>
@@ -604,43 +651,13 @@ const BlogDetail = () => {
 
               {/* Article Body */}
               <div className="fx-blog-body">
-                <div dangerouslySetInnerHTML={{ __html: data?.description }} />
-
-                {/* Tags */}
-                {/* <div className="fx-blog-tags">
-                  <span className="fx-blog-tags-label">Tags:</span>
-                  <div className="fx-blog-tag-list">
-                    {post?.tags?.map((tag, index) => (
-                      <Link href={`#`} key={index} className="fx-blog-tag-item">
-                        {tag}
-                      </Link>
-                    ))}
-                  </div>
-                </div> */}
-
-                {/* Article Actions */}
-                {/* <div className="fx-blog-actions">
-                  <div className="fx-blog-action-buttons">
-                    <button
-                      className={`fx-blog-action-btn ${liked ? "fx-blog-action-active" : ""}`}
-                      onClick={handleLike}
-                    >
-                      {liked ? <RiHeartFill /> : <FaRegHeart />} {likeCount}{" "}
-                      Likes
-                    </button>
-                    <button
-                      className={`fx-blog-action-btn ${bookmarked ? "fx-blog-action-active" : ""}`}
-                      onClick={() => setBookmarked(!bookmarked)}
-                    >
-                      {bookmarked ? <RiBookmarkFill /> : <FaRegBookmark />}{" "}
-                      {bookmarked ? "Saved" : "Save"}
-                    </button>
-                    <button className="fx-blog-action-btn">
-                      <FaPrint /> Print
-                    </button>
-                  </div>
-                </div> */}
-
+                {/* <div className="blog-content" dangerouslySetInnerHTML={{ __html: data?.description }} /> */}
+                <div
+                  className="prose max-w-full break-words overflow-hidden [&_*]:max-w-full [&_img]:h-auto [&_img]:max-w-full"
+                  dangerouslySetInnerHTML={{
+                    __html: data?.description?.replace(/&nbsp;/g, " "),
+                  }}
+                />
                 {/* Author Bio */}
                 <div className="fx-blog-author-bio">
                   <div className="fx-blog-author-bio-avatar">
@@ -673,43 +690,108 @@ const BlogDetail = () => {
                   <h3>Comments ({post?.comments})</h3>
 
                   {/* Comment Form */}
-                  <div className="fx-blog-comment-form">
-                    <textarea
-                      placeholder="Leave a comment..."
-                      rows={4}
-                    ></textarea>
-                    <button className="fx-blog-submit-comment">
-                      Post Comment
+                  <form onSubmit={handleSubmit}>
+                    <div className="grid gap-6 mb-6 md:grid-cols-2">
+                      <div>
+                        <label className="block mb-2.5 text-sm font-medium text-heading">
+                          First name
+                        </label>
+                        <input
+                          type="text"
+                          name="name"
+                          value={comment.name}
+                          onChange={handleChange}
+                          className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base block w-full px-3 py-2.5"
+                          placeholder="John"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block mb-2.5 text-sm font-medium text-heading">
+                          Email address
+                        </label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={comment.email}
+                          onChange={handleChange}
+                          className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base block w-full px-3 py-2.5"
+                          placeholder="john.doe@company.com"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="mb-6">
+                      <label className="block mb-2.5 text-sm font-medium text-heading">
+                        Your message
+                      </label>
+                      <textarea
+                        name="comment"
+                        rows="4"
+                        value={comment.comment}
+                        onChange={handleChange}
+                        className="bg-neutral-secondary-medium p-3 border border-default-medium text-heading text-sm rounded-base block w-full "
+                        placeholder="Write your thoughts here..."
+                      ></textarea>
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={mutation.isPending}
+                      className="fx-blog-submit-comment"
+                    >
+                      {mutation.isPending ? "Submitting..." : "Submit"}
                     </button>
-                  </div>
+                  </form>
 
                   {/* Sample Comments */}
                   <div className="fx-blog-comments-list">
-                    <div className="fx-blog-single-comment">
-                      <div className="fx-blog-comment-avatar">
-                        <img
-                          src="/assets/img/blog/comment-author-1.jpg"
-                          alt="User"
-                          width={50}
-                          height={50}
-                        />
-                      </div>
-                      <div className="fx-blog-comment-content">
-                        <div className="fx-blog-comment-header">
-                          <span className="fx-blog-commenter-name">
-                            John Doe
-                          </span>
-                          <span className="fx-blog-comment-date">
-                            2 hours ago
-                          </span>
+                    {commentsLoading ? (
+                      <Loading />
+                    ) : isCommentsError ? (
+                      <ErrorState
+                        message={commentsError.message}
+                        onRetry={refetchComments}
+                      />
+                    ) : (
+                      visibleComments?.map((com, index) => (
+                        <div key={index} className="fx-blog-single-comment">
+                          <div className="fx-blog-comment-avatar">
+                            <img
+                              src="/assets/img/blog/comment-author-1.jpg"
+                              alt="User"
+                              width={50}
+                              height={50}
+                            />
+                          </div>
+                          <div className="fx-blog-comment-content">
+                            <div className="fx-blog-comment-header">
+                              <span className="fx-blog-commenter-name">
+                                {com?.name}
+                              </span>
+                              <span className="fx-blog-comment-date">
+                                {com?.createdDate}
+                              </span>
+                            </div>
+                            <p>{com?.comment}</p>
+                          </div>
                         </div>
-                        <p>
-                          Great analysis! Really helpful for my trading
-                          decisions.
-                        </p>
-                        <button className="fx-blog-comment-reply">Reply</button>
-                      </div>
-                    </div>
+                      ))
+                    )}
+                  </div>
+                  <div className="show-more-wrapper">
+                    {comments?.length > 3 &&
+                      (!showAll ? (
+                        <button className="expand-btn" onClick={handleShowMore}>
+                          Show More Posts <FaArrowRight />
+                        </button>
+                      ) : (
+                        <button className="expand-btn" onClick={handleShowLess}>
+                          Show Less Posts <FaArrowRight />
+                        </button>
+                      ))}
                   </div>
                 </div>
               </div>
