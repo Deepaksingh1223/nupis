@@ -46,7 +46,7 @@ const Table = ({ columns, data, onEdit, onDelete, loading, title, pagination, on
                         {columns.map((col, index) => (
                             <th
                                 key={index}
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center"
                                 style={{ width: col.width }}
                             >
                                 {col.header}

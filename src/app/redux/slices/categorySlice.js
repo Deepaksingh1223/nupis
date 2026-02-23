@@ -140,11 +140,37 @@ export const addorUpdateCategory = createAsyncThunk(
     }
 );
 
+export const getComments = createAsyncThunk(
+    'category/getComments',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(`${API_URL}/getAllComments`);
+            return { 
+                statusCode: response.data.statusCode || 200, 
+                data: response.data.data || response.data,
+                message: response.data.message || "Categories fetched successfully"
+            };
+        } catch (error) {
+            if (error.response) {
+                return rejectWithValue({ 
+                    statusCode: error.response.status, 
+                    message: error.response.data?.message || "Failed to fetch categories" 
+                });
+            }
+            return rejectWithValue({ 
+                statusCode: 500, 
+                message: error.message || "Network error occurred" 
+            });
+        }
+    }
+);
+
 const initialState = {
     data: [],
     loading: false,
     error: null,
     success: false,
+    commentsData:null,
     pagination: {
         currentPage: 1,
         itemsPerPage: 10,
@@ -248,7 +274,23 @@ const categorySlice = createSlice({
             .addCase(addorUpdateCategory.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload?.message || 'Failed to save category';
-            });
+            })
+             .addCase(getComments.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getComments.fulfilled, (state, action) => {
+                state.loading = false;
+                state.commentsData = action.payload.data;
+                // Update pagination with total items
+                const totalItems = action.payload.data?.length || 0;
+                state.pagination.totalItems = totalItems;
+                state.pagination.totalPages = Math.ceil(totalItems / state.pagination.itemsPerPage);
+            })
+            .addCase(getComments.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload?.message || 'Failed to fetch categories';
+            })
     }
 });
 

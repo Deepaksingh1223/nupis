@@ -17,6 +17,7 @@ import {
 import { toast } from 'react-hot-toast';
 import { getCategory } from '@/app/redux/slices/categorySlice';
 import { addUserBlog } from '@/app/redux/slices/blogSlice';
+import QuillEditor from '@/app/common/rich-text-editor';
 
 
 // Validation schema with Formik
@@ -208,7 +209,7 @@ const AddBlogPage = () => {
                   </div>
 
                   {/* Description */}
-                  <div className='pt-4'>
+                  {/* <div className='pt-4'>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                       Description <span className="text-red-500">*</span>
                     </label>
@@ -224,15 +225,31 @@ const AddBlogPage = () => {
                     {formik.touched.description && formik.errors.description && (
                       <p className="text-xs text-red-500 mt-1">{formik.errors.description}</p>
                     )}
-                  </div>
+                  </div> */}
+                  <div className='pt-4'>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                    Description <span className="text-red-500">*</span>
+                  </label>
+                  <QuillEditor
+                    value={formik.values.description}
+                    onChange={(content) => {
+                      formik.setFieldValue("description", content);
+                    }}
+                    placeholder="Write your blog content here..."
+                    height={200}
+                  />
+                  {formik.touched.description && formik.errors.description && (
+                    <p className="text-xs text-red-500 mt-1">{formik.errors.description}</p>
+                  )}
+                </div>
 
                   {/* Read Time */}
                   <div className='pt-4'>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 mt-5">
                       Read Time <span className="text-red-500">*</span>
                     </label>
                     <input
-                      type="text"
+                      type="number"
                       name="readTime"
                       value={formik.values.readTime}
                       onChange={formik.handleChange}
@@ -390,8 +407,9 @@ const AddBlogPage = () => {
                       onChange={formik.handleChange}
                       className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc] focus:ring-2 focus:ring-[#29d2cc]/20 transition-all"
                     >
-                      <option value="draft">Draft</option>
                       <option value="published">Published</option>
+                      <option value="Unpublished">UnPublished</option>
+                      
                     </select>
                   </div>
                 </div>
