@@ -1294,7 +1294,7 @@ input[type=checkbox]:checked~label:before {
 
 input[type=checkbox]~label {
   position: relative;
-  padding-left: 30px;
+  padding-left: 0px;
   cursor: pointer;
   display: block;
 }
@@ -1313,6 +1313,7 @@ input[type=checkbox]~label:before {
   line-height: 18px;
   text-align: center;
   font-size: 12px;
+  display: none;
 }
 
 input[type=radio] {

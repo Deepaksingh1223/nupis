@@ -65,7 +65,6 @@ const Category = () => {
     setErrors({});
   }, []);
 
-
   const validateForm = () => {
     const newErrors = {};
     const limitedName = limitToCharacters(name);
@@ -76,15 +75,18 @@ const Category = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     const categoryData = {
-      id: editCategoryId || 0,
+      id: editMode ? editCategoryId : 0,  
       categoryName: name,
-      status: active ? 1 : 0
+      status: active ? 1 : 0,  
+      createdBy: "5ac7b226-6e37-4aa0-92af-4b9985b0a3b0"
     };
+
+   
 
     try {
       const response = await dispatch(addorUpdateCategory(categoryData)).unwrap();
@@ -102,26 +104,26 @@ const handleSubmit = async (e) => {
   };
 
   const handleEdit = (category, index) => {
-    setEditCategoryId(index+1);
-    setName(category.categoryName  || '');
-    setActive(category.status === "Active");
+    setEditCategoryId(category.id || index + 1); 
+    setName(category.categoryName || '');
+    setActive(category.status === "Active" || category.status === 1);
     setEditMode(true);
     setShowForm(true);
   };
 
-
   const handleDelete = (category, index) => {
     setCategoryToDelete(category.categoryName);
-    setEditCategoryId(index + 1);
+    setEditCategoryId(category.id || index + 1);
     setCurrentCategoryStatus(category.status === "Active" ? 0 : 1);
     setShowDeletePopup(true);
   };
 
-const confirmDelete = async () => {
+  const confirmDelete = async () => {
     const categoryData = {
       id: editCategoryId,
       categoryName: categoryToDelete,
-      status: currentCategoryStatus
+      status: currentCategoryStatus,
+      createdBy: "5ac7b226-6e37-4aa0-92af-4b9985b0a3b0"
     };
 
     try {
@@ -139,8 +141,6 @@ const confirmDelete = async () => {
   };
 
   const formTitle = editMode ? "Edit Category" : "Add Category";
-
-
   const submitButtonText = loading ? (editMode ? "Updating..." : "Adding...") : (editMode ? "Update" : "Submit");
 
   return (
@@ -158,7 +158,6 @@ const confirmDelete = async () => {
             className="px-4 py-2 mx-auto mt-3 text-white rounded-md bg-add-btn md:mx-0"
           >
             + Add Category
-
           </button>
         )}
       </div>
@@ -183,18 +182,21 @@ const confirmDelete = async () => {
           />
           {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
           
-
           {editMode && (
-            <div className="flex items-center">
+            <div className="flex items-center mt-2">
               <input
                 type="checkbox"
                 checked={active}
                 onChange={(e) => setActive(e.target.checked)}
-                className="w-5 h-5 mr-2 "
+                className="w-5 h-5 mr-2"
               />
-              <label className="text-sm font-medium text-gray-700 pt-3">Active</label>
+              <label className="text-sm font-medium text-gray-700 m-0">
+                {active ? 'Active' : 'Deactivated'}
+              </label>
             </div>
           )}
+
+
 
           <div className="flex gap-2" style={{marginTop:"18px"}}>
             <button
@@ -233,7 +235,6 @@ const confirmDelete = async () => {
             loading={loading}
             title={'Category'}
           />
-          
         </>
       )}
 
@@ -244,10 +245,8 @@ const confirmDelete = async () => {
         onCancel={() => setShowDeletePopup(false)}
         onConfirm={confirmDelete}
       />
-
     </div>
   );
 };
 
 export default React.memo(Category);
-

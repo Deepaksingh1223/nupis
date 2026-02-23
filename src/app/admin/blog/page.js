@@ -243,7 +243,7 @@ export default function BlogAdminPage() {
             </div>
             <div className="min-w-0">
               <p className="text-lg md:text-xl font-bold text-[#2E4A5B] dark:text-white truncate">
-                {blogPosts.filter(post => post.status === 0).length}
+                {blogPosts?.filter(post => post?.status === 0).length}
               </p>
               <p className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
                 Draft
@@ -379,6 +379,7 @@ export default function BlogAdminPage() {
                   currentPosts.map((post, index) => {
                     const blogData = {
                       id: index,
+                       blogId: post.blogId || post.id,
                       title: post.title || post.tittle || '-',
                       image: post.image || '',
                       date: post.createdDate || post.date || '-',
@@ -490,7 +491,7 @@ export default function BlogAdminPage() {
                         <td className="px-3 md:px-4 py-3 md:py-4 text-right" data-label="Actions">
                           <div className="flex items-center justify-end gap-0.5 md:gap-1">
                             <Link
-                              href={`/pages/blog/${blogData.id}`}
+                              href={`/pages/blog/${blogData.blogId}`}
                               target="_blank"
                               className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-[#D16655] transition-colors"
                               title="View"

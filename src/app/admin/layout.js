@@ -16,6 +16,8 @@ import {
   RiArrowDownSLine,
   RiContactsBookLine,
   RiArticleLine,
+  RiChat1Line ,
+  RiCommentLine
 } from 'react-icons/ri';
 import { 
   RiFolderLine, 
@@ -30,6 +32,8 @@ const menuItems = [
   { icon: RiContactsBookLine, label: 'Contact Us', href: '/admin/contact', badge: '3' },
   { icon: RiFolderLine, label: 'Category', href: '/admin/category', badge: null },
   { icon: RiArticleLine, label: 'Blog', href: '/admin/blog', badge: null },
+    { icon: RiChat1Line , label: 'Comment', href: '/admin/comment', badge: null },
+
 ];
 
 // Helper function to get token from storage
