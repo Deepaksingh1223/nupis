@@ -226,7 +226,7 @@ export default function BlogAdminPage() {
             </div>
             <div className="min-w-0">
               <p className="text-lg md:text-xl font-bold text-[#2E4A5B] dark:text-white truncate">
-                {blogPosts.filter(post => post.status === 1).length}
+                {blogPosts?.filter(post => post?.status === 1)?.length}
               </p>
               <p className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
                 Published

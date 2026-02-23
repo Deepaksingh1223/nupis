@@ -4,6 +4,7 @@ import "./globals.css";
 import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import ReduxProvider from "./components/ReduxProvider";
+import AppLayout from "./components/AppLayout";
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -38,11 +39,10 @@ export default function RootLayout({ children }) {
 
       <body className={`${geistSans.variable}`}>
         <ReduxProvider>
-          <Header />
-          <main>{children}</main>
-          <Footer />
+          <AppLayout>{children}</AppLayout>
         </ReduxProvider>
       </body>
     </html>
   );
 }
+
