@@ -11,25 +11,38 @@ import {
   FaComments,
   FaEye,
   FaThumbsUp,
-  FaTag
+  FaTag,
 } from "react-icons/fa";
-import {
-  RiMailLine,
-  RiNewsLine
-} from "react-icons/ri";
+import { RiMailLine, RiNewsLine } from "react-icons/ri";
 import { useRouter } from "next/navigation";
+import api from "@/app/lib/axios";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "@/app/components/Loading";
+import ErrorState from "@/app/components/ErrorState";
 
+const fetchBlogs = async () => {
+  const { data } = await api.get("/api/Blog/getUserBlog");
+  return data?.data;
+};
 const BlogSection = () => {
   const [email, setEmail] = useState("");
   const [showAll, setShowAll] = useState(false);
   const router = useRouter();
+  const { data, isLoading, isError, error, refetch } = useQuery({
+    queryKey: ["blogs"],
+    queryFn: fetchBlogs,
+  });
+  const zeroIndex = data?.slice(0, 1);
+  const objOfBlog = zeroIndex?.[0];
+  console.log(zeroIndex);
   // Blog posts data - 12 posts (6 visible + 6 hidden)
   const blogPosts = [
     // Row 1 - 6 Posts
     {
       id: 1,
       title: "US Dollar Strengthens Ahead of Fed Decision",
-      description: "Analysis of how the upcoming Federal Reserve interest rate decision could impact major currency pairs.",
+      description:
+        "Analysis of how the upcoming Federal Reserve interest rate decision could impact major currency pairs.",
       category: "Market Analysis",
       author: "Rajesh Kumar",
       date: "Feb 12, 2026",
@@ -39,12 +52,13 @@ const BlogSection = () => {
       comments: 34,
       image: "/assets/img/blog/blog-d-1.jpg",
       categoryColor: "primary",
-      slug: "../"
+      slug: "../",
     },
     {
       id: 2,
       title: "EUR/USD Technical Outlook: Key Levels to Watch",
-      description: "Detailed technical analysis of EUR/USD with support and resistance levels for this week.",
+      description:
+        "Detailed technical analysis of EUR/USD with support and resistance levels for this week.",
       category: "Technical Analysis",
       author: "Priya Sharma",
       date: "Feb 11, 2026",
@@ -54,12 +68,13 @@ const BlogSection = () => {
       comments: 23,
       image: "/assets/img/blog/blog-d-2.jpg",
       categoryColor: "success",
-      slug: "eur-usd-technical-outlook"
+      slug: "eur-usd-technical-outlook",
     },
     {
       id: 3,
       title: "Fed Signals Potential Rate Cuts in Q2 2026",
-      description: "Following news on Federal Reserve's latest statements about possible rate cuts and market impact.",
+      description:
+        "Following news on Federal Reserve's latest statements about possible rate cuts and market impact.",
       category: "Forex News",
       author: "Amit Patel",
       date: "Feb 10, 2026",
@@ -69,12 +84,13 @@ const BlogSection = () => {
       comments: 67,
       image: "/assets/img/blog/blog-d-3.jpg",
       categoryColor: "info",
-      slug: "fed-rate-cuts-q2-2026"
+      slug: "fed-rate-cuts-q2-2026",
     },
     {
       id: 4,
       title: "Gold Prices: Can XAU/USD Break Above $2,000?",
-      description: "Technical and fundamental analysis of gold prices with key levels to watch for breakout.",
+      description:
+        "Technical and fundamental analysis of gold prices with key levels to watch for breakout.",
       category: "Commodities",
       author: "Anita Desai",
       date: "Feb 9, 2026",
@@ -84,12 +100,13 @@ const BlogSection = () => {
       comments: 29,
       image: "/assets/img/blog/blog-d-4.jpg",
       categoryColor: "warning",
-      slug: "gold-prices-break-2000"
+      slug: "gold-prices-break-2000",
     },
     {
       id: 5,
       title: "BOJ Maintains Ultra-Loose Policy: Yen Weakens",
-      description: "Bank of Japan keeps negative interest rates, leading to continued Yen weakness.",
+      description:
+        "Bank of Japan keeps negative interest rates, leading to continued Yen weakness.",
       category: "Forex News",
       author: "Takeshi Tanaka",
       date: "Feb 8, 2026",
@@ -99,12 +116,13 @@ const BlogSection = () => {
       comments: 53,
       image: "/assets/img/blog/blog-img-1-1.jpg",
       categoryColor: "danger",
-      slug: "boj-ultra-loose-policy"
+      slug: "boj-ultra-loose-policy",
     },
     {
       id: 6,
       title: "UK Economy Shows Resilience: GBP Strengthens",
-      description: "Better-than-expected UK GDP data leads to broad-based Sterling strength.",
+      description:
+        "Better-than-expected UK GDP data leads to broad-based Sterling strength.",
       category: "Market Analysis",
       author: "Sarah Williams",
       date: "Feb 7, 2026",
@@ -114,13 +132,14 @@ const BlogSection = () => {
       comments: 36,
       image: "/assets/img/blog/blog-img-1-1.jpg",
       categoryColor: "purple",
-      slug: "uk-economy-resilience"
+      slug: "uk-economy-resilience",
     },
     // Row 2 - 6 More Posts (Hidden initially)
     {
       id: 7,
       title: "ECB's Lagarde: Inflation Progress Continues",
-      description: "Latest comments from ECB President on inflation and future monetary policy direction.",
+      description:
+        "Latest comments from ECB President on inflation and future monetary policy direction.",
       category: "Forex News",
       author: "Neha Gupta",
       date: "Feb 6, 2026",
@@ -130,12 +149,13 @@ const BlogSection = () => {
       comments: 42,
       image: "/assets/img/blog/blog-img-1-2.jpg",
       categoryColor: "info",
-      slug: "ecb-lagarde-inflation"
+      slug: "ecb-lagarde-inflation",
     },
     {
       id: 8,
       title: "AUD/USD: RBA Rate Decision Impact Analysis",
-      description: "How RBA's latest rate decision affects AUD/USD and what traders should watch.",
+      description:
+        "How RBA's latest rate decision affects AUD/USD and what traders should watch.",
       category: "Market Analysis",
       author: "Vikram Singh",
       date: "Feb 5, 2026",
@@ -145,12 +165,13 @@ const BlogSection = () => {
       comments: 16,
       image: "/assets/img/blog/blog-img-1-3.jpg",
       categoryColor: "primary",
-      slug: "aud-usd-rba-decision"
+      slug: "aud-usd-rba-decision",
     },
     {
       id: 9,
       title: "China's Stimulus Measures Boost Risk Appetite",
-      description: "New economic stimulus from China improves sentiment, benefiting AUD and NZD.",
+      description:
+        "New economic stimulus from China improves sentiment, benefiting AUD and NZD.",
       category: "Economic Events",
       author: "Li Wei",
       date: "Feb 4, 2026",
@@ -160,12 +181,13 @@ const BlogSection = () => {
       comments: 28,
       image: "/assets/img/blog/blog-img-1-4.jpg",
       categoryColor: "success",
-      slug: "china-stimulus-risk"
+      slug: "china-stimulus-risk",
     },
     {
       id: 10,
       title: "Oil Prices Surge: Impact on USD/CAD",
-      description: "Rising oil prices due to Middle East tensions strengthen Canadian Dollar.",
+      description:
+        "Rising oil prices due to Middle East tensions strengthen Canadian Dollar.",
       category: "Commodities",
       author: "Michael Chen",
       date: "Feb 3, 2026",
@@ -175,12 +197,13 @@ const BlogSection = () => {
       comments: 47,
       image: "/assets/img/blog/blog-img-1-5.jpg",
       categoryColor: "warning",
-      slug: "oil-prices-impact-usd-cad"
+      slug: "oil-prices-impact-usd-cad",
     },
     {
       id: 11,
       title: "USD/JPY: Intervention Risks and Technical Setup",
-      description: "Analysis of potential Japanese intervention and technical levels for USD/JPY.",
+      description:
+        "Analysis of potential Japanese intervention and technical levels for USD/JPY.",
       category: "Technical Analysis",
       author: "Rajesh Kumar",
       date: "Feb 2, 2026",
@@ -190,12 +213,13 @@ const BlogSection = () => {
       comments: 21,
       image: "/assets/img/blog/blog-img-1-6.jpg",
       categoryColor: "danger",
-      slug: "usd-jpy-intervention"
+      slug: "usd-jpy-intervention",
     },
     {
       id: 12,
       title: "Stock Market Outlook: Q2 2026 Preview",
-      description: "What to expect from global stock markets in the second quarter of 2026.",
+      description:
+        "What to expect from global stock markets in the second quarter of 2026.",
       category: "Stock Market",
       author: "Priya Sharma",
       date: "Feb 1, 2026",
@@ -205,13 +229,13 @@ const BlogSection = () => {
       comments: 58,
       image: "/assets/img/blog/blog-img-1-7.jpg",
       categoryColor: "purple",
-      slug: "stock-market-outlook-q2-2026"
-    }
+      slug: "stock-market-outlook-q2-2026",
+    },
   ];
 
   // Yeh line fix ki - visiblePosts showAll ke according change hoga
-  const visiblePosts = showAll ? blogPosts : blogPosts.slice(0, 6);
-
+  // const visiblePosts = showAll ? blogPosts : blogPosts.slice(0, 6);
+  const visiblePosts = showAll ? data : data?.slice(0, 6);
   const handleShowMore = () => {
     setShowAll(true);
   };
@@ -220,7 +244,7 @@ const BlogSection = () => {
     setShowAll(false);
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   };
 
@@ -232,28 +256,35 @@ const BlogSection = () => {
             <RiNewsLine />
             <span>Market Insights & Analysis</span>
           </div>
-          <h1>Latest <span>Market News</span> & Analysis</h1>
-          <p>Stay updated with the latest financial market news, expert analysis, trading strategies, and economic insights from our team of professionals.</p>
-
+          <h1>
+            Latest <span>Market News</span> & Analysis
+          </h1>
+          <p>
+            Stay updated with the latest financial market news, expert analysis,
+            trading strategies, and economic insights from our team of
+            professionals.
+          </p>
         </div>
       </div>
       <div className="insight-wrapper">
-
         <div className="insight-container">
           {/* Hero Section */}
-
 
           {/* Spotlight Card (Featured) */}
           <div className="spotlight-card">
             <div className="row g-0">
               <div className="col-lg-5">
                 <div className="spotlight-image">
-                  <Image
-                    src="/assets/img/blog/blog-d-2.jpg"
+                  <img
+                    src={objOfBlog?.image}
                     alt="Featured"
                     width={600}
                     height={400}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
                   />
                 </div>
               </div>
@@ -261,16 +292,36 @@ const BlogSection = () => {
                 <div className="spotlight-content">
                   <div className="spotlight-tags">
                     <span className="spotlight-badge purple">Featured</span>
-                    <span className="spotlight-badge blue">Market Analysis</span>
+                    <span className="spotlight-badge blue">
+                      {objOfBlog?.categoryName}
+                    </span>
                   </div>
-                  <h2>US Dollar Strengthens Ahead of Fed Decision: Complete Market Impact Analysis</h2>
-                  <p>Comprehensive analysis of how the upcoming Federal Reserve interest rate decision could impact major currency pairs and global markets. Expert insights and trading strategies.</p>
+                  <h2>{objOfBlog?.tittle}</h2>
+                  <p
+                    style={{
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {objOfBlog?.description}
+                  </p>
                   <div className="spotlight-meta">
-                    <span className="meta-block"><FaUserAlt /> Rajesh Kumar</span>
-                    <span className="meta-block"><FaCalendarAlt /> Feb 12, 2026</span>
-                    <span className="meta-block"><FaClock /> 8 min read</span>
+                    <span className="meta-block">
+                      <FaUserAlt /> {objOfBlog?.createdBy}
+                    </span>
+                    <span className="meta-block">
+                      <FaCalendarAlt /> {objOfBlog?.createdDate}
+                    </span>
+                    <span className="meta-block">
+                      <FaClock /> {objOfBlog?.readTime} min read
+                    </span>
                   </div>
-                  <Link href="/blog/us-dollar-strengthens" className="spotlight-link">
+                  <Link
+                    href={`/pages/blog/${objOfBlog?.blogId}`}
+                    className="spotlight-link"
+                  >
                     Read Full Analysis <FaArrowRight />
                   </Link>
                 </div>
@@ -281,7 +332,6 @@ const BlogSection = () => {
           {/* Blog Header */}
 
           <div className="insight-header">
-
             <div>
               <h2>Latest Blog Posts</h2>
               <p>Expert analysis and market updates</p>
@@ -289,48 +339,79 @@ const BlogSection = () => {
             <div className="views-pill">
               <FaEye /> 16,403 total views
             </div>
-
           </div>
 
           {/* Blog Grid - Yeh dynamically update hoga */}
           <div className="row g-4">
-            {visiblePosts.map((post) => (
-              <div key={post.id} className="col-lg-4 col-md-6" onClick={() => router.push(`/pages/blog/${post.id}`)}>
-                <div className="article-card">
-                  <div className="card-media">
-                    <Image
-                      src={post.image}
-                      alt={post.title}
-                      width={400}
-                      height={250}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                    <span className={`topic-tag ${post.categoryColor}`}>
-                      <FaTag /> {post.category}
-                    </span>
-                  </div>
-                  <div className="card-details">
-                    <div className="article-meta">
-                      <span><FaUserAlt /> {post.author}</span>
-                      <span><FaCalendarAlt /> {post.date}</span>
-                      <span><FaClock /> {post.readTime}</span>
+            {isLoading ? (
+              <Loading />
+            ) : isError ? (
+              <ErrorState message={error.message} onRetry={refetch} />
+            ) : (
+              visiblePosts.map((post, index) => (
+                <div
+                  key={index}
+                  className="col-lg-4 col-md-6"
+                  onClick={() => router.push(`/pages/blog/${post.blogId}`)}
+                >
+                  <div className="article-card">
+                    <div className="card-media">
+                      <img
+                        src={post.image}
+                        alt="blogimg"
+                        width={400}
+                        height={250}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
+                      />
+
+                      <span
+                        className={`topic-tag backdrop-blur-xl bg-white/50 ${post.categoryColor}`}
+                      >
+                        <FaTag /> {post?.categoryName}
+                      </span>
                     </div>
-                    <h3><Link href={`/blog/${post.slug}`}>{post.title}</Link></h3>
-                    <p>{post.description}</p>
-                    <div className="card-footer">
-                      <div className="post-stats">
-                        <span className="stat-block"><FaEye /> {post.views}</span>
-                        <span className="stat-block"><FaThumbsUp /> {post.likes}</span>
-                        <span className="stat-block"><FaComments /> {post.comments}</span>
+                    <div className="card-details">
+                      <div className="article-meta">
+                        <span>
+                          <FaUserAlt /> {post.createdBy}
+                        </span>
+                        <span>
+                          <FaCalendarAlt /> {post.createdDate}
+                        </span>
+                        <span>
+                          <FaClock /> {post.readTime} min read
+                        </span>
                       </div>
-                      <Link href={`/blog/${post.slug}`} className="read-link">
-                        Read More <FaChevronRight />
-                      </Link>
+                      <h3>
+                        <Link href={`/blog/${post.slug}`}>{post.tittle}</Link>
+                      </h3>
+                      <p>{post?.description}</p>
+                      <div className="card-footer">
+                        <div className="post-stats">
+                          <span className="stat-block">
+                            <FaEye /> {post?.totalView} views
+                          </span>
+                          {/* <span className="stat-block">
+                            <FaThumbsUp /> {post.likes}
+                          </span>
+                          <span className="stat-block">
+                            <FaComments /> {post.comments}
+                          </span> */}
+                        </div>
+                        <Link href={`/blog/${post.slug}`} className="read-link">
+                          Read More <FaChevronRight />
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
+            {/* {} */}
           </div>
 
           {/* Show More / Show Less Button - Yeh ab kaam karega */}
@@ -340,14 +421,18 @@ const BlogSection = () => {
                 <button className="expand-btn" onClick={handleShowMore}>
                   Show More Posts <FaArrowRight />
                 </button>
-                <p className="post-count">Showing 6 of {blogPosts.length} posts</p>
+                <p className="post-count">
+                  Showing 6 of {blogPosts.length} posts
+                </p>
               </>
             ) : (
               <>
                 <button className="expand-btn" onClick={handleShowLess}>
                   Show Less Posts <FaArrowRight />
                 </button>
-                <p className="post-count">Showing all {blogPosts.length} posts</p>
+                <p className="post-count">
+                  Showing all {blogPosts.length} posts
+                </p>
               </>
             )}
           </div>
@@ -358,10 +443,15 @@ const BlogSection = () => {
               <RiMailLine />
             </div>
             <h3>Stay Updated with Market Insights</h3>
-            <p>Get the latest market analysis, news, and trading strategies delivered to your inbox. No spam, unsubscribe anytime.</p>
+            <p>
+              Get the latest market analysis, news, and trading strategies
+              delivered to your inbox. No spam, unsubscribe anytime.
+            </p>
             <div className="subscribe-form">
               <div className="input-group-custom">
-                <span className="input-icon"><RiMailLine /></span>
+                <span className="input-icon">
+                  <RiMailLine />
+                </span>
                 <input
                   type="email"
                   className="subscribe-input"
@@ -375,7 +465,6 @@ const BlogSection = () => {
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </>
