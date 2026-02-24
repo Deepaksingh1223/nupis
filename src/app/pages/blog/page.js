@@ -28,7 +28,7 @@ const BlogSection = () => {
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["blogs"],
     queryFn: fetchBlogs,
-  });
+  });  
   const totalViews = data?.reduce((acc, curr) => {
     return acc + (curr.totalView || 0);
   }, 0);
