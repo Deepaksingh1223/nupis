@@ -154,69 +154,75 @@ export const addUserBlog = createAsyncThunk(
   }
 );
 
+
 // Update user blog (with query parameters)
 export const updateUserBlog = createAsyncThunk(
   'blog/updateUserBlog',
-  async (blogData, { rejectWithValue }) => {
+  async (formData, { rejectWithValue }) => {
     try {
-      const { 
-        BlogId,
-        Tittle, 
-        Description, 
-        ReadTime, 
-        Status, 
-        MetaKeyWord, 
-        MetaDescription, 
-        MetaTitle, 
-        Canonical,
-        categoryId,
-        UpdatedBy,
-        Image
-      } = blogData;
-
-      // If there's an image, use FormData with query params, otherwise use only query params
-      if (Image) {
-        const formData = new FormData();
-        formData.append('Tittle', Tittle || '');
-        formData.append('Description', Description || '');
-        formData.append('ReadTime', ReadTime || '');
-        formData.append('Status', Status || 1);
-        formData.append('MetaKeyWord', MetaKeyWord || '');
-        formData.append('MetaDescription', MetaDescription || '');
-        formData.append('MetaTitle', MetaTitle || '');
-        formData.append('Canonical', Canonical || '');
-        formData.append('categoryId', categoryId || '');
-        formData.append('UpdatedBy', UpdatedBy || '');
-        formData.append('Image', Image);
-
-        const response = await axios.post(
-          `${API_URL}/updateUserBlog?BlogId=${encodeURIComponent(BlogId || '')}&CategoryId=${encodeURIComponent(categoryId || '')}&Tittle=${encodeURIComponent(Tittle || '')}&Description=${encodeURIComponent(Description || '')}&ReadTime=${encodeURIComponent(ReadTime || '')}&UpdatedBy=${encodeURIComponent(UpdatedBy || '')}&Status=${encodeURIComponent(Status || 1)}&MetaKeyWord=${encodeURIComponent(MetaKeyWord || '')}&MetaDescription=${encodeURIComponent(MetaDescription || '')}&MetaTitle=${encodeURIComponent(MetaTitle || '')}&Canonical=${encodeURIComponent(Canonical || '')}`,
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          }
-        );
-        return { 
-          statusCode: response.data.statusCode || 200, 
-          message: response.data.message || "Blog updated successfully",
-          data: response.data.data
-        };
-      } else {
-        const response = await axios.post(
-          `${API_URL}/updateUserBlog?BlogId=${encodeURIComponent(BlogId || '')}&CategoryId=${encodeURIComponent(categoryId || '')}&Tittle=${encodeURIComponent(Tittle || '')}&Description=${encodeURIComponent(Description || '')}&ReadTime=${encodeURIComponent(ReadTime || '')}&UpdatedBy=${encodeURIComponent(UpdatedBy || '')}&Status=${encodeURIComponent(Status || 1)}&MetaKeyWord=${encodeURIComponent(MetaKeyWord || '')}&MetaDescription=${encodeURIComponent(MetaDescription || '')}&MetaTitle=${encodeURIComponent(MetaTitle || '')}&Canonical=${encodeURIComponent(Canonical || '')}`
-        );
-        return { 
-          statusCode: response.data.statusCode || 200, 
-          message: response.data.message || "Blog updated successfully",
-          data: response.data.data
-        };
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        return rejectWithValue({ 
+          statusCode: 401, 
+          message: "Authentication token not found. Please login again." 
+        });
       }
+
+      // FormData se values nikaalo
+      const blogId = formData.get('BlogId') || '';
+      const categoryId = formData.get('CategoryId') || '';
+      const tittle = formData.get('Tittle') || '';
+      const description = formData.get('Description') || ''; // ✅ सादा टेक्स्ट
+      const readTime = formData.get('ReadTime') || '';
+      const updatedBy = formData.get('UpdatedBy') || '';
+      const status = formData.get('Status') || '1';
+      const metaKeyWord = formData.get('MetaKeyWord') || '';
+      const metaDescription = formData.get('MetaDescription') || '';
+      const metaTitle = formData.get('MetaTitle') || '';
+      const canonical = formData.get('Canonical') || '';
+
+      // URL build karo
+      let url = `${API_URL}/updateUserBlog?`;
+      url += `BlogId=${encodeURIComponent(blogId)}`;
+      url += `&CategoryId=${encodeURIComponent(categoryId)}`;
+      url += `&Tittle=${encodeURIComponent(tittle)}`;
+      url += `&Description=${encodeURIComponent(description)}`; 
+      url += `&ReadTime=${encodeURIComponent(readTime)}`;
+      url += `&UpdatedBy=${encodeURIComponent(updatedBy)}`;
+      url += `&Status=${encodeURIComponent(status)}`;
+      url += `&MetaKeyWord=${encodeURIComponent(metaKeyWord)}`;
+      url += `&MetaDescription=${encodeURIComponent(metaDescription)}`;
+      url += `&MetaTitle=${encodeURIComponent(metaTitle)}`;
+      url += `&Canonical=${encodeURIComponent(canonical)}`;
+
+      console.log('Final URL:', url);
+      console.log('Payload Description (plain text):', description);
+
+      // Headers
+      const headers = {
+        'Authorization': `Bearer ${token}`,
+      };
+
+      const response = await axios.post(url, formData, {
+        headers: {
+          ...headers,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      
+      return { 
+        statusCode: response.data.statusCode || 200, 
+        message: response?.data?.message || "Blog updated successfully",
+        data: response.data.data
+      };
+      
     } catch (error) {
+      console.error('Update blog error:', error);
+      
       if (error.response) {
         return rejectWithValue({ 
-          statusCode: error.response.status, 
+          statusCode: error.response?.status, 
           message: error.response.data?.message || "Failed to update blog" 
         });
       }
@@ -385,14 +391,19 @@ const blogSlice = createSlice({
         state.error = null;
         state.success = false;
       })
+      // .addCase(updateUserBlog.fulfilled, (state, action) => {
+      //   state.loading = false;
+      //   state.success = true;
+      //   const index = state.data.findIndex(blog => blog.blogId === action.payload.data.blogId);
+      //   if (index !== -1) {
+      //     state.data[index] = action.payload.data;
+      //   }
+      // })
       .addCase(updateUserBlog.fulfilled, (state, action) => {
-        state.loading = false;
-        state.success = true;
-        const index = state.data.findIndex(blog => blog.blogId === action.payload.data.blogId);
-        if (index !== -1) {
-          state.data[index] = action.payload.data;
-        }
-      })
+  state.loading = false;
+  state.success = true;
+  
+})
       .addCase(updateUserBlog.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload?.message || 'Failed to update blog';

@@ -25,6 +25,8 @@ import {
 } from 'react-icons/ri';
 import { getBlogs, updateUserBlog } from '@/app/redux/slices/blogSlice';
 import { toast } from 'react-hot-toast';
+import QuillEditor from '@/app/common/rich-text-editor';
+import { getCategory } from '@/app/redux/slices/categorySlice';
 
 // Category color mapping
 const categoryColors = {
@@ -124,26 +126,11 @@ export default function BlogAdminPage() {
     setEditModal({ show: true, blog: blog });
   };
 
-  // Handle update blog
   const handleUpdateBlog = async (updatedData) => {
     try {
       setIsEditing(true);
-      const blogData = {
-        BlogId: updatedData.blogId,
-        Tittle: updatedData.title,
-        Description: updatedData.description,
-        ReadTime: updatedData.readTime,
-        Status: updatedData.status === 'published' ? 1 : 0,
-        MetaKeyWord: updatedData.metaKeyword || '',
-        MetaDescription: updatedData.metaDescription || '',
-        MetaTitle: updatedData.metaTitle || '',
-        Canonical: updatedData.canonical || '',
-        categoryId: updatedData.categoryId,
-        UpdatedBy: '',
-        Image: updatedData.image || null
-      };
 
-      const result = await dispatch(updateUserBlog(blogData)).unwrap();
+      const result = await dispatch(updateUserBlog(updatedData)).unwrap();
 
       if (result.statusCode === 200) {
         toast.success(result.message || 'Blog updated successfully!');
@@ -153,7 +140,7 @@ export default function BlogAdminPage() {
         toast.error(result.message || 'Failed to update blog');
       }
     } catch (error) {
-      console.error('Error updating blog:', error);
+      console?.error('Error updating blog:', error);
       toast.error(error?.message || 'Failed to update blog');
     } finally {
       setIsEditing(false);
@@ -353,14 +340,15 @@ export default function BlogAdminPage() {
             <table className="w-full text-left border-collapse min-w-[700px]">
               <thead className="bg-gray-50 dark:bg-gray-700/50">
                 <tr>
-                  <th className="px-3 md:px-4 py-3 text-left">
+                  {/* <th className="px-3 md:px-4 py-3 text-left">
                     <input
                       type="checkbox"
                       onChange={handleSelectAll}
                       checked={selectedPosts.length === currentPosts.length && currentPosts.length > 0}
-                      className="w-4 h-4 rounded border-gray-300 text-[#D16655] focus:ring-[#D16655]"
+                      className="w-4 h-4 rounded border-gray-300 text-[#D16655] focus:ring-[#D16655]"status
                     />
-                  </th>
+                  </th> */}
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">  Action</th>
                   <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider w-16">Post</th>
                   <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider"> Read Time</th>
                   <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Created Date</th>
@@ -371,7 +359,9 @@ export default function BlogAdminPage() {
                   <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">  Canonical</th>
                   <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">  Meta Desc</th>
                   <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">  Total View</th>
-                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">  Action</th>
+
+                  <th className="px-4 py-3 text-[10px] md:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">  Status</th>
+
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
@@ -379,7 +369,7 @@ export default function BlogAdminPage() {
                   currentPosts.map((post, index) => {
                     const blogData = {
                       id: index,
-                       blogId: post.blogId || post.id,
+                      blogId: post.blogId || post.id,
                       title: post.title || post.tittle || '-',
                       image: post.image || '',
                       date: post.createdDate || post.date || '-',
@@ -400,23 +390,58 @@ export default function BlogAdminPage() {
 
                     return (
                       <tr key={blogData.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
-                        <td className="px-3 md:px-4 py-3 md:py-4" data-label="Select">
+                        {/* <td className="px-3 md:px-4 py-3 md:py-4" data-label="Select">
                           <input
                             type="checkbox"
                             checked={selectedPosts.includes(blogData.id)}
                             onChange={() => handleSelectPost(blogData.id)}
                             className="w-4 h-4 rounded border-gray-300 text-[#D16655] focus:ring-[#D16655]"
                           />
+                        </td> */}
+                        <td className="px-3 md:px-4 py-3 md:py-4 text-right" data-label="Actions">
+                          <div className="flex items-center justify-end gap-2 md:gap-1 ">
+                            <Link
+                              href={`/pages/blog/${blogData.blogId}`}
+                              target="_blank"
+                              className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-[#D16655] transition-colors"
+                              title="View"
+                            >
+                              <RiEyeLine className="text-sm md:text-base" />
+                            </Link>
+                            <button
+                              onClick={() => handleEditClick(post)}
+                              className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-[#D16655] transition-colors"
+                              title="Edit"
+                            >
+                              <RiEditLine className="text-sm md:text-base" />
+                            </button>
+                            {/* <button
+                              className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-red-500 transition-colors"
+                              title="Delete"
+                            >
+                              <RiDeleteBinLine className="text-sm md:text-base" />
+                            </button> */}
+                          </div>
                         </td>
                         <td className="px-3 md:px-4 py-3 md:py-4" data-label="Post">
                           <div className="flex items-center gap-2 md:gap-3">
-                            <div className="w-12 md:w-16 h-10 md:h-12 relative rounded-lg overflow-hidden flex-shrink-0">
-                              <Image
-                                src={blogData.image}
-                                alt={blogData.title}
-                                fill
-                                className="object-cover"
-                              />
+                            <div className="w-12 md:w-16 h-10 md:h-12 relative rounded-lg overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-gray-700">
+                              {blogData.image ? (
+                                <Image
+                                  src={blogData.image}
+                                  alt={blogData.title || 'Blog image'}
+                                  fill
+                                  className="object-cover"
+                                  onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = '/fallback-image.jpg';
+                                  }}
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center">
+                                  <RiArticleLine className="text-gray-400 text-xl" />
+                                </div>
+                              )}
                             </div>
                             <div className="min-w-0">
                               <p className="text-xs md:text-sm font-medium text-gray-800 dark:text-white truncate max-w-[120px] md:max-w-[200px] lg:max-w-[300px]">
@@ -486,34 +511,24 @@ export default function BlogAdminPage() {
                           </span>
                         </td>
 
-                       
-                      
-                        <td className="px-3 md:px-4 py-3 md:py-4 text-right" data-label="Actions">
-                          <div className="flex items-center justify-end gap-0.5 md:gap-1">
-                            <Link
-                              href={`/pages/blog/${blogData.blogId}`}
-                              target="_blank"
-                              className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-[#D16655] transition-colors"
-                              title="View"
-                            >
-                              <RiEyeLine className="text-sm md:text-base" />
-                            </Link>
-                            <button
-                              onClick={() => handleEditClick(post)}
-                              className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-[#D16655] transition-colors"
-                              title="Edit"
-                            >
-                              <RiEditLine className="text-sm md:text-base" />
-                            </button>
-                            <button
-                              className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-red-500 transition-colors"
-                              title="Delete"
-                            >
-                              <RiDeleteBinLine className="text-sm md:text-base" />
-                            </button>
-                          </div>
+
+
+
+
+                        <td className="px-3 md:px-4 py-3 md:py-4" data-label="Status">
+                          <span
+                            className={`text-xs md:text-sm font-medium truncate block max-w-[150px] ${blogData.status === "Publish"
+                                ? 'text-green-600 dark:text-green-400'
+                                : 'text-red-600 dark:text-red-400'
+                              }`}
+                            title={blogData.status}
+                          >
+                            {blogData.status}
+                          </span>
                         </td>
+
                       </tr>
+
                     );
                   })
                 ) : (
@@ -539,6 +554,7 @@ export default function BlogAdminPage() {
                   // Map API fields to table fields
                   const blogData = {
                     id: index,
+                    blogId: post.blogId || post.id,
                     title: post.title || post.tittle || '-',
                     image: post.image || '/assets/img/blog/blog-img-1-1.jpg',
                     date: post.createdDate || post.date || '-',
@@ -602,7 +618,7 @@ export default function BlogAdminPage() {
                         </div>
                         <div className="flex items-center gap-1">
                           <Link
-                            href={`/pages/blog/${blogData.id}`}
+                            href={`/pages/blog/${blogData.blogId}`}
                             target="_blank"
                             className="flex-1 p-1.5 text-center text-xs bg-gray-200 dark:bg-gray-600 rounded text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors"
                           >
@@ -699,35 +715,188 @@ export default function BlogAdminPage() {
   );
 }
 
-// Edit Blog Modal Component
 function EditBlogModal({ blog, onClose, onUpdate, isEditing }) {
+
+  const dispatch = useDispatch();
+  const categoryData = useSelector((state) => state.category?.data || []);
+
   const [formData, setFormData] = useState({
     blogId: blog.blogId || blog.id,
+    categoryId: blog.categoryId || '',
     title: blog.title || blog.tittle || '',
     description: blog.description || '',
     readTime: blog.readTime || '',
-    status: blog.status === 1 || blog.status === 'published' ? 'published' : 'draft',
-    metaTitle: blog.metaTitle || '',
+    status: blog.status === 1 || blog.status === '1' ? 1 : 0,
+    metaKeyWord: blog.metaKeyWord || '',
     metaDescription: blog.metaDescription || '',
-    metaKeyword: blog.metaKeyWord || '',
+    metaTitle: blog.metaTitle || '',
     canonical: blog.canonical || '',
-    categoryId: blog.categoryId || '',
-    image: blog.image || null
+    updatedBy: '5ac7b226-6e37-4aa0-92af-4b9985b0a3b0',
+    image: blog.image || null, // Existing image URL
+    categoryName: blog.categoryName,
+    imageFile: null, // New image file
+    isImageChanged: false // 👈 NEW FLAG - initially false
   });
 
+  console.log("Form Data:", formData);
+
+  const [imagePreview, setImagePreview] = useState(blog.image || null);
+
+  useEffect(() => {
+    dispatch(getCategory());
+  }, [dispatch]);
+
+  // Handle input changes
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    if (e && e.target) {
+      const { name, value } = e.target;
+
+      // Special handling for status to convert to number
+      if (name === 'status') {
+        setFormData(prev => ({
+          ...prev,
+          [name]: parseInt(value) // "1" → 1, "0" → 0
+        }));
+      } else {
+        setFormData(prev => ({ ...prev, [name]: value }));
+      }
+    } else {
+      // Quill editor change
+      setFormData(prev => ({ ...prev, description: e }));
+    }
   };
 
+  // Handle image selection
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+      setFormData(prev => ({
+        ...prev,
+        imageFile: file,
+        image: previewUrl, // Preview for display
+        isImageChanged: true // 👈 Image changed
+      }));
+    }
+  };
+
+  // Remove image
+  const handleRemoveImage = () => {
+    setImagePreview(null);
+    setFormData(prev => ({
+      ...prev,
+      imageFile: null,
+      image: null,
+      isImageChanged: true
+    }));
+    const fileInput = document.getElementById('blog-image-input');
+    if (fileInput) fileInput.value = '';
+  };
+
+  // HTML to plain text converter
+  const stripHtml = (html) => {
+    if (!html) return '';
+    if (typeof window !== 'undefined') {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      return doc.body.textContent || "";
+    }
+    return html.replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ').trim();
+  };
+
+  // Handle form submission
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+
+  //   // Create FormData for API
+  //   const formDataToSend = new FormData();
+
+  //   // Convert HTML to plain text for API
+  //   const plainTextDescription = stripHtml(formData.description);
+
+  //   // Append all fields
+  //   formDataToSend.append('BlogId', formData.blogId);
+  //   formDataToSend.append('CategoryId', formData.categoryId);
+  //   formDataToSend.append('Tittle', formData.title);
+  //   formDataToSend.append('Description', plainTextDescription);
+  //   formDataToSend.append('ReadTime', formData.readTime);
+  //   formDataToSend.append('UpdatedBy', formData.updatedBy);
+  //   formDataToSend.append('Status', formData.status);
+  //   formDataToSend.append('MetaKeyWord', formData.metaKeyWord);
+  //   formDataToSend.append('MetaDescription', formData.metaDescription);
+  //   formDataToSend.append('MetaTitle', formData.metaTitle);
+  //   formDataToSend.append('Canonical', formData.canonical);
+
+  //   // 👇 FIXED IMAGE HANDLING
+  //   if (formData.isImageChanged) {
+  //     // User changed the image
+  //     if (formData.imageFile) {
+  //       // New image selected - send the file
+  //       formDataToSend.append('Image', formData.imageFile);
+  //       console.log('Sending new image file');
+  //     } else {
+  //       // Image was removed - send empty string
+  //       formDataToSend.append('Image', '');
+  //       console.log('Image removed');
+  //     }
+  //   } else {
+  //     // User did NOT change the image - send ORIGINAL blog.image
+  //     if (blog.image) {
+  //       formDataToSend.append('Image', blog.image); // 👈 Original URL
+  //       console.log('Keeping original image:', blog.image);
+  //     } else {
+  //       formDataToSend.append('Image', '');
+  //       console.log('No original image');
+  //     }
+  //   }
+
+  //   console.log('isImageChanged:', formData.isImageChanged);
+  //   console.log('Sending plain text description:', plainTextDescription);
+  //   console.log('Status value:', formData.status);
+
+  //   onUpdate(formDataToSend);
+  // };
+  // EditBlogModal में handleSubmit फंक्शन
+  // handleSubmit function में
   const handleSubmit = (e) => {
     e.preventDefault();
-    onUpdate(formData);
-  };
 
+    const formDataToSend = new FormData();
+
+    // सभी fields ऐड करो
+    formDataToSend.append('BlogId', formData.blogId);
+    formDataToSend.append('CategoryId', formData.categoryId);
+    formDataToSend.append('Tittle', formData.title);
+    formDataToSend.append('Description', stripHtml(formData.description));
+    formDataToSend.append('ReadTime', formData.readTime);
+    formDataToSend.append('UpdatedBy', formData.updatedBy);
+    formDataToSend.append('Status', formData.status);
+    formDataToSend.append('MetaKeyWord', formData.metaKeyWord);
+    formDataToSend.append('MetaDescription', formData.metaDescription);
+    formDataToSend.append('MetaTitle', formData.metaTitle);
+    formDataToSend.append('Canonical', formData.canonical);
+
+    // Image handling
+    if (formData.isImageChanged) {
+      if (formData.imageFile) {
+        // नई image file
+        formDataToSend.append('Image', formData.imageFile);
+      } else {
+        // Image removed
+        formDataToSend.append('Image', '');
+      }
+    } else {
+      // पुरानी image URL
+      if (blog.image) {
+        formDataToSend.append('Image', blog.image);
+      }
+    }
+
+    onUpdate(formDataToSend);
+  };
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 md:p-6 flex items-center justify-between">
           <h2 className="text-xl font-bold text-[#2E4A5B] dark:text-white">Edit Blog</h2>
           <button
@@ -738,100 +907,197 @@ function EditBlogModal({ blog, onClose, onUpdate, isEditing }) {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-4 md:p-6 space-y-4">
-          {/* Title */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Title <span className="text-red-500">*</span>
+        <form onSubmit={handleSubmit} className="p-4 md:p-6">
+          {/* Image Section */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Blog Image
             </label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
-            />
+            <div className="flex flex-col sm:flex-row items-start gap-4">
+              <div className="w-full sm:w-48 h-32 relative rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800">
+                {imagePreview ? (
+                  <>
+                    <Image
+                      src={imagePreview}
+                      alt="Blog preview"
+                      fill
+                      className="object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                      title="Remove image"
+                    >
+                      <RiCloseLine className="text-sm" />
+                    </button>
+                  </>
+                ) : (
+                  <div className="flex items-center justify-center h-full">
+                    <RiArticleLine className="text-3xl text-gray-400" />
+                  </div>
+                )}
+              </div>
+              <div className="flex-1">
+                <input
+                  type="file"
+                  id="blog-image-input"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+                <label
+                  htmlFor="blog-image-input"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                >
+                  <RiAddLine />
+                  {imagePreview ? 'Change Image' : 'Upload Image'}
+                </label>
+                {formData.keepExistingImage && formData.image && !formData.imageFile && (
+                  <p className="text-xs text-green-600 dark:text-green-400 mt-2">
+                    ✓ Current image will be preserved
+                  </p>
+                )}
+                {formData.imageFile && (
+                  <p className="text-xs text-blue-600 dark:text-blue-400 mt-2">
+                    New image selected
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
 
-          {/* Category */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Category <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              name="categoryId"
-              value={formData.categoryId}
-              onChange={handleChange}
-              placeholder="Category ID"
-              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
-            />
-          </div>
+          {/* Two column layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            {/* Title - Full width */}
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Title <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
+              />
+            </div>
 
-          {/* Description */}
-          <div>
+            {/* Category Dropdown */}
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Category <span className="text-red-500">*</span>
+              </label>
+              <select
+                name="categoryId"
+                value={formData.categoryId}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
+              >
+                <option value="">Select Category</option>
+                {categoryData.map((cat) => (
+                  <option key={cat.categoryId} value={cat.categoryId}>
+                    {cat.categoryName}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Read Time */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Read Time <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="readTime"
+                value={formData.readTime}
+                onChange={handleChange}
+                required
+                placeholder="e.g., 5"
+                className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
+              />
+            </div>
+
+            {/* Status */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Status
+              </label>
+              <select
+                name="status"
+                value={formData.status.toString()}
+                onChange={handleChange}
+                className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
+              >
+                <option value="1">Published</option>
+                <option value="0">Unpublished</option>
+              </select>
+            </div>
+
+            {/* Meta Title */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Meta Title
+              </label>
+              <input
+                type="text"
+                name="metaTitle"
+                value={formData.metaTitle}
+                onChange={handleChange}
+                className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
+              />
+            </div>
+
+            {/* Meta Keywords */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Meta Keywords
+              </label>
+              <input
+                type="text"
+                name="metaKeyWord"
+                value={formData.metaKeyWord}
+                onChange={handleChange}
+                placeholder="keyword1, keyword2, keyword3"
+                className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
+              />
+            </div>
+
+            {/* Canonical URL */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Canonical URL
+              </label>
+              <input
+                type="text"
+                name="canonical"
+                value={formData.canonical}
+                onChange={handleChange}
+                placeholder="https://example.com/canonical-url"
+                className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
+              />
+            </div>
+          </div>
+          <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Description <span className="text-red-500">*</span>
             </label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              required
-              rows={4}
-              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc] resize-none"
-            />
-          </div>
-
-          {/* Read Time */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Read Time <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              name="readTime"
-              value={formData.readTime}
-              onChange={handleChange}
-              required
-              placeholder="e.g., 5 min read"
-              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
-            />
-          </div>
-
-          {/* Status */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Status
-            </label>
-            <select
-              name="status"
-              value={formData.status}
-              onChange={handleChange}
-              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
-            >
-              <option value="draft">Draft</option>
-              <option value="published">Published</option>
-            </select>
-          </div>
-
-          {/* Meta Title */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Meta Title
-            </label>
-            <input
-              type="text"
-              name="metaTitle"
-              value={formData.metaTitle}
-              onChange={handleChange}
-              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
-            />
+            <div className="border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden">
+              <QuillEditor
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                required
+                height={250}
+              />
+            </div>
           </div>
 
           {/* Meta Description */}
-          <div>
+          <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Meta Description
             </label>
@@ -839,28 +1105,13 @@ function EditBlogModal({ blog, onClose, onUpdate, isEditing }) {
               name="metaDescription"
               value={formData.metaDescription}
               onChange={handleChange}
-              rows={2}
+              rows={3}
               className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc] resize-none"
             />
           </div>
 
-          {/* Meta Keywords */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Meta Keywords
-            </label>
-            <input
-              type="text"
-              name="metaKeyword"
-              value={formData.metaKeyword}
-              onChange={handleChange}
-              placeholder="keyword1, keyword2, keyword3"
-              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc]"
-            />
-          </div>
-
           {/* Action Buttons */}
-          <div className="flex gap-3 pt-4">
+          <div className="flex gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
             <button
               type="button"
               onClick={onClose}
@@ -888,4 +1139,3 @@ function EditBlogModal({ blog, onClose, onUpdate, isEditing }) {
     </div>
   );
 }
-
