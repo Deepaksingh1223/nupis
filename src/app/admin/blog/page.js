@@ -1081,8 +1081,6 @@ function EditBlogModal({ blog, onClose, onUpdate, isEditing }) {
               />
             </div>
           </div>
-
-          {/* Description - Quill Editor */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Description <span className="text-red-500">*</span>
