@@ -68,7 +68,7 @@ const AddBlogPage = () => {
       categoryId: '',
       description: '',
       readTime: '',
-      status: 'draft',
+      status: '1',
       metaTitle: '',
       metaDescription: '',
       metaKeyword: '',
@@ -209,23 +209,7 @@ const AddBlogPage = () => {
                   </div>
 
                   {/* Description */}
-                  {/* <div className='pt-4'>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                      Description <span className="text-red-500">*</span>
-                    </label>
-                    <textarea
-                      name="description"
-                      value={formik.values.description}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      placeholder="Write your blog description here..."
-                      rows={8}
-                      className={`w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border ${formik.touched.description && formik.errors.description ? 'border-red-500' : 'border-gray-200 dark:border-gray-600'} rounded-lg text-sm text-gray-800 dark:text-white placeholder-gray-400 focus:outline-none focus:border-[#29d2cc] focus:ring-2 focus:ring-[#29d2cc]/20 transition-all resize-none`}
-                    />
-                    {formik.touched.description && formik.errors.description && (
-                      <p className="text-xs text-red-500 mt-1">{formik.errors.description}</p>
-                    )}
-                  </div> */}
+                
                   <div className='pt-4'>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                     Description <span className="text-red-500">*</span>
@@ -407,8 +391,8 @@ const AddBlogPage = () => {
                       onChange={formik.handleChange}
                       className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-white focus:outline-none focus:border-[#29d2cc] focus:ring-2 focus:ring-[#29d2cc]/20 transition-all"
                     >
-                      <option value="published">Published</option>
-                      <option value="Unpublished">UnPublished</option>
+                      <option value="1">Published</option>
+                      <option value="0">UnPublished</option>
                       
                     </select>
                   </div>
