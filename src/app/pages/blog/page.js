@@ -304,12 +304,11 @@ const BlogSection = () => {
                       WebkitBoxOrient: "vertical",
                       overflow: "hidden",
                     }}
-                     dangerouslySetInnerHTML={{
-                          __html: objOfBlog?.description?.replace(/&nbsp;/g, " "),
-                        }}
-                  >
-                    {/* {objOfBlog?.description} */}
-                  </p>
+                    dangerouslySetInnerHTML={{
+                      __html: objOfBlog?.description?.replace(/&nbsp;/g, " "),
+                    }}
+                  ></p>
+                
                   <div className="spotlight-meta">
                     <span className="meta-block">
                       <FaUserAlt /> {objOfBlog?.createdBy}
@@ -393,12 +392,20 @@ const BlogSection = () => {
                         <Link href={`/blog/${post.slug}`}>{post.tittle}</Link>
                       </h3>
                       <p
-                        dangerouslySetInnerHTML={{
-                          __html: post?.description?.replace(/&nbsp;/g, " "),
+                        style={{
+                          display: "-webkit-box",
+                          WebkitBoxOrient: "vertical",
+                          WebkitLineClamp: 2,
+                          overflow: "hidden",
                         }}
-                      >
-                        {/* {post?.description} */}
-                      </p>
+                        className="blog-description h-[48px]"
+                        dangerouslySetInnerHTML={{
+                          __html: post?.description?.replace(
+                            /&nbsp;/g,
+                            " ",
+                          ),
+                        }}
+                      />
                       <div className="card-footer">
                         <div className="post-stats">
                           <span className="stat-block">
