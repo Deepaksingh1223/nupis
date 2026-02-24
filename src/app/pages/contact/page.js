@@ -10,6 +10,9 @@ const ContactUs = () => {
   const dispatch = useDispatch();
   const { contactUsData, loading } = useSelector((state) => state.blog);
   const [activeFaq, setActiveFaq] = useState(null);
+  const [apiMessage, setApiMessage] = useState("");
+  const [apiError, setApiError] = useState("");
+  const [errors, setErrors] = useState({});
   const [query, setQuery] = useState({
     name: "",
     email: "",
@@ -54,13 +57,23 @@ const ContactUs = () => {
 
   const mutation = useMutation({
     mutationFn: addQuery,
-    onSuccess: () => {
+    onSuccess: (data) => {
       setQuery({
         name: "",
         email: "",
         subject: "",
         message: "",
       });
+      console.log("data---", data);
+      setApiMessage(data?.message || "Query submitted successfully!");
+      setTimeout(() => {
+        setApiMessage("");
+      }, 3000);
+    },
+    onError: (error) => {
+      setApiError(error?.response?.data?.message || "Something went wrong!");
+      console.log("error---", error);
+      setTimeout(() => setApiError(""), 3000);
     },
   });
 
@@ -71,13 +84,43 @@ const ContactUs = () => {
       ...prev,
       [name]: value,
     }));
+    setErrors({
+      ...errors,
+      [name]: "",
+    });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    mutation.mutate({
-      ...query,
-    });
+    let newErrors = {};
+
+    if (!query.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!query.email.trim()) {
+      newErrors.email = "Email is required";
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(query.email)) {
+        newErrors.email = "Invalid email format";
+      }
+    }
+
+    if (!query.subject.trim()) {
+      newErrors.subject = "Subject is required";
+    }
+
+    if (!query.message.trim()) {
+      newErrors.message = "Message is required";
+    }
+
+    setErrors(newErrors);
+
+    // Agar koi error nahi hai tabhi mutation call hoga
+    if (Object.keys(newErrors).length === 0) {
+      mutation.mutate(query);
+    }
   };
   return (
     <>
@@ -198,6 +241,9 @@ const ContactUs = () => {
                         className="contactus-form-input"
                         placeholder="John Doe"
                       />
+                      {errors.name && (
+                        <p className="text-red-500 text-sm">{errors.name}</p>
+                      )}
                     </div>
                     <div className="contactus-form-group">
                       <label className="contactus-form-label">
@@ -212,6 +258,9 @@ const ContactUs = () => {
                         className="contactus-form-input"
                         placeholder="john@example.com"
                       />
+                      {errors.email && (
+                        <p className="text-red-500 text-sm">{errors.email}</p>
+                      )}
                     </div>
                     <div className="contactus-form-group">
                       <label className="contactus-form-label">
@@ -225,6 +274,9 @@ const ContactUs = () => {
                         className="contactus-form-input"
                         placeholder="Program Inquiry / Partnership / Support"
                       />
+                      {errors.subject && (
+                        <p className="text-red-500 text-sm">{errors.subject}</p>
+                      )}
                     </div>
                     <div className="contactus-form-group">
                       <label className="contactus-form-label">
@@ -238,8 +290,27 @@ const ContactUs = () => {
                         rows={4}
                         placeholder="Tell us about your inquiry..."
                       />
+                      {errors.message && (
+                        <p className="text-red-500 text-sm">{errors.message}</p>
+                      )}
                     </div>
-                    <button type="submit" disabled={mutation.isPending} className="contactus-submit-btn">
+                    {apiMessage && (
+                      <div className="bg-green-100 text-green-700 text-center px-4 py-2 rounded-md mb-3">
+                        {apiMessage}
+                      </div>
+                    )}
+                    {apiError && (
+                      <div className="bg-red-100 text-red-700 px-4 text-center py-2 rounded-md mb-3">
+                        {apiError}
+                      </div>
+                    )}
+                    <button
+                      type="submit"
+                      disabled={mutation.isPending}
+                      className={`contactus-submit-btn 
+                        ${mutation.isPending ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+                        `}
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
@@ -248,7 +319,9 @@ const ContactUs = () => {
                       >
                         <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
                       </svg>
-                      {mutation.isPending ? "Sending Message..." : "Send Message"}
+                      {mutation.isPending
+                        ? "Sending Message..."
+                        : "Send Message"}
                     </button>
                   </form>
                 </div>
