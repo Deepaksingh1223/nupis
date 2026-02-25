@@ -1,119 +1,156 @@
-import React from 'react';
+"use client" 
+import React, { useState } from 'react'; 
 
-export default function NupipsSplitLogin() {
+export default function LoginPage() {
+  const [userEmail, setUserEmail] = useState('test1@gmail.com');
+  const [userPassword, setUserPassword] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isRememberChecked, setIsRememberChecked] = useState(false);
+
   return (
-    <div className="min-h-screen bg-[#FDFCFB] flex items-center justify-center p-4 md:p-10 font-sans relative overflow-hidden">
+    <div className="login-wrapper">
       
-      {/* --- Aesthetic Background Elements --- */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-50/50 blur-[120px] rounded-full" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-rose-50/50 blur-[120px] rounded-full" />
-
-      {/* Main Container Card */}
-      <div className="relative z-10 w-full max-w-6xl bg-white rounded-[2.5rem] shadow-[0_30px_100px_-20px_rgba(0,0,0,0.06)] flex flex-col md:flex-row overflow-hidden border border-white">
-        
-        {/* LEFT SIDE: FORM SECTION */}
-        <div className="w-full md:w-[45%] p-8 lg:p-16 flex flex-col justify-center">
-          <div className="max-w-sm mx-auto w-full">
-            <div className="mb-10">
-              <div className="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200 mb-6">
-                 <span className="text-white text-xl font-bold italic">n</span>
-              </div>
-              <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Welcome Back</h2>
-              <p className="text-slate-500 mt-2 font-medium">Please enter your details to sign in.</p>
-            </div>
-
-            <form className="space-y-5">
-              <div className="space-y-2">
-                <label className="text-[11px] font-bold text-slate-400 uppercase tracking-widest ml-1">Email Address</label>
-                <input 
-                  type="email" 
-                  placeholder="name@nupips.com"
-                  className="w-full bg-slate-50/50 border border-slate-100 rounded-2xl px-5 py-4 text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-400 transition-all"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between px-1">
-                  <label className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Password</label>
-                  <button type="button" className="text-xs text-indigo-600 font-bold hover:underline">Forgot?</button>
-                </div>
-                <input 
-                  type="password" 
-                  placeholder="••••••••"
-                  className="w-full bg-slate-50/50 border border-slate-100 rounded-2xl px-5 py-4 text-slate-900 placeholder:text-slate-300 focus:outline-none focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-400 transition-all"
-                />
-              </div>
-
-              <button className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-2xl shadow-xl shadow-slate-200 transition-all active:scale-[0.98]">
-                Sign In
-              </button>
-
-              <div className="grid grid-cols-2 gap-4 pt-2">
-                <button type="button" className="flex items-center justify-center gap-2 bg-white border border-slate-100 py-3 rounded-2xl hover:bg-slate-50 transition-all shadow-sm">
-                  <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-4 h-4" alt="Google" />
-                  <span className="text-xs font-bold text-slate-700">Google</span>
-                </button>
-                <button type="button" className="flex items-center justify-center gap-2 bg-white border border-slate-100 py-3 rounded-2xl hover:bg-slate-50 transition-all shadow-sm">
-                  <img src="https://www.svgrepo.com/show/445841/apple-black.svg" className="w-4 h-4" alt="Apple" />
-                  <span className="text-xs font-bold text-slate-700">Apple</span>
-                </button>
-              </div>
-            </form>
-
-            <p className="text-center mt-10 text-slate-500 text-sm font-medium">
-              New here? <span className="text-indigo-600 font-bold cursor-pointer hover:underline">Create an account</span>
-            </p>
-          </div>
+      {/* Background Design Elements */}
+      <div className="design-circle-one"></div>
+      <div className="design-circle-two"></div>
+      <div className="design-circle-three"></div>
+      
+      {/* Main Login Box */}
+      <div className="login-box">
+         
+        {/* Heading Section */}
+        <div className="heading-section">
+          <h1 className="main-heading">Welcome Back</h1>
+          <p className="sub-heading">
+            Please enter your details to sign in 
+          </p>
         </div>
 
-        {/* RIGHT SIDE: DETAIL CONTENT & IMAGE */}
-        <div className="hidden md:block w-[55%] relative overflow-hidden bg-slate-50">
-          {/* Main Background Image (Trading/Dashboard Vibe) */}
-          <img 
-            src="https://t4.ftcdn.net/jpg/06/12/22/29/360_F_612222999_7nT8JXjdVkJMOdRHLBhQBqTvV8flOEJO.jpg" 
-            alt="Trading Dashboard" 
-            className="absolute inset-0 w-full h-full object-cover"
-          />
+        {/* Login Form */}
+        <form className="login-form">
           
-          {/* Soft Overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-indigo-900/40 via-transparent to-transparent" />
-
-          {/* Floating Glass Content */}
-          <div className="absolute inset-0 flex flex-col justify-end p-12 text-white">
-            <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-[2rem] shadow-2xl max-w-md">
-              <span className="bg-indigo-500/20 text-indigo-800 text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full border border-indigo-400/30">
-                Premium Access
-              </span>
-              <h3 className="text-3xl font-black mt-4 leading-tight">Master your financial strategy with nupips.</h3>
-              <p className="text-indigo-500 mt-4 text-sm leading-relaxed font-medium">
-                Get real-time insights, expert forex education, and advanced portfolio management tools all in one place.
-              </p>
-              
-              {/* Feature Tags */}
-              <div className="flex gap-3 mt-6">
-                <div className="flex items-center gap-2 bg-white/10 px-3 py-2 rounded-xl border border-white/10">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-black">Live Analytics</span>
-                </div>
-                <div className="flex items-center gap-2 bg-white/10 px-3 py-2 rounded-xl border border-white/10">
-                  <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-black">Expert Mentors</span>
-                </div>
-              </div>
+          {/* Email Field */}
+          <div className="form-field-group">
+            <label className="field-label">
+              <svg className="label-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+              Email Address
+            </label>
+            <div className="input-container">
+              <input 
+                type="email" 
+                value={userEmail}
+                onChange={(e) => setUserEmail(e.target.value)}
+                className="text-input-field"
+              />
+              <svg className="success-check-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M20 6L9 17l-5-5" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </div>
           </div>
 
-          {/* Aesthetic Floating Element (Top Right) */}
-          <div className="absolute top-10 right-10 bg-white/20 backdrop-blur-lg border border-white/30 px-5 py-3 rounded-2xl shadow-xl">
-             <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
-                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
-                </div>
-                <span className="text-xs font-black uppercase tracking-tighter text-white">Verified Platform</span>
-             </div>
+          {/* Password Field */}
+          <div className="form-field-group">
+            <div className="label-row-container">
+              <label className="field-label">
+                <svg className="label-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" strokeWidth="2"/>
+                  <path d="M7 11V7a5 5 0 0110 0v4" strokeWidth="2"/>
+                </svg>
+                Password
+              </label>
+              <button type="button" className="forgot-password-link">Forgot?</button>
+            </div>
+            <div className="input-container">
+              <input 
+                type={isPasswordVisible ? "text" : "password"}
+                value={userPassword}
+                onChange={(e) => setUserPassword(e.target.value)}
+                className="text-input-field"
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                className="password-visibility-toggle"
+              >
+                {isPasswordVisible ? (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24" strokeWidth="2" strokeLinecap="round"/>
+                    <path d="M1 1l22 22" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" strokeWidth="2"/>
+                    <circle cx="12" cy="12" r="3" strokeWidth="2"/>
+                  </svg>
+                )}
+              </button>
+            </div>
           </div>
-        </div>
 
+          {/* Remember Me Checkbox */}
+          <label className="remember-me-container">
+            <input 
+              type="checkbox" 
+              checked={isRememberChecked}
+              onChange={(e) => setIsRememberChecked(e.target.checked)}
+              className="checkbox-input"
+            />
+            <span className="checkbox-label-text">
+              <svg className="shield-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" strokeWidth="2"/>
+              </svg>
+              Remember me
+            </span>
+          </label>
+
+          {/* Sign In Button */}
+          <button type="submit" className="sign-in-button">
+            <span>Sign In</span>
+            <svg className="button-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M5 12h14M12 5l7 7-7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+
+          {/* Divider Line */}
+          <div className="divider-container">
+            <span className="divider-line"></span>
+            <span className="divider-text">Or continue with</span>
+            <span className="divider-line"></span>
+          </div>
+
+          {/* Social Login Buttons */}
+          <div className="social-buttons-grid">
+            <button type="button" className="social-login-btn google-btn">
+              <svg className="social-icon-svg google-icon" viewBox="0 0 24 24">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+              </svg>
+              Google
+            </button>
+            <button type="button" className="social-login-btn apple-btn">
+              <svg className="social-icon-svg apple-icon" viewBox="0 0 24 24">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" fill="currentColor"/>
+              </svg>
+              Apple
+            </button>
+          </div>
+        </form>
+
+        {/* Sign Up Link */}
+        <p className="sign-up-text">
+          New here? 
+          <button className="create-account-btn">
+            Create an account
+            <svg className="small-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M5 12h14M12 5l7 7-7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </p>
       </div>
     </div>
   );
